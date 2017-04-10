@@ -12,10 +12,11 @@
     </head>
 
     <body>
+        <h1 class="ui blue huge header">Gestion de rapport</h1>
         <form class="ui form">
             <table>
                 <tr>
-                    <th colspan="2"><h4 class="ui dividing header">Gestion de rapport</h4></th>
+                    <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
                 </tr>
 
                 <tr>
@@ -130,6 +131,35 @@
                             </div>
                         </div>
                     </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <th colspan="2"><h4 class="ui dividing header">Document de référence</h4></th>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="field">
+                            <label>Suivant procédure : </label>
+                            <div class="field">
+                                <input type="text" name="procedure" placeholder="Procédure suivie">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="field">
+                            <label>Code d'interprétation : </label>
+                            <div class="field">
+                                <input type="text" name="codeInter" placeholder="Code d'interprétation">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><button class="ui right floated blue button">Valider</button></td>
                 </tr>
             </table>
         </form>
