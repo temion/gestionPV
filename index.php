@@ -1,8 +1,14 @@
+<?php
+    $bdd = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+
+    $societes = $bdd->query('select distinct nom_societe from societe')->fetchAll(PDO::FETCH_COLUMN);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>index</title>
+        <title>Gestion de rapport</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
         <link rel="stylesheet" href="style/style.css"/>
@@ -13,7 +19,7 @@
 
     <body>
         <h1 class="ui blue huge header">Gestion de rapport</h1>
-        <form class="ui form">
+        <form class="ui form" method="post" action="traitementAffaire.php">
             <table>
                 <tr>
                     <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
@@ -23,9 +29,13 @@
                     <td>
                         <div class="field">
                             <label>Clients : </label>
-                            <div class="field">
-                                <input type="text" name="societeClient" placeholder="Nom de la société">
-                            </div>
+                            <select class="ui search dropdown">
+                                <?php
+                                for ($i = 0; $i < sizeof($societes); $i++) {
+                                    echo '<option>'.$societes[$i].'</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
                     </td>
                     <td>
