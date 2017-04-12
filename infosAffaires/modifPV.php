@@ -1,30 +1,44 @@
 <?php
-    $bddAffaires = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
-
-    $societes = $bddAffaires->query('select * from societe')->fetchAll();
-    $client = $bddAffaires->query('select * from client')->fetchAll();
+/**
+ * Created by PhpStorm.
+ * User: t.emion
+ * Date: 12/04/2017
+ * Time: 14:26
+ */
+    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $pv = $bddAffaire->query('select * from pv_controle where id_pv = '.$_GET['idPv'])->fetch();
+    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
+    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
 
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
-    $equipement = $bddEquipement->query('select * from equipement')->fetchAll();
+    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Gestion de rapport</title>
+        <title>Modification de PV</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
-        <link rel="stylesheet" href="style/style.css"/>
+        <link rel="stylesheet" href="../style/style.css"/>
+        <link rel="stylesheet" href="../style/creaPV.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
     </head>
 
     <body>
-        <h1 class="ui blue center aligned huge header">Gestion de rapport</h1>
-        <form class="ui form" method="post" action="traitementAffaire.php">
+        <h1 class="ui blue center aligned huge header">Modification du PV </h1>
+
+        <form class="ui form" method="post" action="listePV.php">
             <table>
+                <tr>
+                    <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>
+                </tr>
                 <tr>
                     <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
                 </tr>
@@ -33,27 +47,13 @@
                     <td>
                         <div class="field">
                             <label>Clients : </label>
-                            <select class="ui search dropdown" name="societe_client">
-                                <?php
-                                    for ($i = 0; $i < sizeof($societes); $i++) {
-                                        echo '<option>'.$societes[$i]['nom_societe'].'</option>';
-                                    }
-                                ?>
-                            </select>
+                            <label> <?php echo $societe['nom_societe']; ?> </label>
                         </div>
                     </td>
                     <td>
                         <div class="field">
                             <label>N° Equipement : </label>
-                            <div class="field">
-                                <select class="ui search dropdown" name="num_equipement">
-                                    <?php
-                                    for ($i = 0; $i < sizeof($equipement); $i++) {
-                                        echo '<option>'.$equipement[$i]['Designation'].' '.$equipement[$i]['Type'].'</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+                            <label> <?php echo $equipement['Designation'].' '.$equipement['Type']; ?> </label>
                         </div>
                     </td>
                 </tr>
@@ -62,21 +62,13 @@
                     <td>
                         <div class="field">
                             <label>Personne rencontrée : </label>
-                            <select class="ui search dropdown" name="personne_client">
-                                <?php
-                                for ($i = 0; $i < sizeof($client); $i++) {
-                                    echo '<option>'.$client[$i]['nom'].'</option>';
-                                }
-                                ?>
-                            </select>
+                            <label> <?php echo $client['nom']; ?> </label>
                         </div>
                     </td>
                     <td>
                         <div class="field">
                             <label>Diamètre : </label>
-                            <div class="field">
-                                <input type="text" name="diam_equipement" placeholder="Diamètre (m)">
-                            </div>
+                            <label> <?php echo $ficheTechniqueEquipement['diametre'].' m'; ?> </label>
                         </div>
                     </td>
                 </tr>
@@ -84,18 +76,16 @@
                 <tr>
                     <td>
                         <div class="field">
-                            <label>N° Commande client : </label>
                             <div class="field">
-                                <input type="text" name="num_commande" placeholder="Numéro de commande">
+                                <label>Numéro de commande client : </label>
+                                <label> <?php echo $affaire['commande']; ?> </label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="field">
                             <label>Hauteur : </label>
-                            <div class="field">
-                                <input type="text" name="hauteur_equipement" placeholder="Hauteur (m)">
-                            </div>
+                            <label> <?php echo $ficheTechniqueEquipement['hauteurEquipement'].' m'; ?> </label>
                         </div>
                     </td>
                 </tr>
@@ -104,9 +94,7 @@
                     <td>
                         <div class="field">
                             <label>Lieu : </label>
-                            <div class="field">
-                                <input type="text" name="lieu" placeholder="Lieu de l'affaire">
-                            </div>
+                            <label> <?php echo $affaire['lieu_intervention']; ?> </label>
                         </div>
                     </td>
                     <td>
@@ -122,9 +110,9 @@
                 <tr>
                     <td>
                         <div class="field">
-                            <label>Début du contrôle : </label>
                             <div class="field">
-                                <input type="text" name="debut_controle" placeholder="Date de début">
+                                <label>Début du contrôle : </label>
+                                <label> <?php echo $affaire['date_ouv']; ?> </label>
                             </div>
                         </div>
                     </td>
@@ -142,9 +130,7 @@
                     <td>
                         <div class="field">
                             <label>Nombre de génératrices : </label>
-                            <div class="field">
-                                <input type="text" name="nb_generatrices" placeholder="Nombre de génératrices">
-                            </div>
+                            <label> <?php echo $ficheTechniqueEquipement['nbGeneratrice']; ?> </label>
                         </div>
                     </td>
                     <td>
@@ -174,9 +160,9 @@
                     </td>
                     <td>
                         <div class="field">
-                            <label>Code d'interprétation : </label>
+                            <label>Suivant procédure : </label>
                             <div class="field">
-                                <input type="text" name="codeInter" placeholder="Code d'interprétation">
+                                <input type="text" name="procedure" placeholder="Procédure suivie">
                             </div>
                         </div>
                     </td>
@@ -186,11 +172,6 @@
                     <td colspan="2"><button class="ui right floated blue button">Valider</button></td>
                 </tr>
             </table>
-
-            <?php
-                if (isset($_GET['erreur']))
-                    echo '<h2 class="ui red center aligned huge header">Veuillez remplir tous les champs</h2>';
-            ?>
         </form>
     </body>
 </html>
