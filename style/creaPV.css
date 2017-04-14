@@ -24,10 +24,24 @@ td {
     padding: 0 2em 1em 2em;
 }
 
-button {
-    padding-top: 2em;
+div.header {
+    text-align: center;
+}
+
+#cbVoieOffre {
+    margin-right: 1em;
+}
+
+#voieOffre {
+    width: 5em;
 }
 
 #apercu {
     margin-top: 10em;
+}
+
+#erreur {
+    color: red;
+    text-align: center;
+    font-weight: bold;
 }

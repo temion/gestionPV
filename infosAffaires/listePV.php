@@ -14,7 +14,6 @@
         <title>Liste des PV</title>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
-        <link rel="stylesheet" href="../style/style.css"/>
         <link rel="stylesheet" href="../style/listePV.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
