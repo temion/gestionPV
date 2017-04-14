@@ -7,7 +7,7 @@
                 <meta charset="UTF-8">
                 <title><?php echo $titre; ?></title>
 
-                <link rel="stylesheet" href="../style/menu.css"/>
+                <link rel="stylesheet" href="style/menu.css"/>
                 <?php
                     for ($i = 0; $i < sizeof($styles); $i++) {
                         echo '<link rel="stylesheet" href="'.$styles[$i].'"/>';
@@ -33,7 +33,7 @@
         <?php
     }
 
-    function pied() {
+    function fonctionMenu() {
         ?>
             <script>
                 $(function () {

@@ -6,6 +6,10 @@ th {
     text-align: center;
 }
 
+td {
+    width: 15em;
+}
+
 button > a {
     color: white;
     text-decoration: none;
