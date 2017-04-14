@@ -1,9 +1,5 @@
-body {
-    padding: 1em 10em 0 10em;
-}
-
 select {
-    width: 20em;
+    width: 15em;
 }
 
 select:disabled {
@@ -20,8 +16,8 @@ th {
 }
 
 td {
-    width: 25em;
-    padding: 0 2em 1em 2em;
+    width: 20em;
+    padding: 0 2em 0.5em 2em;
 }
 
 div.header {
@@ -44,4 +40,8 @@ div.header {
     color: red;
     text-align: center;
     font-weight: bold;
+}
+
+#contenu {
+    padding: 1em 5em 2em 20em;
 }

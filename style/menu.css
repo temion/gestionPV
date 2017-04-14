@@ -1,0 +1,9 @@
+#menu {
+    position: fixed;
+    left: 0;
+    height: inherit;
+}
+
+#menu h1 {
+    padding-top: 0.5em;
+}

@@ -1,7 +1,16 @@
-body {
-    padding: 2em 3em 0 3em;
-}
-
 table {
     margin: auto;
+}
+
+th {
+    text-align: center;
+}
+
+button > a {
+    color: white;
+    text-decoration: none;
+}
+
+#contenu {
+    padding: 1em 5em 0 20em;
 }
