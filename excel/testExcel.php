@@ -1,8 +1,8 @@
 <?php
     //Script pour générer un fichier Excel
-    require_once ("PHPExcel/Classes/PHPExcel.php");
+    require_once("../PHPExcel/Classes/PHPExcel.php");
 
-    require_once ("PHPExcel/Classes/PHPExcel/IOFactory.php");
+    require_once("../PHPExcel/Classes/PHPExcel/IOFactory.php");
 
     $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
 
@@ -156,9 +156,9 @@
 
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
 
-    $writer->save('./PV_PDF/pv_'.$pv['id_pv'].'.xls');
+    $writer->save('../PV_PDF/pv_'.$pv['id_pv'].'.xls');
 
-    header('Location: listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
+    header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
 
     function colorerCellule($classeur, $cellule, $couleur){
 

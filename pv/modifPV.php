@@ -1,7 +1,7 @@
 <?php
-    include_once "menu.php";
+    include_once "../menu.php";
     enTete("Modification de PV",
-                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "style/infos.css"),
+                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
                  array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
@@ -18,7 +18,7 @@
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Modification du PV </h1>
 
-            <form class="ui form" method="post" <?php echo 'action=testExcel.php?idPV='.$pv['id_pv'].'' ?>>
+            <form class="ui form" method="post" <?php echo 'action=/gestionPV/excel/testExcel.php?idPV='.$pv['id_pv'].'' ?>>
                 <table>
                     <tr>
                         <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>

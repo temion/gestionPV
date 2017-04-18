@@ -7,7 +7,6 @@
                 <meta charset="UTF-8">
                 <title><?php echo $titre; ?></title>
 
-                <link rel="stylesheet" href="style/menu.css"/>
                 <?php
                     for ($i = 0; $i < sizeof($styles); $i++) {
                         echo '<link rel="stylesheet" href="'.$styles[$i].'"/>';
@@ -17,20 +16,22 @@
                         echo '<script src="'.$scripts[$i].'"></script>';
                     }
                 ?>
-
             </head>
 
             <body>
             <div id="menu" class="ui vertical menu">
-                <h1 class="ui center aligned blue header"> Gestion des PV </h1>
-                <a href="creationPV.php" class="active blue item lienMenu">
+                <h1 class="ui center aligned blue header"><a href="/gestionPV/"> Gestion des PV </a></h1>
+                <a href="/gestionPV/pv/creationPV.php" class="item lienMenu">
                     Création de PV
                 </a>
-                <a href="listePV.php" class="item lienMenu">
+                <a href="/gestionPV/pv/listePV.php" class="item lienMenu">
                     Liste des PV existants
                 </a>
-                <a href="ajoutAppareil.php" class="item lienMenu">
+                <a href="/gestionPV/appareils/ajoutAppareil.php" class="item lienMenu">
                     Ajout d'appareils
+                </a>
+                <a href="/gestionPV/appareils/listeAppareils.php" class="item lienMenu">
+                    Liste des appareils existants
                 </a>
             </div>
         <?php

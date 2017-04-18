@@ -1,7 +1,7 @@
 <?php
-    include_once "menu.php";
+    include_once "../menu.php";
 enTete("Ajout d'un nouvel appareil",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "style/ajoutAppareil.css"),
+    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajoutAppareil.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 ?>
 
@@ -11,14 +11,14 @@ enTete("Ajout d'un nouvel appareil",
         if (isset($_GET['erreur']) && $_GET['erreur'] == 1) {
             echo '<div class="ui message">';
             echo '<div class="header"> Erreur ! </div>';
-            echo '<p id="erreur"> Veuillez remplir tous les champs précédés par un astérisque avec des valeurs valides. </p>';
+            echo '<p id="infosAction"> Veuillez remplir tous les champs précédés par un astérisque avec des valeurs valides. </p>';
             echo '</div>';
         }
 
         if (isset($_GET['ajout']) && $_GET['ajout'] == 1) {
             echo '<div class="ui message">';
             echo '<div class="header"> Succès ! </div>';
-            echo '<p> Votre appareil a bien été ajouté à la base ! </p>';
+            echo '<p id="infosAction"> Votre appareil a bien été ajouté à la base ! </p>';
             echo '</div>';
         }
     ?>
@@ -28,9 +28,17 @@ enTete("Ajout d'un nouvel appareil",
             <tr>
                 <td>
                     <div class="field">
+                        <label>* Système : </label>
+                        <div class="ui input">
+                            <input type="text" name="systeme" placeholder="Système (ex. : Théodolite)">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="field">
                         <label>* Type d'appareil : </label>
                         <div class="ui input">
-                            <input type="text" name="type" placeholder="Type (ex. : Théodolite)">
+                            <input type="text" name="type" placeholder="Type (ex. : TS06)">
                         </div>
                     </div>
                 </td>
@@ -54,7 +62,7 @@ enTete("Ajout d'un nouvel appareil",
                     <div class="field">
                         <label>* Valide jusqu'au : </label>
                         <div class="ui input">
-                            <input type="text" name="date_valid" placeholder="JJ-MM-AAAA">
+                            <input type="date" name="date_valid" placeholder="JJ-MM-AAAA">
                         </div>
                     </div>
                 </td>
@@ -62,7 +70,7 @@ enTete("Ajout d'un nouvel appareil",
                     <div class="field">
                         <label>* Date de calibration : </label>
                         <div class="ui input">
-                            <input type="text" name="date_calib" placeholder="JJ-MM-AAAA">
+                            <input type="date" name="date_calib" placeholder="JJ-MM-AAAA">
                         </div>
                     </div>
                 </td>
