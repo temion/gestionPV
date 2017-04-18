@@ -13,6 +13,8 @@
     $receveur = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
     $analyste = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
 
+    $controle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
+
     // création des objets de base et initialisation des informations d'entête
 
     $classeur = new PHPExcel;
@@ -76,6 +78,59 @@
     $feuille->setCellValue('B8', $affaire['libelle']);
     $feuille->getCell('B8')->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
+    $feuille->mergeCells('A10:B10');
+    $feuille->setCellValue('A10', "Début de la mission prévu le : ");
+
+    $feuille->mergeCells('A11:B11');
+    $feuille->setCellValue('A11', "Fin de la mission prévue le : ");
+
+    $feuille->mergeCells('A13:E13');
+    $feuille->setCellValue('A13', "Liste des livrables : ");
+    $feuille->getCell('A13')->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    if ($pv['id_controle1'] != "") {
+        $controle->execute(array($pv['id_controle1']));
+        ecrireControle($feuille, $affaire,14, $controle->fetch());
+    }
+
+    if ($pv['id_controle2'] != "") {
+        $controle->execute(array($pv['id_controle2']));
+        ecrireControle($feuille, $affaire,15, $controle->fetch());
+    }
+
+    if ($pv['id_controle3'] != "") {
+        $controle->execute(array($pv['id_controle3']));
+        ecrireControle($feuille, $affaire,16, $controle->fetch());
+    }
+
+    if ($pv['id_controle4'] != "") {
+        $controle->execute(array($pv['id_controle4']));
+        ecrireControle($feuille, $affaire,17, $controle->fetch());
+    }
+    if ($pv['id_controle5'] != "") {
+        $controle->execute(array($pv['id_controle5']));
+        ecrireControle($feuille, $affaire,18, $controle->fetch());
+    }
+
+    function ecrireControle($feuille, $affaire, $i, $infosControle) {
+        $feuille->setCellValue('A'.$i, "SCO");
+        $feuille->setCellValue('B'.$i, explode(" ", $affaire['num_affaire'])[1]); // Explode divise la chaine de caractères
+
+        $feuille->setCellValue('D'.$i, $infosControle['code']);
+        $feuille->setCellValue('E'.$i, $infosControle['num_controle']);
+
+        $bordures = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => '000000')
+                )
+            )
+        );
+
+        $feuille->getStyle('A'.($i - 1).':E'.$i)->applyFromArray($bordures);
+    }
+
     // STYLE //
 
     colorerCellule($classeur, 'B2:B6', 'FFFF00');
@@ -83,6 +138,7 @@
     colorerCellule($classeur, 'F2:F4', 'FFFF00');
     colorerCellule($classeur, 'B8', 'FFFF00');
     colorerCellule($classeur, 'A8', '808080');
+    colorerCellule($classeur, 'A13', 'FFFF00');
 
     $bordures = array(
         'borders' => array(
@@ -96,6 +152,7 @@
     $feuille->getStyle("A1:F4")->applyFromArray($bordures);
     $feuille->getStyle("A5:B6")->applyFromArray($bordures);
     $feuille->getStyle("A8:F8")->applyFromArray($bordures);
+    $feuille->getStyle("A10:C11")->applyFromArray($bordures);
 
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
 

@@ -205,12 +205,10 @@
 
                     <tr>
                         <td>
-
-                                <label>* Suivant procédure : </label>
-                                <div class="ui input">
-                                    <input type="text" name="procedure" placeholder="Procédure suivie">
-                                </div>
-
+                            <label>* Suivant procédure : </label>
+                            <div class="ui input">
+                                <input type="text" name="procedure" placeholder="Procédure suivie">
+                            </div>
                         </td>
                         <td>
                             <div class="field">

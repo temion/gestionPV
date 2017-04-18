@@ -1,0 +1,27 @@
+th {
+    padding-bottom: 1em;
+}
+
+td {
+    width: 20em;
+    padding: 0 2em 0.5em 2em;
+}
+
+table {
+    margin: 2em auto 0 auto;
+
+}
+
+div.header {
+    text-align: center;
+}
+
+#erreur {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+#contenu {
+    padding: 1em 5em 2em 20em;
+}

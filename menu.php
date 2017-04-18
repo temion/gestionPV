@@ -29,6 +29,9 @@
                 <a href="listePV.php" class="item lienMenu">
                     Liste des PV existants
                 </a>
+                <a href="ajoutAppareil.php" class="item lienMenu">
+                    Ajout d'appareils
+                </a>
             </div>
         <?php
     }
