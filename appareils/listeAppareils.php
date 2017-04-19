@@ -11,15 +11,23 @@ $listeAppareils = $bddAffaire->query('select * from appareils')->fetchAll();
     <div id="contenu">
         <h1 class="ui blue center aligned huge header">Liste des appareils</h1>
         <?php
-        if (isset($_GET['pdfG']) && $_GET['pdfG'] == 1) {
-            echo '<div class="ui message">';
-            echo '<div class="header"> Succès ! </div>';
-            echo '<p> L\'appareil a été généré avec succès ! </p>';
-            echo '</div>';
-        }
+            if (isset($_GET['modifs']) && $_GET['modifs'] != 0) {
+                echo '<div class="ui message">';
+                echo '<div class="header"> Succès ! </div>';
+                if ($_GET['modifs'] == 1)
+                    echo '<p> La modification a été effectuée avec succès ! </p>';
+                else
+                    echo '<p> Les '.$_GET['modifs'].' modifications ont été effectuées avec succès ! </p>';
+                echo '</div>';
+            } else if (isset($_GET['modifs']) && $_GET['modifs'] == 0) {
+                echo '<div class="ui message">';
+                echo '<div class="header"> Erreur </div>';
+                echo '<p> Aucune modification n\'a été effectué ! </p>';
+                echo '</div>';
+            }
         ?>
 
-        <form method="get" action="/gestionPV/appareils/modifAppareil.php">
+        <form method="post" action="/gestionPV/appareils/modifAppareil.php">
             <table class="ui celled table">
                 <thead>
                 <tr>
@@ -41,8 +49,8 @@ $listeAppareils = $bddAffaire->query('select * from appareils')->fetchAll();
                     echo '<td>'.$listeAppareils[$i]['type'].'</td>';
                     echo '<td>'.$listeAppareils[$i]['marque'].'</td>';
                     echo '<td>'.$listeAppareils[$i]['num_serie'].'</td>';
-                    echo '<td>'.$listeAppareils[$i]['date_valid'].'</td>';
-                    echo '<td>'.$listeAppareils[$i]['date_calib'].'</td>';
+                    echo '<td>'.conversionDate($listeAppareils[$i]['date_valid']).'</td>';
+                    echo '<td>'.conversionDate($listeAppareils[$i]['date_calib']).'</td>';
                     echo '<td><button name="idAppareil" value="'.$listeAppareils[$i]['id_appareil'].'" class="ui right floated blue button">Modifier</button></td></tr>';
                 }
                 ?>
@@ -55,4 +63,14 @@ $listeAppareils = $bddAffaire->query('select * from appareils')->fetchAll();
 
 <?php
 fonctionMenu();
+
+function conversionDate($date) {
+    if ($date != "") {
+        $tab = explode("-", $date);
+        return $tab[2] . '-' . $tab[1] . '-' . $tab[0];
+    }
+
+    return "";
+}
+
 ?>

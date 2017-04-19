@@ -1,7 +1,3 @@
-table {
-    margin: 2em auto 0 auto;
-}
-
 th {
     padding-bottom: 1em;
 }
@@ -13,9 +9,25 @@ td {
 
 button {
     width: 15em;
-    display: block;
+}
+
+#listeAppareilsUtilises {
+    width: 100%;
+    height: 5em;
+}
+
+#listeAppareilsUtilises::selection {
+    background: #FFFFFF;
 }
 
 #contenu {
     padding: 1em 5em 2em 20em;
+}
+
+#ensTables {
+    margin: 5em auto 0 auto;
+}
+
+.partieTableau {
+    width: 50em;
 }

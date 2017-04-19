@@ -21,7 +21,7 @@
                     echo '</div>';
                 }
             ?>
-            <form method="get" action="modifPV.php">
+            <form method="post" action="modifPV.php">
                 <table class="ui celled table">
                     <thead>
                         <tr>

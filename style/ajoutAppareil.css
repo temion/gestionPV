@@ -1,5 +1,6 @@
 th {
     padding-bottom: 1em;
+    width: 20em;
 }
 
 td {
@@ -24,4 +25,8 @@ div.header {
 
 #contenu {
     padding: 1em 5em 2em 20em;
+}
+
+.titreLigne {
+    font-weight: bold;
 }

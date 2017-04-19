@@ -4,16 +4,18 @@
 
     require_once("../PHPExcel/Classes/PHPExcel/IOFactory.php");
 
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bdd = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
 
-    $pv = $bddAffaire->query('select * from pv_controle where id_pv = '.$_GET['idPV'])->fetch();
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
-    $societeClient = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bddAffaire->query('select * from client where id_client = '.$societeClient['ref_client'])->fetch();
-    $receveur = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
-    $analyste = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
+    $pv = $bdd->query('select * from pv_controle where id_pv = '.$_GET['idPV'])->fetch();
+    $affaire = $bdd->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $societeClient = $bdd->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
+    $client = $bdd->query('select * from client where id_client = '.$societeClient['ref_client'])->fetch();
+    $receveur = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
+    $analyste = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
 
-    $controle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
+    $appareils = $bdd->query('select * from appareils where id_pv = '.$_GET['idPV'])->fetchAll();
+
+    $controle = $bdd->prepare('select * from type_controle where id_type = ?');
 
     // création des objets de base et initialisation des informations d'entête
 
@@ -91,53 +93,51 @@
     if ($pv['id_controle1'] != "") {
         $controle->execute(array($pv['id_controle1']));
         ecrireControle($feuille, $affaire,14, $controle->fetch());
+        $max = 14;
     }
 
     if ($pv['id_controle2'] != "") {
         $controle->execute(array($pv['id_controle2']));
         ecrireControle($feuille, $affaire,15, $controle->fetch());
+        $max = 15;
     }
 
     if ($pv['id_controle3'] != "") {
         $controle->execute(array($pv['id_controle3']));
         ecrireControle($feuille, $affaire,16, $controle->fetch());
+        $max = 16;
     }
 
     if ($pv['id_controle4'] != "") {
         $controle->execute(array($pv['id_controle4']));
         ecrireControle($feuille, $affaire,17, $controle->fetch());
+        $max = 17;
     }
     if ($pv['id_controle5'] != "") {
         $controle->execute(array($pv['id_controle5']));
         ecrireControle($feuille, $affaire,18, $controle->fetch());
+        $max = 18;
     }
 
-    function ecrireControle($feuille, $affaire, $i, $infosControle) {
-        $feuille->setCellValue('A'.$i, "SCO");
-        $feuille->setCellValue('B'.$i, explode(" ", $affaire['num_affaire'])[1]); // Explode divise la chaine de caractères
+    $max = $max + 2;
 
-        $feuille->setCellValue('D'.$i, $infosControle['code']);
-        $feuille->setCellValue('E'.$i, $infosControle['num_controle']);
+    // Appareils utilisés
 
-        $bordures = array(
-            'borders' => array(
-                'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => array('rgb' => '000000')
-                )
-            )
-        );
+    $feuille->mergeCells('A'.$max.':E'.$max);
+    $feuille->setCellValue('A'.$max, "Matériel utilisé" );
+    colorerCellule($classeur, 'A'.$max, '808080');
 
-        $feuille->getStyle('A'.($i - 1).':E'.$i)->applyFromArray($bordures);
+    for ($i = 0; $i < sizeof($appareils); $i++) {
+
     }
 
     // STYLE //
 
-    colorerCellule($classeur, 'B2:B6', 'FFFF00');
+    colorerCellule($classeur, 'B2:B6', 'FFFF00'); // Jaune
     colorerCellule($classeur, 'D2:D4', 'FFFF00');
     colorerCellule($classeur, 'F2:F4', 'FFFF00');
     colorerCellule($classeur, 'B8', 'FFFF00');
-    colorerCellule($classeur, 'A8', '808080');
+    colorerCellule($classeur, 'A8', '808080'); // Gris
     colorerCellule($classeur, 'A13', 'FFFF00');
 
     $bordures = array(
@@ -161,13 +161,31 @@
     header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
 
     function colorerCellule($classeur, $cellule, $couleur){
-
         $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
             'startcolor' => array(
                 'rgb' => $couleur
             )
         ));
+    }
+
+    function ecrireControle($feuille, $affaire, $i, $infosControle) {
+        $feuille->setCellValue('A'.$i, "SCO");
+        $feuille->setCellValue('B'.$i, explode(" ", $affaire['num_affaire'])[1]); // Explode divise la chaine de caractères
+
+        $feuille->setCellValue('D'.$i, $infosControle['code']);
+        $feuille->setCellValue('E'.$i, $infosControle['num_controle']);
+
+        $bordures = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => '000000')
+                )
+            )
+        );
+
+        $feuille->getStyle('A'.($i - 1).':E'.$i)->applyFromArray($bordures);
     }
 ?>
 
