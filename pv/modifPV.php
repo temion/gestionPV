@@ -169,7 +169,7 @@
                                     <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
                                 </tr>
                                 <?php
-                                    if (isset($_POST['ajout']) && $_POST['ajout'] == 1) {
+                                    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
                                         echo '<tr><td><div class="ui message">';
                                         echo '<div class="header"> Succès ! </div>';
                                         echo '<p id="infosAction"> L\'appareil a bien été ajouté ! </p>';

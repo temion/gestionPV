@@ -13,7 +13,7 @@
     $receveur = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
     $analyste = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
 
-    $appareils = $bdd->query('select * from appareils where id_pv = '.$_GET['idPV'])->fetchAll();
+    $appareils = $bdd->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_GET['idPV'].')')->fetchAll();
 
     $controle = $bdd->prepare('select * from type_controle where id_type = ?');
 
@@ -26,6 +26,16 @@
     $feuille = $classeur->getActiveSheet();
 
     $feuille->setTitle("PV n°".$pv['id_pv']);
+
+
+    $bordures = array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                'color' => array('rgb' => '000000')
+            )
+        )
+    );
 
     // INFORMATIONS GÉNÉRALES //
 
@@ -123,12 +133,38 @@
 
     // Appareils utilisés
 
-    $feuille->mergeCells('A'.$max.':E'.$max);
+    $feuille->mergeCells('A'.$max.':F'.$max);
     $feuille->setCellValue('A'.$max, "Matériel utilisé" );
     colorerCellule($classeur, 'A'.$max, '808080');
+    $feuille->getCell('A'.$max)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $feuille->getStyle('A'.$max)->applyFromArray($bordures);
+
+    $max++;
 
     for ($i = 0; $i < sizeof($appareils); $i++) {
+        $feuille->setCellValue('A'.$max, "Système");
+        $feuille->setCellValue('B'.$max, $appareils[$i]['systeme']);
+        $feuille->setCellValue('C'.$max, "Marque");
+        $feuille->setCellValue('D'.$max, $appareils[$i]['marque']);
+        $feuille->setCellValue('E'.$max, "Date de calibration");
+        $feuille->setCellValue('F'.$max, $appareils[$i]['date_calib']);
 
+        $max++;
+
+        $feuille->setCellValue('A'.$max, "Type");
+        $feuille->setCellValue('B'.$max, $appareils[$i]['type']);
+        $feuille->setCellValue('C'.$max, "Numéro de série");
+        $feuille->setCellValue('D'.$max, $appareils[$i]['num_serie']);
+        $feuille->setCellValue('E'.$max, "Valide jusqu'au");
+        $feuille->setCellValue('F'.$max, $appareils[$i]['date_valid']);
+
+        colorerCellule($classeur, 'A'.($max-1).':A'.$max, '808080');
+        colorerCellule($classeur, 'C'.($max-1).':C'.$max, '808080');
+        colorerCellule($classeur, 'E'.($max-1).':E'.$max, '808080');
+
+        $feuille->getStyle('A'.($max-1).':F'.$max)->applyFromArray($bordures);
+
+        $max++;
     }
 
     // STYLE //
@@ -139,15 +175,6 @@
     colorerCellule($classeur, 'B8', 'FFFF00');
     colorerCellule($classeur, 'A8', '808080'); // Gris
     colorerCellule($classeur, 'A13', 'FFFF00');
-
-    $bordures = array(
-        'borders' => array(
-            'allborders' => array(
-                'style' => PHPExcel_Style_Border::BORDER_THIN,
-                'color' => array('rgb' => '000000')
-            )
-        )
-    );
 
     $feuille->getStyle("A1:F4")->applyFromArray($bordures);
     $feuille->getStyle("A5:B6")->applyFromArray($bordures);
