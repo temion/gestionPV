@@ -10,11 +10,19 @@
     $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
     $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
 
-    if (isset($_POST['ajout']) && $_POST['ajout'] == 1) {
+    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
         $appareil = $bddAffaire->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bddAffaire->quote($_POST['appareil']))->fetch();
-
         $bddAffaire->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$_POST['idPV'].')');
     }
+
+    if (isset($_POST['controle']) && $_POST['controle'] != "") {
+        $controle = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controle']))->fetch();
+        $bddAffaire->exec('insert into controles_sur_pv values (null, '.$controle['id_type'].', '.$_POST['idPV'].', '.($controle['num_controle'] + 1).')');
+        $bddAffaire->exec('update type_controle set num_controle = num_controle + 1 where id_type = '.$controle['id_type']);
+    }
+
+    $controlesUtilises = $bddAffaire->query('select * from type_controle where id_type in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $controles = $bddAffaire->query('select * from type_controle where id_type not in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
 
     $appareilsUtilises = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
     $appareils = $bddAffaire->query('select * from appareils where id_appareil not in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
@@ -159,32 +167,60 @@
                                     </td>
                                 </tr>
                             </table>
-                            <button class="ui right floated blue button">Générer en PDF</button>
+                            <button class="ui right floated blue button">Générer en format Excel</button>
                         </form>
                     </td>
                     <td class="partieTableau">
                         <form method="post" action="modifPV.php">
                             <table>
                                 <tr>
+                                    <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label> Contrôles à effectuer : </label>
+                                        <select class="ui search dropdown listeAjout" name="controle">
+                                            <option selected> </option>
+                                            <?php
+                                                for ($i = 0; $i < sizeof($controles); $i++) {
+                                                    echo '<option>'.$controles[$i]['libelle'].' ('.$controles[$i]['code'].')</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label> Contrôles déjà ajoutés : </label>
+                                        <select disabled size=4 class="ui search dropdown listeUtilises">
+                                            <?php
+                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
+                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <?php
+                                        afficherMessageAjout('controle', "Le contrôle a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
+                                    ?>
+                                </tr>
+                            </table>
+                            <?php
+                                echo '<input type="hidden" name="idPV" value="'.$_POST['idPV'].'">';
+                            ?>
+                        </form>
+                        <form method="post" action="modifPV.php">
+                            <table>
+                                <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
                                 </tr>
-                                <?php
-                                    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
-                                        echo '<tr><td><div class="ui message">';
-                                        echo '<div class="header"> Succès ! </div>';
-                                        echo '<p id="infosAction"> L\'appareil a bien été ajouté ! </p>';
-                                        echo '</div></td></tr>';
-                                    }
-                                ?>
 
                                 <tr>
                                     <td>
                                         <label> Appareil à ajouter : </label>
-                                        <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$_POST['idPV'].'">';
-                                            echo '<input type="hidden" name="ajout" value="1">'; // Modifier message si rien sélectionné
-                                        ?>
-                                        <select class="ui search dropdown" name="appareil">
+                                        <select class="ui search dropdown listeAjout" name="appareil">
                                             <option selected> </option>
                                             <?php
                                                 for ($i = 0; $i < sizeof($appareils); $i++) {
@@ -195,19 +231,26 @@
                                     </td>
                                     <td colspan="2"><button class="ui right floated blue button">Ajouter cet appareil</button></td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <label> Appareils déjà ajoutés : </label>
-                                        <select id="listeAppareilsUtilises" disabled size=4 class="ui search dropdown">
+                                        <select disabled size=4 class="ui search dropdown listeUtilises">
                                             <?php
-                                            for ($i = 0; $i < sizeof($appareilsUtilises); $i++) {
-                                                echo '<option>'.$appareilsUtilises[$i]['systeme'].' '.$appareilsUtilises[$i]['type'].' ('.$appareilsUtilises[$i]['num_serie'].')</option>';
-                                            }
+                                                for ($i = 0; $i < sizeof($appareilsUtilises); $i++) {
+                                                    echo '<option>'.$appareilsUtilises[$i]['systeme'].' '.$appareilsUtilises[$i]['type'].' ('.$appareilsUtilises[$i]['num_serie'].')</option>';
+                                                }
                                             ?>
                                         </select>
                                     </td>
+                                    <?php
+                                        afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil n'a été indiqué.");
+                                    ?>
                                 </tr>
                             </table>
+                            <?php
+                                echo '<input type="hidden" name="idPV" value="'.$_POST['idPV'].'">';
+                            ?>
                         </form>
                     </td>
                 </tr>
@@ -215,3 +258,19 @@
         </div>
     </body>
 </html>
+
+<?php
+
+function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
+    if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
+        echo '<td><div class="ui message">';
+        echo '<div class="header"> Succès !</div>';
+        echo '<p id="infosAction">'.$messageSucces.'</p>';
+        echo '</div></td>';
+    } else if (isset($_POST[$conditionSucces])) {
+        echo '<td><div class="ui message">';
+        echo '<div class="header"> Erreur </div>';
+        echo '<p id="infosAction">'.$messageErreur.'</p>';
+        echo '</div></td>';
+    }
+}

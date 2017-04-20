@@ -11,13 +11,25 @@ button {
     width: 15em;
 }
 
-#listeAppareilsUtilises {
+table {
+    margin: auto;
+}
+
+div.header {
+    text-align: center;
+}
+
+.listeUtilises {
     width: 100%;
     height: 5em;
 }
 
-#listeAppareilsUtilises::selection {
+.listeUtilises::selection {
     background: #FFFFFF;
+}
+
+.listeAjout {
+    width: inherit;
 }
 
 #contenu {
@@ -26,6 +38,12 @@ button {
 
 #ensTables {
     margin: 5em auto 0 auto;
+}
+
+#infosAction {
+    color: red;
+    text-align: center;
+    font-weight: bold;
 }
 
 .partieTableau {

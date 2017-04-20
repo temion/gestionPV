@@ -14,12 +14,7 @@
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Liste des PV</h1>
             <?php
-                if (isset($_GET['pdfG']) && $_GET['pdfG'] == 1) {
-                    echo '<div class="ui message">';
-                    echo '<div class="header"> Succès ! </div>';
-                    echo '<p> Votre PV a été généré avec succès ! </p>';
-                    echo '</div>';
-                }
+                afficherMessage('pdfG', "Succès", "Votre PV a été généré avec succès !", "", "");
             ?>
             <form method="post" action="modifPV.php">
                 <table class="ui celled table">
@@ -33,16 +28,9 @@
                     </thead>
                     <tbody>
                         <?php
-                        for ($i = 0; $i < sizeof($listePV); $i++) {
-                            echo '<tr><td>'.$listePV[$i]['id_pv'].'</td><td>';
-                            $selectAffaire->execute(array($listePV[$i]['id_affaire']));
-                            $num_affaire = $selectAffaire->fetch();
-                            echo $num_affaire['num_affaire'].'</td><td>';
-                            $selectEquipement->execute(array($listePV[$i]['id_equipement']));
-                            $nom_equipement = $selectEquipement->fetch();
-                            echo $nom_equipement['Designation'].' '.$nom_equipement['Type'].'</td>';
-                            echo '<td><button name="idPV" value="'.$listePV[$i]['id_pv'].'" class="ui right floated blue button">Modifier</button></td></tr>';
-                        }
+                            for ($i = 0; $i < sizeof($listePV); $i++) {
+                                creerLignePV($listePV, $i);
+                            }
                         ?>
                     </tbody>
                 </table>
@@ -52,5 +40,25 @@
 </html>
 
 <?php
-    fonctionMenu();
+
+/**
+ * Crée une ligne à ajouter dans le tableau comprenant les différentes informations du PV à l'indice i.
+ *
+ * @param array $PVs Liste des pv de la base.
+ * @param int $ind Indice de l'appareil à afficher.
+ */
+function creerLignePV($PVs, $ind) {
+    global $selectAffaire;
+    global $selectEquipement;
+
+    echo '<tr><td>'.$PVs[$ind]['id_pv'].'</td><td>';
+    $selectAffaire->execute(array($PVs[$ind]['id_affaire']));
+    $num_affaire = $selectAffaire->fetch();
+    echo $num_affaire['num_affaire'].'</td><td>';
+    $selectEquipement->execute(array($PVs[$ind]['id_equipement']));
+    $nom_equipement = $selectEquipement->fetch();
+    echo $nom_equipement['Designation'].' '.$nom_equipement['Type'].'</td>';
+    echo '<td><button name="idPV" value="'.$PVs[$ind]['id_pv'].'" class="ui right floated blue button">Modifier</button></td></tr>';
+}
+
 ?>

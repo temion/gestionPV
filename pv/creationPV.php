@@ -35,12 +35,7 @@
 
             <h1 id="titreMenu" class="ui blue center aligned huge header">Création d'un PV</h1>
             <?php
-                if (isset($_GET['erreur']) && $_GET['erreur'] == 1) {
-                    echo '<div class="ui message">';
-                    echo '<div class="header"> Erreur ! </div>';
-                    echo '<p id="erreur"> Veuillez remplir tous les champs précédés par un astérisque. </p>';
-                    echo '</div>';
-                }
+                afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque.", "", "");
             ?>
 
             <form method="post" action="infosPV.php">
@@ -135,41 +130,6 @@
                         </td>
                     </tr>
 
-                </table>
-
-                <table>
-                    <tr>
-                        <th colspan="5"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
-                    </tr>
-
-                    <tr>
-                        <?php
-                            creerChampControle(1, $typeControles, "controle1");
-                            creerChampControle(2, $typeControles, "controle2");
-                            creerChampControle(3, $typeControles, "controle3");
-                            creerChampControle(4, $typeControles, "controle4");
-                            creerChampControle(5, $typeControles, "controle5");
-
-                            function creerChampControle($nbControle, $controles, $nom) {
-                                if ($nbControle == 1)
-                                    echo '<td><label>* Contrôle n° 1</label>';
-                                else
-                                    echo '<td><label>Contrôle n° '.$nbControle.'</label>';
-                                echo '<div class="field">';
-                                echo '<select class="ui search dropdown controles" name="'.$nom.'"';
-                                if ($nbControle != 1)
-                                    echo 'disabled';
-                                echo '>';
-                                echo '<option selected> </option>';
-                                for ($i = 0; $i < sizeof($controles); $i++) {
-                                    echo '<option>'.$controles[$i]['libelle'].' ('.$controles[$i]['code'].')</option>';
-                                }
-                                echo '</select>';
-                                echo '</div>';
-                                echo '</td>';
-                            }
-                        ?>
-                    </tr>
                 </table>
 
                 <table>
@@ -385,27 +345,3 @@
         </div>
     </body>
 </html>
-
-<?php
-    fonctionMenu();
-?>
-
-<script>
-    $(function() {
-        $("select[name='controle1']").on("change", function () {
-            $("select[name='controle2']").prop('disabled', false);
-        });
-
-        $("select[name='controle2']").on("change", function () {
-            $("select[name='controle3']").prop('disabled', false);
-        });
-
-        $("select[name='controle3']").on("change", function () {
-            $("select[name='controle4']").prop('disabled', false);
-        });
-
-        $("select[name='controle4']").on("change", function () {
-            $("select[name='controle5']").prop('disabled', false);
-        });
-    });
-</script>

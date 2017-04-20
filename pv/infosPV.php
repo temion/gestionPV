@@ -5,7 +5,7 @@
             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     if ($_POST['num_affaire'] == "" || $_POST['num_equipement'] == "" || $_POST['demandeRecue'] == "" || $_POST['demandeAnalysee'] == "" ||
-        $_POST['controle1'] == "" || $_POST['obtentionOffre'] == "" || $_POST['numAvenant'] == "" ||
+        $_POST['obtentionOffre'] == "" || $_POST['numAvenant'] == "" ||
         $_POST['procedure'] == "" || $_POST['codeInter'] == "") {
         header("Location: creationPV.php?erreur=1");
     }
@@ -25,133 +25,31 @@
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
     $equipement = $bddEquipement->query('SELECT * FROM equipement WHERE concat(Designation, \' \', type) LIKE ' . $bddEquipement->quote($_POST['num_equipement']))->fetch();
 
+    $bddAffaire->exec('insert into pv_controle values(null, '.$affaire['id_affaire'] . ' , 
+                                                                      '.$equipement['idEquipement'] . ' ,
+                                                                      '.$idReceveur['id_utilisateur']. ',
+                                                                      '.$idAnalyste['id_utilisateur']. ', 
+                                                                      '.$bddAffaire->quote($_POST['obtentionOffre']).',
+                                                                      '.$appelOffre.',
+                                                                      '.$_POST['numAvenant'].',
+                                                                      '.$bddAffaire->quote($_POST['procedure']).',
+                                                                      '.$bddAffaire->quote($_POST['codeInter']).',
+                                                                      now())');
 
-    $controle1 = $controle2 = $controle3 = $controle4 = $controle5 = null;
-    $variablesControles = array($controle1, $controle2, $controle3, $controle4, $controle5);
+    $pv = $bddAffaire->query('select * from pv_controle where id_pv = last_insert_id()')->fetch();
 
-    $postControles = verifPost();
-    $variablesControles = definirControles($variablesControles, $postControles, $bddAffaire);
+    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
+    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
 
-    if ($variablesControles[4] != null)
-        $bddAffaire->exec('insert into pv_controle(id_affaire, id_equipement, id_receveur, id_analyste, obtention, appel_offre, avenant_affaire, procedure_controle, code_inter,
-                                                             id_controle1, id_controle2, id_controle3, id_controle4, id_controle5, date) values('.$affaire['id_affaire'] . ' , 
-                                                                                                                                          '.$equipement['idEquipement'] . ' ,
-                                                                                                                                          '.$idReceveur['id_utilisateur']. ',
-                                                                                                                                          '.$idAnalyste['id_utilisateur']. ',
-                                                                                                                                          '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                                                                                          '.$appelOffre.',
-                                                                                                                                          '.$_POST['numAvenant'].',
-                                                                                                                                          '.$bddAffaire->quote($_POST['procedure']).',
-                                                                                                                                          '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                                                                                          '.$variablesControles[0]['id_type']. ',
-                                                                                                                                          '.$variablesControles[1]['id_type'].',
-                                                                                                                                          '.$variablesControles[2]['id_type'].',
-                                                                                                                                          '.$variablesControles[3]['id_type'].',
-                                                                                                                                          '.$variablesControles[4]['id_type'].',
-                                                                                                                                          now())');
-    else if ($variablesControles[3] != null)
-        $bddAffaire->exec('insert into pv_controle(id_affaire, id_equipement, id_receveur, id_analyste, obtention, appel_offre, avenant_affaire, procedure_controle, code_inter,
-                                                             id_controle1, id_controle2, id_controle3, id_controle4, date) values('.$affaire['id_affaire'] . ' , 
-                                                                                                                            '.$equipement['idEquipement'] . ' ,
-                                                                                                                            '.$idReceveur['id_utilisateur']. ',
-                                                                                                                            '.$idAnalyste['id_utilisateur']. ',
-                                                                                                                            '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                                                                            '.$appelOffre.',
-                                                                                                                            '.$_POST['numAvenant'].',
-                                                                                                                            '.$bddAffaire->quote($_POST['procedure']).',
-                                                                                                                            '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                                                                            '.$variablesControles[0]['id_type']. ',
-                                                                                                                            '.$variablesControles[1]['id_type'].',
-                                                                                                                            '.$variablesControles[2]['id_type'].',
-                                                                                                                            '.$variablesControles[3]['id_type'].',
-                                                                                                                            now())');
-    else if ($variablesControles[2] != null)
-        $bddAffaire->exec('insert into pv_controle(id_affaire, id_equipement, id_receveur, id_analyste, obtention, appel_offre, avenant_affaire, procedure_controle, code_inter,
-                                                             id_controle1, id_controle2, id_controle3, date) values('.$affaire['id_affaire'] . ' , 
-                                                                                                              '.$equipement['idEquipement'] . ' ,
-                                                                                                              '.$idReceveur['id_utilisateur']. ',
-                                                                                                              '.$idAnalyste['id_utilisateur']. ',   
-                                                                                                              '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                                                              '.$appelOffre.',
-                                                                                                              '.$_POST['numAvenant'].',
-                                                                                                              '.$bddAffaire->quote($_POST['procedure']).',
-                                                                                                              '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                                                              '.$variablesControles[0]['id_type']. ',
-                                                                                                              '.$variablesControles[1]['id_type'].',
-                                                                                                              '.$variablesControles[2]['id_type'].',
-                                                                                                              now())');
-    else if ($variablesControles[1] != null)
-        $bddAffaire->exec('insert into pv_controle(id_affaire, id_equipement, id_receveur, id_analyste, obtention, appel_offre, avenant_affaire, procedure_controle, code_inter,
-                                                             id_controle1, id_controle2, date) values('.$affaire['id_affaire'] . ' , 
-                                                                                                '.$equipement['idEquipement'] . ' ,
-                                                                                                '.$idReceveur['id_utilisateur']. ',
-                                                                                                '.$idAnalyste['id_utilisateur']. ',  
-                                                                                                '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                                                '.$appelOffre.',
-                                                                                                '.$_POST['numAvenant'].',
-                                                                                                '.$bddAffaire->quote($_POST['procedure']).',
-                                                                                                '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                                                '.$variablesControles[0]['id_type']. ',
-                                                                                                '.$variablesControles[1]['id_type'].',
-                                                                                                now())');
-    else if ($variablesControles[0] != null)
-        $bddAffaire->exec('insert into pv_controle(id_affaire, id_equipement, id_receveur, id_analyste, obtention, appel_offre, avenant_affaire, procedure_controle, code_inter,
-                                                             id_controle1, date) values('.$affaire['id_affaire'] . ' , 
-                                                                                  '.$equipement['idEquipement'] . ' ,
-                                                                                  '.$idReceveur['id_utilisateur']. ',
-                                                                                  '.$idAnalyste['id_utilisateur']. ', 
-                                                                                  '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                                  '.$appelOffre.',
-                                                                                  '.$_POST['numAvenant'].',
-                                                                                  '.$bddAffaire->quote($_POST['procedure']).',
-                                                                                  '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                                  '.$variablesControles[0]['id_type']. ',
-                                                                                  now())');
-
-
-    function verifPost()
-        {
-            $tab = array();
-            if (isset($_POST['controle1']))
-                $tab[0] = $_POST['controle1'];
-            if (isset($_POST['controle2']))
-                $tab[1] = $_POST['controle2'];
-            if (isset($_POST['controle3']))
-                $tab[2] = $_POST['controle3'];
-            if (isset($_POST['controle4']))
-                $tab[3] = $_POST['controle4'];
-            if (isset($_POST['controle5']))
-                $tab[4] = $_POST['controle5'];
-
-            return $tab;
-        }
-
-        function definirControles($var, $post, $base)
-        {
-            for ($i = 0; $i < sizeof($post); $i++) {
-                if (isset($post[$i])) {
-                    $var[$i] = $base->query('SELECT * FROM type_controle WHERE concat(libelle, \' (\', code, \')\') LIKE ' . $base->quote($post[$i]))->fetch();
-                    $base->exec('update type_controle set num_controle = num_controle + 1 where concat(libelle, \' (\', code, \')\') LIKE ' . $base->quote($post[$i]));
-                }
-            }
-
-            return $var;
-        }
-
-        $pv = $bddAffaire->query('select * from pv_controle where id_affaire = '.$affaire['id_affaire'].' and id_equipement = '.$equipement['idEquipement'])->fetch();
-
-        $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
-        $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-        $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
-
-        $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
-        $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
-    ?>
+    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
+?>
 
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Votre PV a bien été crée !</h1>
 
-            <form class="ui form" method="post" action="listePV.php">
+            <form class="ui form" method="post" action="modifPV.php">
                 <table>
                     <tr>
                         <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>
@@ -285,6 +183,9 @@
                         <td colspan="2"><button class="ui right floated blue button">Valider</button></td>
                     </tr>
                 </table>
+                <?php
+                    echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                ?>
             </form>
         </div>
     </body>
