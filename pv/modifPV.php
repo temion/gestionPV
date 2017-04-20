@@ -11,8 +11,13 @@
     $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
 
     if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
-        $appareil = $bddAffaire->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bddAffaire->quote($_POST['appareil']))->fetch();
-        $bddAffaire->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$_POST['idPV'].')');
+        if (isset($_POST['controleAssocie']) && $_POST['controleAssocie'] != "") {
+            $controleAssocie = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controleAssocie']))->fetch();
+            $appareil = $bddAffaire->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bddAffaire->quote($_POST['appareil']))->fetch();
+            $bddAffaire->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$controleAssocie['id_type'].', '.$_POST['idPV'].')');
+        } else {
+            $_POST['appareil'] = "";
+        }
     }
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
@@ -37,7 +42,7 @@
             <table id="ensTables">
                 <tr>
                     <td class="partieTableau">
-                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php?idPV='.$pv['id_pv'].'"' ?>>
+                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
                             <table>
                                 <tr>
                                     <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>
@@ -166,8 +171,29 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <tr>
+                                        <th colspan="2"><h4 class="ui dividing header">Générer les PV</h4></th>
+                                    </tr>
+                                    <td>
+                                        <label> Choix du PV de contrôle à générer : </label>
+                                        <select class="ui search dropdown" id="controleGenere" name="controleGenere">
+                                            <option selected></option>
+                                            <?php
+                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
+                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                                        ?>
+                                        <button disabled id="boutonGenere" class="ui right floated blue button">Générer sous format Excel</button>
+                                    </td>
+                                </tr>
                             </table>
-                            <button class="ui right floated blue button">Générer en format Excel</button>
                         </form>
                     </td>
                     <td class="partieTableau">
@@ -189,9 +215,6 @@
                                             ?>
                                         </select>
                                     </td>
-                                    <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
-                                </tr>
-                                <tr>
                                     <td>
                                         <label> Contrôles déjà ajoutés : </label>
                                         <select disabled size=4 class="ui search dropdown listeUtilises">
@@ -202,9 +225,13 @@
                                             ?>
                                         </select>
                                     </td>
+                                </tr>
+                                <tr>
+
                                     <?php
                                         afficherMessageAjout('controle', "Le contrôle a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
                                     ?>
+                                    <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
                                 </tr>
                             </table>
                             <?php
@@ -229,22 +256,34 @@
                                             ?>
                                         </select>
                                     </td>
-                                    <td colspan="2"><button class="ui right floated blue button">Ajouter cet appareil</button></td>
+                                    <td>
+                                        <label> Employé pour le contrôle : </label>
+                                        <select class="ui search dropdown" name="controleAssocie">
+                                            <option selected> </option>
+                                            <?php
+                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
+                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <label> Appareils déjà ajoutés : </label>
                                         <select disabled size=4 class="ui search dropdown listeUtilises">
                                             <?php
-                                                for ($i = 0; $i < sizeof($appareilsUtilises); $i++) {
-                                                    echo '<option>'.$appareilsUtilises[$i]['systeme'].' '.$appareilsUtilises[$i]['type'].' ('.$appareilsUtilises[$i]['num_serie'].')</option>';
-                                                }
+                                            for ($i = 0; $i < sizeof($appareilsUtilises); $i++) {
+                                                echo '<option>'.$appareilsUtilises[$i]['systeme'].' '.$appareilsUtilises[$i]['type'].' ('.$appareilsUtilises[$i]['num_serie'].')</option>';
+                                            }
                                             ?>
                                         </select>
                                     </td>
+                                    <td><button class="ui right floated blue button">Ajouter cet appareil</button></td>
+                                </tr>
+                                <tr>
                                     <?php
-                                        afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil n'a été indiqué.");
+                                        afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil ou contrôle associé n'a été indiqué.");
                                     ?>
                                 </tr>
                             </table>
@@ -258,6 +297,18 @@
         </div>
     </body>
 </html>
+
+<script>
+    $(function () {
+        $("#controleGenere").on("change", function () {
+            console.log($("#controleGenere").val())
+            if ($("#controleGenere").val().length >  0)
+                $("#boutonGenere").prop('disabled', false);
+            else
+                $("#boutonGenere").prop('disabled', true);
+        })
+    });
+</script>
 
 <?php
 

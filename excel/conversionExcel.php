@@ -4,20 +4,23 @@
 
     require_once("../PHPExcel/Classes/PHPExcel/IOFactory.php");
 
-    $bdd = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
 
-    $pv = $bdd->query('select * from pv_controle where id_pv = '.$_GET['idPV'])->fetch();
-    $affaire = $bdd->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
-    $societeClient = $bdd->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bdd->query('select * from client where id_client = '.$societeClient['ref_client'])->fetch();
-    $receveur = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
-    $analyste = $bdd->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
+    $pv = $bddAffaire->query('select * from pv_controle where id_pv = '.$_POST['idPV'])->fetch();
+    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $societeClient = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
+    $client = $bddAffaire->query('select * from client where id_client = '.$societeClient['ref_client'])->fetch();
+    $receveur = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
+    $analyste = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
 
-    $appareils = $bdd->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_GET['idPV'].')')->fetchAll();
+    $controle = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controleGenere']))->fetch();
+    $controleEffectue = $bddAffaire->query('select * from controles_sur_pv where id_type_controle = '.$controle['id_type'].' and id_pv = '.$pv['id_pv'])->fetch();
 
-    $controle = $bdd->prepare('select * from type_controle where id_type = ?');
+    $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].' and id_controle_associe = '.$controleEffectue['id_type_controle'].')')->fetchAll();
 
-    // création des objets de base et initialisation des informations d'entête
+    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from ficheTechniqueEquipement where idEquipement = '.$equipement['idEquipement'])->fetch();
 
     $classeur = new PHPExcel;
 
@@ -37,7 +40,28 @@
         )
     );
 
-    $celluleAct = 6; // Cellule active
+    // Présentation PV
+    $celluleAct = 4; // Cellule active
+
+    $feuille->mergeCells('A'.$celluleAct.':D'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Procès verbal");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->setCellValue('E'.$celluleAct, "Inspection & contrôle");
+    $feuille->getCell('E'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    $feuille->mergeCells('I'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$controle['code'].' '.$controleEffectue['num_ordre']);
+    $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
+
+    // Détails de l'affaire
+    $celluleAct++;
 
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
@@ -45,6 +69,7 @@
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
 
+    // Clients + Numéro équipement
     $celluleAct++;
 
     $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
@@ -53,151 +78,140 @@
     $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
     $feuille->setCellValue('C'.$celluleAct, $societeClient['nom_societe']);
 
-    $feuille->mergeCells('E'.$celluleAct.':F'.$celluleAct);
-    $feuille->setCellValue('E'.$celluleAct,"Numéro équipement");
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
-    $feuille->mergeCells('G'.$celluleAct.':H'.$celluleAct);
-    $feuille->setCellValue('G'.$celluleAct, "wow");
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Numéro équipement");
 
-//    $feuille->setCellValue('A3', "Nom (Coord.) :");
-//    $feuille->setCellValue('B3', $client['nom']);
-//    $feuille->setCellValue('A4', "Appel d'offre :");
-//    if ($pv['appel_offre'] == 1)
-//        $feuille->setCellValue('B4', "X");
-//
-//    $feuille->setCellValue('A5', "Oral ");
-//    if ($pv['obtention'] == 'Oral')
-//        $feuille->setCellValue('B5', 'X');
-//
-//    $feuille->setCellValue('A6', "Mail ");
-//    if ($pv['obtention'] == 'Mail')
-//        $feuille->setCellValue('B6', 'X');
-//
-//    $feuille->getColumnDimension('A')->setWidth(20);
-//    $feuille->getColumnDimension('B')->setWidth(25);
-//
-//    $feuille->setCellValue('C2', "Lieu : ");
-//    $feuille->setCellValue('D2', $affaire['lieu_intervention']);
-//    $feuille->setCellValue('C3', "Tél :");
-//    $feuille->setCellValue('D3', $client['tel']);
-//    $feuille->setCellValue('C4', "Avenant affaire n° :");
-//    $feuille->setCellValue('D4', $pv['avenant_affaire']);
-//
-//    $feuille->getColumnDimension('C')->setWidth(20);
-//    $feuille->getColumnDimension('D')->setWidth(25);
-//
-//    $feuille->setCellValue('E2', "Demande reçue par :");
-//    $feuille->setCellValue('F2', $receveur['nom']);
-//    $feuille->setCellValue('E3', "Date : ");
-//    $feuille->setCellValue('F3', $pv['date']);
-//    $feuille->setCellValue('E4', "Demande analysée par :");
-//    $feuille->setCellValue('F4', $analyste['nom']);
-//
-//    $feuille->getColumnDimension('E')->setWidth(20);
-//    $feuille->getColumnDimension('F')->setWidth(25);
-//
-//    // DÉTAILS DES MISSIONS //
-//
-//    $feuille->setCellValue('A8', "Titre : ");
-//
-//    $feuille->mergeCells('B8:F8');
-//    $feuille->setCellValue('B8', $affaire['libelle']);
-//    $feuille->getCell('B8')->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-//
-//    $feuille->mergeCells('A10:B10');
-//    $feuille->setCellValue('A10', "Début de la mission prévu le : ");
-//
-//    $feuille->mergeCells('A11:B11');
-//    $feuille->setCellValue('A11', "Fin de la mission prévue le : ");
-//
-//    $feuille->mergeCells('A13:E13');
-//    $feuille->setCellValue('A13', "Liste des livrables : ");
-//    $feuille->getCell('A13')->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-//
-//    if ($pv['id_controle1'] != "") {
-//        $controle->execute(array($pv['id_controle1']));
-//        ecrireControle($feuille, $affaire,14, $controle->fetch());
-//        $max = 14;
-//    }
-//
-//    if ($pv['id_controle2'] != "") {
-//        $controle->execute(array($pv['id_controle2']));
-//        ecrireControle($feuille, $affaire,15, $controle->fetch());
-//        $max = 15;
-//    }
-//
-//    if ($pv['id_controle3'] != "") {
-//        $controle->execute(array($pv['id_controle3']));
-//        ecrireControle($feuille, $affaire,16, $controle->fetch());
-//        $max = 16;
-//    }
-//
-//    if ($pv['id_controle4'] != "") {
-//        $controle->execute(array($pv['id_controle4']));
-//        ecrireControle($feuille, $affaire,17, $controle->fetch());
-//        $max = 17;
-//    }
-//    if ($pv['id_controle5'] != "") {
-//        $controle->execute(array($pv['id_controle5']));
-//        ecrireControle($feuille, $affaire,18, $controle->fetch());
-//        $max = 18;
-//    }
-//
-//    $max = $max + 2;
-//
-//    // Appareils utilisés
-//
-//    $feuille->mergeCells('A'.$max.':F'.$max);
-//    $feuille->setCellValue('A'.$max, "Matériel utilisé" );
-//    colorerCellule($classeur, 'A'.$max, '808080');
-//    $feuille->getCell('A'.$max)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-//    $feuille->getStyle('A'.$max)->applyFromArray($bordures);
-//
-//    $max++;
-//
-//    for ($i = 0; $i < sizeof($appareils); $i++) {
-//        $feuille->setCellValue('A'.$max, "Système");
-//        $feuille->setCellValue('B'.$max, $appareils[$i]['systeme']);
-//        $feuille->setCellValue('C'.$max, "Marque");
-//        $feuille->setCellValue('D'.$max, $appareils[$i]['marque']);
-//        $feuille->setCellValue('E'.$max, "Date de calibration");
-//        $feuille->setCellValue('F'.$max, $appareils[$i]['date_calib']);
-//
-//        $max++;
-//
-//        $feuille->setCellValue('A'.$max, "Type");
-//        $feuille->setCellValue('B'.$max, $appareils[$i]['type']);
-//        $feuille->setCellValue('C'.$max, "Numéro de série");
-//        $feuille->setCellValue('D'.$max, $appareils[$i]['num_serie']);
-//        $feuille->setCellValue('E'.$max, "Valide jusqu'au");
-//        $feuille->setCellValue('F'.$max, $appareils[$i]['date_valid']);
-//
-//        colorerCellule($classeur, 'A'.($max-1).':A'.$max, '808080');
-//        colorerCellule($classeur, 'C'.($max-1).':C'.$max, '808080');
-//        colorerCellule($classeur, 'E'.($max-1).':E'.$max, '808080');
-//
-//        $feuille->getStyle('A'.($max-1).':F'.$max)->applyFromArray($bordures);
-//
-//        $max++;
-//    }
-//
-//    // STYLE //
-//
-//    colorerCellule($classeur, 'B2:B6', 'FFFF00'); // Jaune
-//    colorerCellule($classeur, 'D2:D4', 'FFFF00');
-//    colorerCellule($classeur, 'F2:F4', 'FFFF00');
-//    colorerCellule($classeur, 'B8', 'FFFF00');
-//    colorerCellule($classeur, 'A8', '808080'); // Gris
-//    colorerCellule($classeur, 'A13', 'FFFF00');
-//
-//    $feuille->getStyle("A1:F4")->applyFromArray($bordures);
-//    $feuille->getStyle("A5:B6")->applyFromArray($bordures);
-//    $feuille->getStyle("A8:F8")->applyFromArray($bordures);
-//    $feuille->getStyle("A10:C11")->applyFromArray($bordures);
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, $equipement['Designation'].' '.$equipement['Type']);
+
+    // Personne rencontrée + Diamètre
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Personne rencontrée :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, $client['nom']);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Diamètre équipement");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, $ficheTechniqueEquipement['diametre']);
+
+    // Num commande + Hauteur
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Numéro commande client :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, $affaire['commande']);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Hauteur");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, $ficheTechniqueEquipement['hauteurEquipement']);
+
+    // Lieu + Hauteur produit
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Lieu :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, $affaire['lieu_intervention']);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Hauteur produit");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "?");
+
+    // Début contrôle + Volume
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Début du contrôle :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, "?");
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Volume : ");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "?");
+
+    // Nombre génératrices + Distance entre 2 points
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Nbre génératrices :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, $ficheTechniqueEquipement['nbGeneratrice']);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Distance entre 2 points");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "?");
+
+    // Partie documents référence
+    $celluleAct = $celluleAct + 2;
+
+    $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Document de référence");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Suivant procédure :");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, $pv['procedure_controle']);
+
+    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct,"Code d'interprétation : ");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, $pv['code_inter']);
+
+    // Partie matériel utilisé
+    $celluleAct = $celluleAct + 2;
+
+    $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Matériel utilisé");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+
+    for ($i = 0; $i < sizeof($appareils); $i++) {
+        creerLigneAppareil($appareils, $i);
+    }
 
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
-
-    $writer->save('../PV_PDF/pv_'.$pv['id_pv'].'.xls');
+    mkdir('../PV_Excel/pv_'.$pv['id_pv']);
+    $writer->save('../PV_Excel/pv_'.$pv['id_pv'].'/pv_'.$pv['id_pv'].'_'.$controle['code'].''.$controleEffectue['num_ordre'].'.xls');
 
     header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
 
@@ -229,5 +243,57 @@
         $feuille->getStyle('A'.($i - 1).':E'.$i)->applyFromArray($bordures);
     }
 ?>
+
+<?php
+
+/**
+ * Crée une ligne à ajouter dans le tableur comprenant les différentes informations de l'appareil à l'indice i.
+ *
+ * @param array $appareils Liste des appareils de la base.
+ * @param int $ind Indice de l'appareil à afficher.
+ */
+function creerLigneAppareil($appareils, $ind) {
+    global $celluleAct, $feuille;
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
+    $feuille->setCellValue('A' . $celluleAct, "Système :");
+
+    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
+    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['systeme']);
+
+    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
+    $feuille->setCellValue('E'.$celluleAct, "Marque :");
+
+    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
+    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['marque']);
+
+    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
+    $feuille->setCellValue('I' . $celluleAct, "Date de calibration : ");
+
+    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
+    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_calib']);
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
+    $feuille->setCellValue('A' . $celluleAct, "Type :");
+
+    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
+    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['type']);
+
+    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
+    $feuille->setCellValue('E'.$celluleAct, "N° de série :");
+
+    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
+    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['num_serie']);
+
+    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
+    $feuille->setCellValue('I' . $celluleAct, "Date de validation : ");
+
+    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
+    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_valid']);
+}
 
 
