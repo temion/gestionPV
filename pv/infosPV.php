@@ -11,7 +11,7 @@
     }
 
 
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bddAffaire = connexion('portail_gestion');
     $affaire = $bddAffaire->query('SELECT * FROM affaire WHERE num_affaire LIKE ' . $bddAffaire->quote($_POST['num_affaire']))->fetch();
     // Id du récepteur de la demande
     $idReceveur = $bddAffaire->query('select * from utilisateurs where nom like '.$bddAffaire->quote($_POST['demandeRecue']))->fetch();
@@ -22,7 +22,7 @@
     if (!isset($_POST['appelOffre'])) // Si la case n'a pas été cochée
         $appelOffre = 0;
 
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+    $bddEquipement = connexion('theodolite');
     $equipement = $bddEquipement->query('SELECT * FROM equipement WHERE concat(Designation, \' \', type) LIKE ' . $bddEquipement->quote($_POST['num_equipement']))->fetch();
 
     $bddAffaire->exec('insert into pv_controle values(null, '.$affaire['id_affaire'] . ' , 

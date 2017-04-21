@@ -1,7 +1,7 @@
 <?php
     include_once "../util.inc.php";
 
-    $bdd = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bdd = connexion('portail_gestion');
     $modifs = 0;
 
     $attributs = array('systeme', 'type', 'marque', 'serie');

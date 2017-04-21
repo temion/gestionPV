@@ -146,9 +146,9 @@ function creerApercuDetails($pv) {
                 <div class="field">
                     <label>Hauteur produit : </label>
                     <label> ? </label>
-                    <!--                                <div class="field">-->
-                    <!--                                    <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
-                    <!--                                </div>-->
+<!--                    <div class="field">-->
+<!--                        <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
+<!--                    </div>-->
                 </div>
             </td>
         </tr>
@@ -166,9 +166,9 @@ function creerApercuDetails($pv) {
                 <div class="field">
                     <label>Volume : </label>
                     <label> ? </label>
-                    <!--                                <div class="field">-->
-                    <!--                                    <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
-                    <!--                                </div>-->
+<!--                    <div class="field">-->
+<!--                        <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
+<!--                    </div>-->
                 </div>
             </td>
         </tr>
@@ -184,9 +184,9 @@ function creerApercuDetails($pv) {
                 <div class="field">
                     <label>Distance entre 2 points : </label>
                     <label> ? </label>
-                    <!--                                <div class="field">-->
-                    <!--                                    <input type="text" name="distance_points" placeholder="Distance (m)">-->
-                    <!--                                </div>-->
+<!--                    <div class="field">-->
+<!--                        <input type="text" name="distance_points" placeholder="Distance (m)">-->
+<!--                    </div>-->
                 </div>
             </td>
         </tr>
@@ -221,4 +221,15 @@ function creerApercuDocuments($pv) {
     </tr>
 <?php
 }
+
+/**
+ * Retourne un objet connexion vers la base dont le nom est indiqué en paramètre.
+ *
+ * @param string $base Nom de la base de données.
+ * @return PDO Connexion vers la base souhaitée.
+ */
+function connexion($base) {
+    return new PDO('mysql:host=localhost; dbname='.$base.'; charset=utf8', 'root', '');
+}
+
 ?>

@@ -4,7 +4,7 @@
                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
                 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    $bddAffaires = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bddAffaires = connexion('portail_gestion');
     $affaires = $bddAffaires->query('select * from affaire order by num_affaire asc')->fetchAll();
     $utilisateurs = $bddAffaires->query('select * from utilisateurs')->fetchAll();
 
@@ -18,8 +18,7 @@
         }
     }
 
-
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+    $bddEquipement = connexion('theodolite');
 
     if (isset($_GET['num_affaire']) && $_GET['num_affaire'] != "")
         $equipement = $bddEquipement->query('select * from equipement where idSociete = '.$societe['id_societe'])->fetchAll();

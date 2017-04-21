@@ -1,3 +1,7 @@
+div.header {
+    text-align: center;
+}
+
 #menu {
     position: fixed;
     left: 0;

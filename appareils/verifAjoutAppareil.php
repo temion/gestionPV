@@ -1,7 +1,7 @@
 <?php
     include_once "../util.inc.php";
 
-    $bdd = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bdd = connexion('portail_gestion');
 
     if ($_POST['systeme'] == "" || $_POST['type'] == "" || $_POST['marque'] == "" || $_POST['serie'] == "") {
         header("Location: ajoutAppareil.php?erreur=1");
@@ -39,7 +39,6 @@ function verifEntreeDates($date) {
     $date_correcte = false;
     if ($_POST[$date] != "") {
         if (!verifFormatDates(strval($_POST[$date]))) {
-            $date_correcte = false;
             header("Location: ajoutAppareil.php?erreur=1");
             exit;
         } else {

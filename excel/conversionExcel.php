@@ -4,7 +4,9 @@
 
     require_once("../PHPExcel/Classes/PHPExcel/IOFactory.php");
 
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    include_once "../util.inc.php";
+
+    $bddAffaire = connexion('portail_gestion');
 
     $pv = $bddAffaire->query('select * from pv_controle where id_pv = '.$_POST['idPV'])->fetch();
     $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
@@ -209,42 +211,49 @@
         creerLigneAppareil($appareils, $i);
     }
 
+    // Partie constatations
+    $celluleAct = $celluleAct + 2;
+    $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Constatations");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+
+    // Partie conclusions
+    $celluleAct = $celluleAct + 2;
+    $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Conclusions");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+
+
+
+    // Sauvegarde du fichier
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
     mkdir('../PV_Excel/pv_'.$pv['id_pv']);
     $writer->save('../PV_Excel/pv_'.$pv['id_pv'].'/pv_'.$pv['id_pv'].'_'.$controle['code'].''.$controleEffectue['num_ordre'].'.xls');
 
     header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
-
-    function colorerCellule($classeur, $cellule, $couleur){
-        $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
-            'type' => PHPExcel_Style_Fill::FILL_SOLID,
-            'startcolor' => array(
-                'rgb' => $couleur
-            )
-        ));
-    }
-
-    function ecrireControle($feuille, $affaire, $i, $infosControle) {
-        $feuille->setCellValue('A'.$i, "SCO");
-        $feuille->setCellValue('B'.$i, explode(" ", $affaire['num_affaire'])[1]); // Explode divise la chaine de caractères
-
-        $feuille->setCellValue('D'.$i, $infosControle['code']);
-        $feuille->setCellValue('E'.$i, $infosControle['num_controle']);
-
-        $bordures = array(
-            'borders' => array(
-                'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => array('rgb' => '000000')
-                )
-            )
-        );
-
-        $feuille->getStyle('A'.($i - 1).':E'.$i)->applyFromArray($bordures);
-    }
 ?>
 
 <?php
+
+/**
+ * Colore la cellule du classeur avec la couleur passée en paramètre.
+ *
+ * @param PHPExcel $classeur Classeur dans lequel se trouve la cellule.
+ * @param int $cellule Cellule à colorer.
+ * @param string $couleur Code RGB hexadécimal de la couleur.
+ */
+function colorerCellule($classeur, $cellule, $couleur){
+    $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => $couleur
+        )
+    ));
+}
 
 /**
  * Crée une ligne à ajouter dans le tableur comprenant les différentes informations de l'appareil à l'indice i.

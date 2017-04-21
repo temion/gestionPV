@@ -4,37 +4,32 @@
                  array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
                  array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
-    $pv = $bddAffaire->query('select * from pv_controle where id_pv = '.$_POST['idPV'])->fetch();
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
-    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
+    $bdd = connexion('portail_gestion');
+    $pv = $bdd->query('select * from pv_controle where id_pv = '.$_POST['idPV'])->fetch();
 
     if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
         if (isset($_POST['controleAssocie']) && $_POST['controleAssocie'] != "") {
-            $controleAssocie = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controleAssocie']))->fetch();
-            $appareil = $bddAffaire->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bddAffaire->quote($_POST['appareil']))->fetch();
-            $bddAffaire->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$controleAssocie['id_type'].', '.$_POST['idPV'].')');
+            $controleAssocie = $bdd->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bdd->quote($_POST['controleAssocie']))->fetch();
+            $appareil = $bdd->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bdd->quote($_POST['appareil']))->fetch();
+            $bdd->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$controleAssocie['id_type'].', '.$_POST['idPV'].')');
         } else {
             $_POST['appareil'] = "";
         }
     }
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
-        $controle = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controle']))->fetch();
-        $bddAffaire->exec('insert into controles_sur_pv values (null, '.$controle['id_type'].', '.$_POST['idPV'].', '.($controle['num_controle'] + 1).')');
-        $bddAffaire->exec('update type_controle set num_controle = num_controle + 1 where id_type = '.$controle['id_type']);
+        $controle = $bdd->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bdd->quote($_POST['controle']))->fetch();
+        $bdd->exec('insert into controles_sur_pv values (null, '.$controle['id_type'].', '.$_POST['idPV'].', '.($controle['num_controle'] + 1).')');
+        $bdd->exec('update type_controle set num_controle = num_controle + 1 where id_type = '.$controle['id_type']);
     }
 
-    $controlesUtilises = $bddAffaire->query('select * from type_controle where id_type in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
-    $controles = $bddAffaire->query('select * from type_controle where id_type not in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $controlesUtilises = $bdd->query('select * from type_controle where id_type in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $controles = $bdd->query('select * from type_controle where id_type not in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
 
-    $appareilsUtilises = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
-    $appareils = $bddAffaire->query('select * from appareils where id_appareil not in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $appareilsUtilises = $bdd->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $appareils = $bdd->query('select * from appareils where id_appareil not in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
 
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
-    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
 ?>
 
         <div id="contenu">
@@ -136,9 +131,9 @@
                                         <select class="ui search dropdown" name="controleAssocie">
                                             <option selected> </option>
                                             <?php
-                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
-                                            }
+                                                for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
+                                                    echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                                }
                                             ?>
                                         </select>
                                     </td>

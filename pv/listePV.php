@@ -3,8 +3,8 @@
     enTete("Liste des PV",
             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+    $bddAffaire = connexion('portail_gestion');
+    $bddEquipement = connexion('theodolite');
 
     $listePV = $bddAffaire->query('select * from pv_controle')->fetchAll();
     $selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
