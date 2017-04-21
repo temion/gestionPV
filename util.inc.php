@@ -51,4 +51,174 @@ function verifFormatDates($date) {
 
     return false;
 }
+
+/**
+ * Retourne les différentes informations sur chaque élément du PV.
+ *
+ * @param array $pv Informations du PV stockées dans la base de données.
+ * @return array Tableau comprenant toutes les informations concernant le PV passé en paramètre.
+ */
+function infosBDD($pv) {
+    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
+    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+
+    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
+    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
+
+    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
+
+    return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client, "equipement"=>$equipement, "ficheTechniqueEquipement"=>$ficheTechniqueEquipement);
+}
+
+/**
+ * Affiche les différentes informations concernant les détails de l'affaire nécessaires pour l'aperçu du PV.
+ *
+ * @param array $pv Informations du PV stockées dans la base de données.
+ */
+function creerApercuDetails($pv) {
+    $infosPV = infosBDD($pv);
+    ?>
+    <table>
+        <tr>
+            <th colspan="2"><h3 class="ui right aligned header"><?php echo $infosPV["affaire"]['num_affaire']; ?></h3></th>
+        </tr>
+        <tr>
+            <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <label>Clients : </label>
+                    <label> <?php echo $infosPV["societe"]['nom_societe']; ?> </label>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>N° Equipement : </label>
+                    <label> <?php echo $infosPV["equipement"]['Designation'].' '.$infosPV["equipement"]['Type']; ?> </label>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <label>Personne rencontrée : </label>
+                    <label> <?php echo $infosPV["client"]['nom']; ?> </label>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>Diamètre : </label>
+                    <label> <?php echo ($infosPV["ficheTechniqueEquipement"]['diametre']/1000).' m'; ?> </label>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <div class="field">
+                        <label>Numéro de commande client : </label>
+                        <label> <?php echo $infosPV["affaire"]['commande']; ?> </label>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>Hauteur : </label>
+                    <label> <?php echo ($infosPV["ficheTechniqueEquipement"]['hauteurEquipement']/1000).' m'; ?> </label>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <label>Lieu : </label>
+                    <label> <?php echo  $infosPV["affaire"]['lieu_intervention']; ?> </label>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>Hauteur produit : </label>
+                    <label> ? </label>
+                    <!--                                <div class="field">-->
+                    <!--                                    <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
+                    <!--                                </div>-->
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <div class="field">
+                        <label>Début du contrôle : </label>
+                        <label> <?php echo  $infosPV["affaire"]['date_ouv']; ?> </label>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>Volume : </label>
+                    <label> ? </label>
+                    <!--                                <div class="field">-->
+                    <!--                                    <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
+                    <!--                                </div>-->
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="field">
+                    <label>Nombre de génératrices : </label>
+                    <label> <?php echo $infosPV["ficheTechniqueEquipement"]['nbGeneratrice']; ?> </label>
+                </div>
+            </td>
+            <td>
+                <div class="field">
+                    <label>Distance entre 2 points : </label>
+                    <label> ? </label>
+                    <!--                                <div class="field">-->
+                    <!--                                    <input type="text" name="distance_points" placeholder="Distance (m)">-->
+                    <!--                                </div>-->
+                </div>
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+/**
+ * Affiche les différentes informations concernant les documents de référence nécessaires pour l'aperçu du PV.
+ *
+ * @param array $pv Informations du PV stockées dans la base de données.
+ */
+function creerApercuDocuments($pv) {
+    ?>
+    <tr>
+        <th colspan="2"><h4 class="ui dividing header">Document de référence</h4></th>
+    </tr>
+
+    <tr>
+        <td>
+            <div class="field">
+                <label>Suivant procédure : </label>
+                <label> <?php echo $pv['procedure_controle']; ?> </label>
+            </div>
+        </td>
+        <td>
+            <div class="field">
+                <label>Code d'interprétation : </label>
+                <label> <?php echo $pv['code_inter']; ?> </label>
+            </div>
+        </td>
+    </tr>
+<?php
+}
 ?>
