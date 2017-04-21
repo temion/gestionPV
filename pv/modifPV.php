@@ -108,9 +108,10 @@
                                     <td>
                                         <div class="field">
                                             <label>Hauteur produit : </label>
-                                            <div class="field">
-                                                <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">
-                                            </div>
+                                            <label> ? </label>
+<!--                                            <div class="field">-->
+<!--                                                <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
+<!--                                            </div>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -127,9 +128,10 @@
                                     <td>
                                         <div class="field">
                                             <label>Volume : </label>
-                                            <div class="field">
-                                                <input type="text" name="volume_equipement" placeholder="Volume (m²)">
-                                            </div>
+                                            <label> ? </label>
+<!--                                            <div class="field">-->
+<!--                                                <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
+<!--                                            </div>-->
                                         </div>
                                     </td>
                                 </tr>
@@ -144,9 +146,10 @@
                                     <td>
                                         <div class="field">
                                             <label>Distance entre 2 points : </label>
-                                            <div class="field">
-                                                <input type="text" name="distance_points" placeholder="Distance (m)">
-                                            </div>
+                                            <label> ? </label>
+<!--                                            <div class="field">-->
+<!--                                                <input type="text" name="distance_points" placeholder="Distance (m)">-->
+<!--                                            </div>-->
                                         </div>
                                     </td>
                                 </tr>

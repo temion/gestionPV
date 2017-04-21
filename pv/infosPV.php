@@ -47,7 +47,7 @@
 ?>
 
         <div id="contenu">
-            <h1 class="ui blue center aligned huge header">Votre PV a bien été crée !</h1>
+            <h1 class="ui blue center aligned huge header">Le PV n°<?php echo $pv['id_pv'] ?> a bien été crée !</h1>
 
             <form class="ui form" method="post" action="modifPV.php">
                 <table>
@@ -83,7 +83,7 @@
                         <td>
                             <div class="field">
                                 <label>Diamètre : </label>
-                                <label> <?php echo $ficheTechniqueEquipement['diametre'].' m'; ?> </label>
+                                <label> <?php echo ($ficheTechniqueEquipement['diametre']/1000).' m'; ?> </label>
                             </div>
                         </td>
                     </tr>
@@ -100,7 +100,7 @@
                         <td>
                             <div class="field">
                                 <label>Hauteur : </label>
-                                <label> <?php echo $ficheTechniqueEquipement['hauteurEquipement'].' m'; ?> </label>
+                                <label> <?php echo ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m'; ?> </label>
                             </div>
                         </td>
                     </tr>
@@ -115,9 +115,10 @@
                         <td>
                             <div class="field">
                                 <label>Hauteur produit : </label>
-                                <div class="field">
-                                    <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">
-                                </div>
+                                <label> ? </label>
+<!--                                <div class="field">-->
+<!--                                    <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
+<!--                                </div>-->
                             </div>
                         </td>
                     </tr>
@@ -134,9 +135,10 @@
                         <td>
                             <div class="field">
                                 <label>Volume : </label>
-                                <div class="field">
-                                    <input type="text" name="volume_equipement" placeholder="Volume (m²)">
-                                </div>
+                                <label> ? </label>
+<!--                                <div class="field">-->
+<!--                                    <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
+<!--                                </div>-->
                             </div>
                         </td>
                     </tr>
@@ -151,9 +153,10 @@
                         <td>
                             <div class="field">
                                 <label>Distance entre 2 points : </label>
-                                <div class="field">
-                                    <input type="text" name="distance_points" placeholder="Distance (m)">
-                                </div>
+                                <label> ? </label>
+<!--                                <div class="field">-->
+<!--                                    <input type="text" name="distance_points" placeholder="Distance (m)">-->
+<!--                                </div>-->
                             </div>
                         </td>
                     </tr>

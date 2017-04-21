@@ -55,7 +55,7 @@
 
     $feuille->mergeCells('I'.$celluleAct.':L'.$celluleAct);
 
-    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$controle['code'].' '.$controleEffectue['num_ordre']);
+    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$controle['code'].' '.sprintf("%03d", $controleEffectue['num_ordre']));
     $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
@@ -101,7 +101,7 @@
     $feuille->setCellValue('I'.$celluleAct,"Diamètre équipement");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
-    $feuille->setCellValue('K'.$celluleAct, $ficheTechniqueEquipement['diametre']);
+    $feuille->setCellValue('K'.$celluleAct, ($ficheTechniqueEquipement['diametre']/1000).' m');
 
     // Num commande + Hauteur
     $celluleAct++;
@@ -118,7 +118,7 @@
     $feuille->setCellValue('I'.$celluleAct,"Hauteur");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
-    $feuille->setCellValue('K'.$celluleAct, $ficheTechniqueEquipement['hauteurEquipement']);
+    $feuille->setCellValue('K'.$celluleAct, ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m');
 
     // Lieu + Hauteur produit
     $celluleAct++;

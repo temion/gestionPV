@@ -8,10 +8,6 @@
     $affaires = $bddAffaires->query('select * from affaire order by num_affaire asc')->fetchAll();
     $utilisateurs = $bddAffaires->query('select * from utilisateurs')->fetchAll();
 
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
-    $equipement = $bddEquipement->query('select * from equipement')->fetchAll();
-
-
     if (isset($_GET['num_affaire'])) {
         $affaireSelectionnee = $bddAffaires->query('select * from affaire where num_affaire like \''.$_GET['num_affaire'].'\'')->fetch();
         if ($affaireSelectionnee['id_societe'] != "") {
@@ -21,6 +17,15 @@
             $dateDebut = 0;
         }
     }
+
+
+    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+
+    if (isset($_GET['num_affaire']) && $_GET['num_affaire'] != "")
+        $equipement = $bddEquipement->query('select * from equipement where idSociete = '.$societe['id_societe'])->fetchAll();
+    else
+        $equipement = $bddEquipement->query('select * from equipement')->fetchAll();
+
 
     if (isset($_GET['num_equipement'])) {
         $equipementSelectionne = $bddEquipement->query('select * from equipement where concat(Designation, \' \', type) LIKE \''.$_GET['num_equipement'].'\'')->fetch();
@@ -234,7 +239,7 @@
                                 <label>
                                     <?php
                                         if (isset($ficheTechniqueEquipement))
-                                            echo $ficheTechniqueEquipement['diametre'].' m';
+                                            echo ($ficheTechniqueEquipement['diametre']/1000).' m';
                                     ?>
                                 </label>
                             </div>
@@ -262,7 +267,7 @@
                                 <label>
                                     <?php
                                         if (isset($ficheTechniqueEquipement))
-                                            echo $ficheTechniqueEquipement['hauteurEquipement'].' m';
+                                            echo ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m';
                                         ?>
                                 </label>
                             </div>
