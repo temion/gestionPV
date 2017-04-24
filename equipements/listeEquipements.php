@@ -47,25 +47,28 @@ $societe = $bdd->prepare('select * from societe where id_societe = ?');
 
 <?php
 
-/**
- * Crée une ligne à ajouter dans le tableau comprenant les différentes informations de l'appareil à l'indice i.
- *
- * @param array $appareils Liste des appareils de la base.
- * @param int $ind Indice de l'appareil à afficher.
- */
-function creerLigneAppareil($equipements, $ind) {
-    global $societe;
-    $societe->execute(array($equipements[$ind]['id_societe']));
+    /**
+     * Crée une ligne à ajouter dans le tableau comprenant les différentes informations de l'appareil à l'indice i.
+     *
+     * @param array $appareils Liste des appareils de la base.
+     * @param int $ind Indice de l'appareil à afficher.
+     */
+    function creerLigneAppareil($equipements, $ind) {
+        global $societe;
+        $societe->execute(array($equipements[$ind]['id_societe']));
 
-    echo '<tr><td>'.$equipements[$ind]['id_equipement'].'</td>';
-    echo '<td>'.$societe->fetch()['nom_societe'].'</td>';
-    echo '<td>'.$equipements[$ind]['nom_equipement'].'</td>';
-    echo '<td>'.($equipements[$ind]['diametre'] != "" ? $equipements[$ind]['diametre'].' m' : "").'</td>';
-    echo '<td>'.($equipements[$ind]['hauteur'] != "" ? $equipements[$ind]['hauteur'].' m' : "").'</td>';
-    echo '<td>'.($equipements[$ind]['hauteur_produit'] != "" ? $equipements[$ind]['hauteur_produit'].' m' : "").'</td>';
-    echo '<td>'.($equipements[$ind]['volume'] != "" ? $equipements[$ind]['volume'].' m²' : "").'</td>';
-    echo '<td>'.($equipements[$ind]['distance_points'] != "" ? $equipements[$ind]['distance_points'].' m' : "").'</td>';
-    echo '<td><button name="idEquipement" value="'.$equipements[$ind]['id_equipement'].'" class="ui right floated blue button">Modifier</button></td></tr>';
-}
+        echo '<tr><td>'.$equipements[$ind]['id_equipement'].'</td>';
+        echo '<td>'.$societe->fetch()['nom_societe'].'</td>';
+        echo '<td>'.$equipements[$ind]['nom_equipement'].'</td>';
+        echo '<td>'.($equipements[$ind]['diametre'] != "" ? $equipements[$ind]['diametre'].' m' : "").'</td>';
+        echo '<td>'.($equipements[$ind]['hauteur'] != "" ? $equipements[$ind]['hauteur'].' m' : "").'</td>';
+        echo '<td>'.($equipements[$ind]['hauteur_produit'] != "" ? $equipements[$ind]['hauteur_produit'].' m' : "").'</td>';
+        echo '<td>'.($equipements[$ind]['volume'] != "" ? $equipements[$ind]['volume'].' m²' : "").'</td>';
+        echo '<td>'.($equipements[$ind]['distance_points'] != "" ? $equipements[$ind]['distance_points'].' m' : "").'</td>';
+        if (isset($_SESSION) && $_SESSION['droit'] == "OP")
+            echo '<td><button disabled name="idEquipement" value="'.$equipements[$ind]['id_equipement'].'" class="ui right floated blue button">Modifier</button></td></tr>';
+        else
+            echo '<td><button name="idEquipement" value="'.$equipements[$ind]['id_equipement'].'" class="ui right floated blue button">Modifier</button></td></tr>';
+    }
 
 ?>

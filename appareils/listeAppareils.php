@@ -58,7 +58,10 @@ function creerLigneAppareil($appareils, $ind) {
     echo '<td>'.$appareils[$ind]['num_serie'].'</td>';
     echo '<td>'.conversionDate($appareils[$ind]['date_valid']).'</td>';
     echo '<td>'.conversionDate($appareils[$ind]['date_calib']).'</td>';
-    echo '<td><button name="idAppareil" value="'.$appareils[$ind]['id_appareil'].'" class="ui right floated blue button">Modifier</button></td></tr>';
+    if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP")
+        echo '<td><button disabled name="idAppareil" value="'.$appareils[$ind]['id_appareil'].'" class="ui right floated blue button">Modifier</button></td></tr>';
+    else
+        echo '<td><button name="idAppareil" value="'.$appareils[$ind]['id_appareil'].'" class="ui right floated blue button">Modifier</button></td></tr>';
 }
 
 ?>
