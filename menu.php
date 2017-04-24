@@ -1,5 +1,10 @@
 <?php
+session_start();
 include_once "util.inc.php";
+
+if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
+    $_SESSION['droit'] = $_POST['utilisateur'];
+}
 
 function enTete($titre, $styles, $scripts) {
     ?>
@@ -55,6 +60,23 @@ function enTete($titre, $styles, $scripts) {
                         Liste des équipements existants
                     </a>
                 </div>
+            </div>
+
+            <div id="boutonsUtilisateur">
+                <form method="post" action="#">
+                    <?php
+                        if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") {
+                            echo '<button name="utilisateur" value="CA" id="bLeft" class="ui active left attached button">CA</button>';
+                            echo '<button name="utilisateur" value="OP" id="bRight" class="right attached ui button">OP</button>';
+                        } else if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP") {
+                            echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">CA</button>';
+                            echo '<button name="utilisateur" value="OP" id="bRight" class="right active attached ui button">OP</button>';
+                        } else {
+                            echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">CA</button>';
+                            echo '<button name="utilisateur" value="OP" id="bRight" class="right attached ui button">OP</button>';
+                        }
+                    ?>
+                </form>
             </div>
         </div>
     <?php

@@ -18,16 +18,22 @@
     }
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
-        $controle = $bdd->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bdd->quote($_POST['controle']))->fetch();
-        $bdd->exec('insert into controles_sur_pv values (null, '.$controle['id_type'].', '.$_POST['idPV'].', '.($controle['num_controle'] + 1).')');
-        $bdd->exec('update type_controle set num_controle = num_controle + 1 where id_type = '.$controle['id_type']);
+        if (verifFormatDates($_POST['date_debut'])) {
+            $controle = $bdd->query('SELECT * FROM type_controle WHERE concat(libelle, \' (\', code, \')\') LIKE ' . $bdd->quote($_POST['controle']))->fetch();
+            $bdd->exec('INSERT INTO controles_sur_pv VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idPV'] . ', ' . ($controle['num_controle'] + 1) . ', ' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
+            $bdd->exec('UPDATE type_controle SET num_controle = num_controle + 1 WHERE id_type = ' . $controle['id_type']);
+        } else {
+            $_POST['controle'] = "";
+        }
     }
 
-    $controlesUtilises = $bdd->query('select * from type_controle where id_type in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
-    $controles = $bdd->query('select * from type_controle where id_type not in (select id_type_controle from controles_sur_pv where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $controlesUtilises = $bdd->query('select * from controles_sur_pv where id_pv = '.$_POST['idPV'])->fetchAll();
+    $typeControleUtilise = $bdd->prepare('select * from type_controle where id_type = ?');
+
+    $controles = $bdd->query('select * from type_controle')->fetchAll();
 
     $appareilsUtilises = $bdd->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
-    $appareils = $bdd->query('select * from appareils where id_appareil not in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
+    $appareils = $bdd->query('select * from appareils')->fetchAll();
 
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
 ?>
@@ -51,7 +57,9 @@
                                             <option selected></option>
                                             <?php
                                             for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                                $typeControleUtilise->execute(array($controlesUtilises[$i]['id_type_controle']));
+                                                $infosControle = $typeControleUtilise->fetch();
+                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesUtilises[$i]['date']).'</option>';
                                             }
                                             ?>
                                         </select>
@@ -67,7 +75,7 @@
                         </form>
                     </td>
                     <td class="partieTableau">
-                        <form method="post" action="modifPV.php">
+                        <form method="post" action="modifPVCA.php">
                             <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
@@ -86,11 +94,21 @@
                                         </select>
                                     </td>
                                     <td>
+                                        <label> Début prévu du contrôle le : </label>
+                                        <div class="ui input">
+                                            <input type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <label> Contrôles déjà ajoutés : </label>
                                         <select disabled size=4 class="ui search dropdown listeUtilises">
                                             <?php
                                             for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
+                                                $typeControleUtilise->execute(array($controlesUtilises[$i]['id_type_controle']));
+                                                $infosControle = $typeControleUtilise->fetch();
+                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesUtilises[$i]['date']).'</option>';
                                             }
                                             ?>
                                         </select>
@@ -102,59 +120,6 @@
                                         afficherMessageAjout('controle', "Le contrôle a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
                                     ?>
                                     <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
-                                </tr>
-                            </table>
-                            <?php
-                                echo '<input type="hidden" name="idPV" value="'.$_POST['idPV'].'">';
-                            ?>
-                        </form>
-                        <form method="post" action="modifPV.php">
-                            <table>
-                                <tr>
-                                    <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label> Appareil à ajouter : </label>
-                                        <select class="ui search dropdown listeAjout" name="appareil">
-                                            <option selected> </option>
-                                            <?php
-                                                for ($i = 0; $i < sizeof($appareils); $i++) {
-                                                    echo '<option>'.$appareils[$i]['systeme'].' '.$appareils[$i]['type'].' ('.$appareils[$i]['num_serie'].')</option>';
-                                                }
-                                            ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <label> Employé pour le contrôle : </label>
-                                        <select class="ui search dropdown" name="controleAssocie">
-                                            <option selected> </option>
-                                            <?php
-                                                for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                    echo '<option>'.$controlesUtilises[$i]['libelle'].' ('.$controlesUtilises[$i]['code'].')</option>';
-                                                }
-                                            ?>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label> Appareils déjà ajoutés : </label>
-                                        <select disabled size=4 class="ui search dropdown listeUtilises">
-                                            <?php
-                                            for ($i = 0; $i < sizeof($appareilsUtilises); $i++) {
-                                                echo '<option>'.$appareilsUtilises[$i]['systeme'].' '.$appareilsUtilises[$i]['type'].' ('.$appareilsUtilises[$i]['num_serie'].')</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </td>
-                                    <td><button class="ui right floated blue button">Ajouter cet appareil</button></td>
-                                </tr>
-                                <tr>
-                                    <?php
-                                        afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil ou contrôle associé n'a été indiqué.");
-                                    ?>
                                 </tr>
                             </table>
                             <?php

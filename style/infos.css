@@ -7,7 +7,7 @@ td {
     padding: 0 2em 1em 2em;
 }
 
-button {
+button-button[name="utilisateur"] {
     width: 15em;
 }
 

@@ -155,12 +155,7 @@ function creerApercuDetails($pv) {
 
         <tr>
             <td>
-                <div class="field">
-                    <div class="field">
-                        <label>Début du contrôle : </label>
-                        <label> <?php echo  $infosPV["affaire"]['date_ouv']; ?> </label>
-                    </div>
-                </div>
+
             </td>
             <td>
                 <div class="field">
@@ -175,10 +170,7 @@ function creerApercuDetails($pv) {
 
         <tr>
             <td>
-                <div class="field">
-                    <label>Nombre de génératrices : </label>
-                    <label> <?php echo $infosPV["ficheTechniqueEquipement"]['nbGeneratrice']; ?> </label>
-                </div>
+
             </td>
             <td>
                 <div class="field">
@@ -189,6 +181,14 @@ function creerApercuDetails($pv) {
 <!--                    </div>-->
                 </div>
             </td>
+        </tr>
+        <td>
+            <td>
+                <div class="field">
+                    <label>Nombre de génératrices : </label>
+                    <label> <?php echo $infosPV["ficheTechniqueEquipement"]['nbGeneratrice']; ?> </label>
+                </div>
+           </td>
         </tr>
     </table>
 <?php

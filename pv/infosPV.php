@@ -42,7 +42,7 @@
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Le PV n°<?php echo $pv['id_pv'] ?> a bien été crée !</h1>
 
-            <form class="ui form" method="post" action="modifPV.php">
+            <form class="ui form" method="post" action="modifPVCA.php">
                 <?php creerApercuDetails($pv); ?>
                 <table>
                     <?php creerApercuDocuments($pv); ?>

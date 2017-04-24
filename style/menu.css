@@ -2,6 +2,10 @@ div.header {
     text-align: center;
 }
 
+#boutonsUtilisateur {
+    text-align: center;
+}
+
 #menu {
     position: fixed;
     left: 0;

@@ -298,18 +298,7 @@
 
                     <tr>
                         <td>
-                            <div class="field">
-                                <div class="field">
-                                    <label>Début du contrôle : </label>
-                                    <label>
-                                        <?php
-                                            if (isset($dateDebut)) {
-                                                echo $dateDebut;
-                                            }
-                                        ?>
-                                    </label>
-                                </div>
-                            </div>
+
                         </td>
                         <td>
                             <div class="field">
@@ -323,21 +312,30 @@
 
                     <tr>
                         <td>
-                            <div class="field">
-                                <label>Nombre de génératrices : </label>
-                                <label>
-                                    <?php
-                                        if (isset($ficheTechniqueEquipement))
-                                            echo $ficheTechniqueEquipement['nbGeneratrice'];
-                                    ?>
-                                </label>
-                            </div>
+
                         </td>
                         <td>
                             <div class="field">
                                 <label>Distance entre 2 points : </label>
                                 <label>
                                     <?php /* ToDo */ ?>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label>Nombre de génératrices : </label>
+                                <label>
+                                    <?php
+                                    if (isset($ficheTechniqueEquipement))
+                                        echo $ficheTechniqueEquipement['nbGeneratrice'];
+                                    ?>
                                 </label>
                             </div>
                         </td>

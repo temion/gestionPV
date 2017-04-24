@@ -15,11 +15,10 @@
     $receveur = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_receveur'])->fetch();
     $analyste = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$pv['id_analyste'])->fetch();
 
-    $controle = $bddAffaire->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bddAffaire->quote($_POST['controleGenere']))->fetch();
-    $controleEffectue = $bddAffaire->query('select * from controles_sur_pv where id_type_controle = '.$controle['id_type'].' and id_pv = '.$pv['id_pv'])->fetch();
+    $controle = $bddAffaire->query('select * from controles_sur_pv where id_controle_pv = '.$_POST['idControle'])->fetch();
+    $typeControle = $bddAffaire->query('select * from type_controle where id_type = '.$controle['id_type_controle'])->fetch();
 
-    $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].' and id_controle_associe = '.$controleEffectue['id_type_controle'].')')->fetchAll();
-
+    $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].' and id_controle_associe = '.$controle['id_controle_pv'].')')->fetchAll();
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
     $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
     $ficheTechniqueEquipement = $bddEquipement->query('select * from ficheTechniqueEquipement where idEquipement = '.$equipement['idEquipement'])->fetch();
@@ -57,7 +56,7 @@
 
     $feuille->mergeCells('I'.$celluleAct.':L'.$celluleAct);
 
-    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$controle['code'].' '.sprintf("%03d", $controleEffectue['num_ordre']));
+    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$typeControle['code'].' '.sprintf("%03d", $controle['num_ordre']));
     $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
@@ -146,7 +145,7 @@
     $feuille->setCellValue('A'.$celluleAct, "Début du contrôle :");
 
     $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
-    $feuille->setCellValue('C'.$celluleAct, "?");
+    $feuille->setCellValue('C'.$celluleAct, $controle['date']);
 
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
@@ -232,9 +231,9 @@
     // Sauvegarde du fichier
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
     mkdir('../PV_Excel/pv_'.$pv['id_pv']);
-    $writer->save('../PV_Excel/pv_'.$pv['id_pv'].'/pv_'.$pv['id_pv'].'_'.$controle['code'].''.$controleEffectue['num_ordre'].'.xls');
+    $writer->save('../PV_Excel/pv_'.$pv['id_pv'].'/pv_'.$pv['id_pv'].'_'.$typeControle['code'].''.$controle['num_ordre'].'.xls');
 
-    header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
+//    header('Location: /gestionPV/pv/listePV.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
 ?>
 
 <?php

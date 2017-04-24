@@ -15,6 +15,17 @@ button > a {
     text-decoration: none;
 }
 
+#choixAffaire select {
+    width: 10em;
+    margin-left: 2em;
+}
+
+#choixAffaire {
+    padding-left: 5em;
+    margin: auto;
+    width: 30em;
+}
+
 #contenu {
     padding: 1em 5em 0 20em;
 }
