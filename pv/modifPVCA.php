@@ -5,35 +5,21 @@
                  array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-    $pv = $bdd->query('select * from pv_controle where id_pv = '.$_POST['idPV'])->fetch();
-
-    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
-        if (isset($_POST['controleAssocie']) && $_POST['controleAssocie'] != "") {
-            $controleAssocie = $bdd->query('select * from type_controle where concat(libelle, \' (\', code, \')\') like '.$bdd->quote($_POST['controleAssocie']))->fetch();
-            $appareil = $bdd->query('select * from appareils where concat(systeme, \' \', type, \' (\', num_serie, \')\') like '.$bdd->quote($_POST['appareil']))->fetch();
-            $bdd->exec('insert into appareils_utilises values (null, '.$appareil['id_appareil'].', '.$controleAssocie['id_type'].', '.$_POST['idPV'].')');
-        } else {
-            $_POST['appareil'] = "";
-        }
-    }
+    $affaireInspection = $bdd->query('select * from affaire_inspection where id_affaire_inspection = '.$_POST['idAffaire'])->fetch();
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
         if (verifFormatDates($_POST['date_debut'])) {
             $controle = $bdd->query('SELECT * FROM type_controle WHERE concat(libelle, \' (\', code, \')\') LIKE ' . $bdd->quote($_POST['controle']))->fetch();
-            $bdd->exec('INSERT INTO controles_sur_pv VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idPV'] . ', ' . ($controle['num_controle'] + 1) . ', ' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
+            $bdd->exec('INSERT INTO pv_controle VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idAffaire'] . ', ' . ($controle['num_controle'] + 1) . ', ' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
             $bdd->exec('UPDATE type_controle SET num_controle = num_controle + 1 WHERE id_type = ' . $controle['id_type']);
         } else {
             $_POST['controle'] = "";
         }
     }
 
-    $controlesUtilises = $bdd->query('select * from controles_sur_pv where id_pv = '.$_POST['idPV'])->fetchAll();
-    $typeControleUtilise = $bdd->prepare('select * from type_controle where id_type = ?');
-
     $controles = $bdd->query('select * from type_controle')->fetchAll();
-
-    $appareilsUtilises = $bdd->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv = '.$_POST['idPV'].')')->fetchAll();
-    $appareils = $bdd->query('select * from appareils')->fetchAll();
+    $controlesEffectues = $bdd->query('select * from pv_controle where id_affaire_inspection = '.$affaireInspection['id_affaire_inspection'])->fetchAll();
+    $typeControle = $bdd->prepare('select * from type_controle where id_type = ?');
 
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
 ?>
@@ -44,31 +30,14 @@
                 <tr>
                     <td class="partieTableau">
                         <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
-                            <?php creerApercuDetails($pv); ?>
+                            <?php creerApercuDetails($affaireInspection); ?>
                             <table>
-                                <?php creerApercuDocuments($pv); ?>
+                                <?php creerApercuDocuments($affaireInspection); ?>
                                 <tr>
-                                    <tr>
-                                        <th colspan="2"><h4 class="ui dividing header">Générer les PV</h4></th>
-                                    </tr>
-                                    <td>
-                                        <label> Choix du PV de contrôle à générer : </label>
-                                        <select class="ui search dropdown" id="controleGenere" name="controleGenere">
-                                            <option selected></option>
-                                            <?php
-                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                $typeControleUtilise->execute(array($controlesUtilises[$i]['id_type_controle']));
-                                                $infosControle = $typeControleUtilise->fetch();
-                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesUtilises[$i]['date']).'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </td>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                                            echo '<input type="hidden" name="idPV" value="'.$affaireInspection['id_affaire_inspection'].'">';
                                         ?>
-                                        <button disabled id="boutonGenere" class="ui right floated blue button">Générer sous format Excel</button>
                                     </td>
                                 </tr>
                             </table>
@@ -105,10 +74,10 @@
                                         <label> Contrôles déjà ajoutés : </label>
                                         <select disabled size=4 class="ui search dropdown listeUtilises">
                                             <?php
-                                            for ($i = 0; $i < sizeof($controlesUtilises); $i++) {
-                                                $typeControleUtilise->execute(array($controlesUtilises[$i]['id_type_controle']));
-                                                $infosControle = $typeControleUtilise->fetch();
-                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesUtilises[$i]['date']).'</option>';
+                                            for ($i = 0; $i < sizeof($controlesEffectues); $i++) {
+                                                $typeControle->execute(array($controlesEffectues[$i]['id_type_controle']));
+                                                $infosControle = $typeControle->fetch();
+                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesEffectues[$i]['date']).'</option>';
                                             }
                                             ?>
                                         </select>
@@ -123,7 +92,7 @@
                                 </tr>
                             </table>
                             <?php
-                                echo '<input type="hidden" name="idPV" value="'.$_POST['idPV'].'">';
+                                echo '<input type="hidden" name="idAffaire" value="'.$_POST['idAffaire'].'">';
                             ?>
                         </form>
                     </td>

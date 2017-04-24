@@ -8,11 +8,11 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd = connexion('portail_gestion');
     $bdd->exec('truncate table affaire_inspection');
     $bdd->exec('truncate table appareils_utilises');
-    $bdd->exec('truncate table controles_sur_pv');
+    $bdd->exec('truncate table pv_controle');
     $bdd->exec('delete from appareils where id_appareil > 15');
     $bdd->exec('alter table affaire_inspection auto_increment = 1');
     $bdd->exec('alter table appareils_utilises auto_increment = 1');
-    $bdd->exec('alter table controles_sur_pv auto_increment = 1');
+    $bdd->exec('alter table pv_controle auto_increment = 1');
     $bdd->exec('alter table appareils auto_increment = 1');
     $bdd->exec('update type_controle set num_controle = 0');
 }
@@ -28,6 +28,22 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
         <p>
             Bienvenue sur le système de gestion des PV. Utilisez le menu latéral pour accéder aux différentes fonctionnalités disponibles.
         </p>
+    </div>
+    <div id="boutonsUtilisateur">
+        <form method="post" action="#">
+            <?php
+            if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") {
+                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui active left attached button">Chargé d\'affaires</button>';
+                echo '<button name="utilisateur" value="OP" id="bRight" class="right attached ui button">Opérateur</button>';
+            } else if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP") {
+                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">Chargé d\'affaires</button>';
+                echo '<button name="utilisateur" value="OP" id="bRight" class="right active attached ui button">Opérateur</button>';
+            } else {
+                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">Chargé d\'affaires</button>';
+                echo '<button name="utilisateur" value="OP" id="bRight" class="right attached ui button">Opérateur</button>';
+            }
+            ?>
+        </form>
     </div>
     <form method="post" action="index.php">
         <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>

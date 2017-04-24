@@ -53,21 +53,21 @@ function verifFormatDates($date) {
 }
 
 /**
- * Retourne les différentes informations sur chaque élément du PV.
+ * Retourne les différentes informations sur chaque élément de l'affaire impliquant le PV.
  *
- * @param array $pv Informations du PV stockées dans la base de données.
- * @return array Tableau comprenant toutes les informations concernant le PV passé en paramètre.
+ * @param array $affaireInspection Affaire concernant le PV.
+ * @return array Tableau comprenant toutes les informations concernant l'affaire impliquant le PV.
  */
-function infosBDD($pv) {
+function infosBDD($affaireInspection) {
     $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
 
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$pv['id_affaire'])->fetch();
+    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
     $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
     $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
 
-    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$pv['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$pv['id_equipement'])->fetch();
+    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
 
     return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client, "equipement"=>$equipement, "ficheTechniqueEquipement"=>$ficheTechniqueEquipement);
 }
@@ -77,12 +77,12 @@ function infosBDD($pv) {
  *
  * @param array $pv Informations du PV stockées dans la base de données.
  */
-function creerApercuDetails($pv) {
-    $infosPV = infosBDD($pv);
+function creerApercuDetails($affaireInspection) {
+    $infosAffaire = infosBDD($affaireInspection);
     ?>
     <table>
         <tr>
-            <th colspan="2"><h3 class="ui right aligned header"><?php echo $infosPV["affaire"]['num_affaire']; ?></h3></th>
+            <th colspan="2"><h3 class="ui right aligned header"><?php echo $infosAffaire["affaire"]['num_affaire']; ?></h3></th>
         </tr>
         <tr>
             <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
@@ -92,13 +92,13 @@ function creerApercuDetails($pv) {
             <td>
                 <div class="field">
                     <label>Clients : </label>
-                    <label> <?php echo $infosPV["societe"]['nom_societe']; ?> </label>
+                    <label> <?php echo $infosAffaire["societe"]['nom_societe']; ?> </label>
                 </div>
             </td>
             <td>
                 <div class="field">
                     <label>N° Equipement : </label>
-                    <label> <?php echo $infosPV["equipement"]['Designation'].' '.$infosPV["equipement"]['Type']; ?> </label>
+                    <label> <?php echo $infosAffaire["equipement"]['Designation'].' '.$infosAffaire["equipement"]['Type']; ?> </label>
                 </div>
             </td>
         </tr>
@@ -107,13 +107,13 @@ function creerApercuDetails($pv) {
             <td>
                 <div class="field">
                     <label>Personne rencontrée : </label>
-                    <label> <?php echo $infosPV["client"]['nom']; ?> </label>
+                    <label> <?php echo $infosAffaire["client"]['nom']; ?> </label>
                 </div>
             </td>
             <td>
                 <div class="field">
                     <label>Diamètre : </label>
-                    <label> <?php echo ($infosPV["ficheTechniqueEquipement"]['diametre']/1000).' m'; ?> </label>
+                    <label> <?php echo ($infosAffaire["ficheTechniqueEquipement"]['diametre']/1000).' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -123,14 +123,14 @@ function creerApercuDetails($pv) {
                 <div class="field">
                     <div class="field">
                         <label>Numéro de commande client : </label>
-                        <label> <?php echo $infosPV["affaire"]['commande']; ?> </label>
+                        <label> <?php echo $infosAffaire["affaire"]['commande']; ?> </label>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="field">
                     <label>Hauteur : </label>
-                    <label> <?php echo ($infosPV["ficheTechniqueEquipement"]['hauteurEquipement']/1000).' m'; ?> </label>
+                    <label> <?php echo ($infosAffaire["ficheTechniqueEquipement"]['hauteurEquipement']/1000).' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -139,7 +139,7 @@ function creerApercuDetails($pv) {
             <td>
                 <div class="field">
                     <label>Lieu : </label>
-                    <label> <?php echo  $infosPV["affaire"]['lieu_intervention']; ?> </label>
+                    <label> <?php echo  $infosAffaire["affaire"]['lieu_intervention']; ?> </label>
                 </div>
             </td>
             <td>
@@ -186,7 +186,7 @@ function creerApercuDetails($pv) {
             <td>
                 <div class="field">
                     <label>Nombre de génératrices : </label>
-                    <label> <?php echo $infosPV["ficheTechniqueEquipement"]['nbGeneratrice']; ?> </label>
+                    <label> <?php echo $infosAffaire["ficheTechniqueEquipement"]['nbGeneratrice']; ?> </label>
                 </div>
            </td>
         </tr>

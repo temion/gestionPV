@@ -25,33 +25,33 @@
     $bddEquipement = connexion('theodolite');
     $equipement = $bddEquipement->query('SELECT * FROM equipement WHERE concat(Designation, \' \', type) LIKE ' . $bddEquipement->quote($_POST['num_equipement']))->fetch();
 
-    $bddAffaire->exec('insert into pv_controle values(null, '.$affaire['id_affaire'] . ' , 
-                                                                      '.$equipement['idEquipement'] . ' ,
-                                                                      '.$idReceveur['id_utilisateur']. ',
-                                                                      '.$idAnalyste['id_utilisateur']. ', 
-                                                                      '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                      '.$appelOffre.',
-                                                                      '.$_POST['numAvenant'].',
-                                                                      '.$bddAffaire->quote($_POST['procedure']).',
-                                                                      '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                      now())');
+    $bddAffaire->exec('insert into affaire_inspection values(null, '.$affaire['id_affaire'] . ' , 
+                                                                             '.$equipement['idEquipement'] . ' ,
+                                                                             '.$idReceveur['id_utilisateur']. ',
+                                                                             '.$idAnalyste['id_utilisateur']. ', 
+                                                                             '.$bddAffaire->quote($_POST['obtentionOffre']).',
+                                                                             '.$appelOffre.',
+                                                                             '.$_POST['numAvenant'].',
+                                                                             '.$bddAffaire->quote($_POST['procedure']).',
+                                                                             '.$bddAffaire->quote($_POST['codeInter']).',
+                                                                             now())');
 
-    $pv = $bddAffaire->query('select * from pv_controle where id_pv = last_insert_id()')->fetch();
+    $affaireInspection = $bddAffaire->query('select * from affaire_inspection where id_affaire_inspection = last_insert_id()')->fetch();
 ?>
 
         <div id="contenu">
-            <h1 class="ui blue center aligned huge header">Le PV n°<?php echo $pv['id_pv'] ?> a bien été crée !</h1>
+            <h1 class="ui blue center aligned huge header">L'affaire n°<?php echo $affaireInspection['id_affaire_inspection'] ?> a bien été crée !</h1>
 
             <form class="ui form" method="post" action="modifPVCA.php">
-                <?php creerApercuDetails($pv); ?>
+                <?php creerApercuDetails($affaireInspection); ?>
                 <table>
-                    <?php creerApercuDocuments($pv); ?>
+                    <?php creerApercuDocuments($affaireInspection); ?>
                     <tr>
                         <td colspan="2"><button class="ui right floated blue button">Valider</button></td>
                     </tr>
                 </table>
                 <?php
-                    echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                    echo '<input type="hidden" name="idAffaire" value="'.$affaireInspection['id_affaire_inspection'].'">';
                 ?>
             </form>
         </div>
