@@ -142,7 +142,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label id="cbVoieOffre"> Appel d'offre ? </label>
+                            <label class="labelCB"> Appel d'offre ? </label>
                             <input type="checkbox" name="appelOffre">
                         </td>
                         <td>

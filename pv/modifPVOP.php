@@ -10,6 +10,7 @@ $pv = $bdd->query('select * from pv_controle where id_pv_controle = '.$_POST['id
 $type_controle = $bdd->query('select * from type_controle where id_type = '.$pv['id_type_controle'])->fetch();
 
 $affaireInspection = $bdd->query('select * from affaire_inspection where id_affaire_inspection = '.$pv['id_affaire_inspection'])->fetch();
+$affaire = $bdd->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
 
 if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
     $bdd->exec('insert into appareils_utilises values (null, '.$_POST['appareil'].', '.$_POST['idPV'].')');
@@ -21,7 +22,8 @@ $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id
 ?>
 
     <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Modification du PV <?php echo $pv['id_pv_controle'].' '.$type_controle['libelle']; ?></h1>
+        <?php $nomPV = explode(" ", $affaire['num_affaire']); ?>
+        <h1 class="ui blue center aligned huge header">Modification du PV <?php echo "SCO ".$nomPV[1]."-".$type_controle['code']."-".sprintf("%03d", $pv['num_ordre']); ?></h1>
         <table id="ensTables">
             <tr>
                 <td class="partieTableau">
@@ -37,7 +39,7 @@ $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id
                                     <?php
                                         echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                                     ?>
-                                    <button id="boutonGenere" class="ui right floated blue button">Générer sous format Excel</button>
+                                    <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>
                                 </td>
                             </tr>
                         </table>
@@ -79,7 +81,7 @@ $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id
                             </tr>
                             <tr>
                                 <?php
-                                    afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil ou contrôle associé n'a été indiqué.");
+                                    afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "    ");
                                 ?>
                             </tr>
                         </table>
@@ -87,12 +89,50 @@ $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id
                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                         ?>
                     </form>
+                    <form method="post" action="modifPVOP.php">
+                        <table>
+                            <tr>
+                                <th colspan="3"><h4 class="ui dividing header">Annexes</h4></th>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label class="labelCB"> Photos jointes ? </label>
+                                    <?php
+                                        if ($pv['photos_jointes'] == true) {
+                                            echo '<input checked type="checkbox" name="photosJointes">';
+                                        } else {
+                                            echo '<input type="checkbox" name="photosJointes">';
+                                        }
+                                    ?>
+                                </td>
+                                <td>
+                                    <label class="labelCB"> Pièces jointes ? </label>
+                                    <input type="checkbox" name="piecesJointes">
+                                </td>
+                                <td>
+                                    <label> Nombre d'annexes : </label>
+                                    <div class="ui input">
+                                        <input type="number" name="nbAnnexes" placeholder="Nombre d'annexes">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><button class="ui right floated blue button">Valider</button></td>
+                            </tr>
+                        </table>
+                        <?php
+                        echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                        ?>
+                    </form>
                 </td>
             </tr>
         </table>
     </div>
     </body>
-    </html>
+</html>
 
 <?php
 

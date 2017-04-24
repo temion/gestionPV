@@ -6,11 +6,12 @@
 
     $bdd = connexion('portail_gestion');
     $affaireInspection = $bdd->query('select * from affaire_inspection where id_affaire_inspection = '.$_POST['idAffaire'])->fetch();
+    $affaire = $bdd->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
         if (verifFormatDates($_POST['date_debut'])) {
             $controle = $bdd->query('SELECT * FROM type_controle WHERE concat(libelle, \' (\', code, \')\') LIKE ' . $bdd->quote($_POST['controle']))->fetch();
-            $bdd->exec('INSERT INTO pv_controle VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idAffaire'] . ', ' . ($controle['num_controle'] + 1) . ', ' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
+            $bdd->exec('INSERT INTO pv_controle VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idAffaire'] . ', ' . ($controle['num_controle'] + 1) . ', false, false, 0,' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
             $bdd->exec('UPDATE type_controle SET num_controle = num_controle + 1 WHERE id_type = ' . $controle['id_type']);
         } else {
             $_POST['controle'] = "";
@@ -25,7 +26,7 @@
 ?>
 
         <div id="contenu">
-            <h1 class="ui blue center aligned huge header">Modification du PV </h1>
+            <h1 class="ui blue center aligned huge header">Modification de l'affaire <?php echo $affaire['num_affaire']; ?></h1>
             <table id="ensTables">
                 <tr>
                     <td class="partieTableau">

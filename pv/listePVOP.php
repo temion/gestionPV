@@ -68,7 +68,7 @@
 <?php
 
 /**
- * Crée une ligne à ajouter dans le tableau comprenant les différentes informations du PV à l'indice i.
+ * Crée une ligne à ajouter dans le tableau comprenant les différentes informations du PV passé en paramètre.
  *
  * @param array $PV PV à afficher.
  */

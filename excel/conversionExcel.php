@@ -55,7 +55,7 @@
 
     $feuille->mergeCells('I'.$celluleAct.':L'.$celluleAct);
 
-    $feuille->setCellValue('I'.$celluleAct, $affaire['num_affaire'].' ? '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
+    $feuille->setCellValue('I'.$celluleAct, "SCO ".explode(" ", $affaire['num_affaire'])[1].' ? '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
     $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
@@ -230,7 +230,7 @@
     // Sauvegarde du fichier
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
     mkdir('../PV_Excel/pv_'.$pv['id_pv_controle']);
-    $writer->save('../PV_Excel/pv_'.$pv['id_pv_controle'].'/pv_'.$pv['id_pv_controle'].'_'.$typeControle['code'].''.$pv['num_ordre'].'.xls');
+    $writer->save('../PV_Excel/pv_'.$pv['id_pv_controle'].'/SCO'.explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']).'.xls');
 
     header('Location: /gestionPV/pv/listePVOP.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
 ?>
