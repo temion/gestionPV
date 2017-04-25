@@ -72,5 +72,5 @@ function insert($base, $table, $tabValeurs) {
  */
 function update($base, $table, $colonneModif, $nouvelleValeur, $colonneCondition, $ope, $condition) {
     $testCondition = $colonneCondition.' '.$ope.' '.$base->quote($condition);
-    $base->exec('update '.$table.' set '.$colonneModif.' = '.$nouvelleValeur.' where '.$testCondition);
+    $base->exec('update '.$table.' set '.$colonneModif.' = '.$base->quote($nouvelleValeur).' where '.$testCondition);
 }

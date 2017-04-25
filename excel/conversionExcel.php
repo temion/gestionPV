@@ -43,8 +43,8 @@
         )
     );
 
-    $feuille->getColumnDimension('A')->setWidth(16);
-    $feuille->getColumnDimension('I')->setWidth(16);
+    $feuille->getColumnDimension('A')->setWidth(20);
+    $feuille->getColumnDimension('I')->setWidth(20);
 
     // Présentation PV
     $celluleAct = 4; // Cellule active
@@ -244,7 +244,7 @@
     }
 
     // Partie constatations
-    $celluleAct = $celluleAct + 2;
+    $celluleAct++;
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
     $feuille->setCellValue('A'.$celluleAct, "Constatations");
@@ -259,7 +259,35 @@
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
 
+    // Partie signatures
+    $celluleAct = $celluleAct + 2;
+    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
 
+    $celluleAct = $celluleAct + 2;
+    $feuille->mergeCells('C'.$celluleAct.':G'.($celluleAct + 3));
+    $feuille->mergeCells('H'.$celluleAct.':L'.($celluleAct + 3));
+
+    $feuille->setCellValue('A'.$celluleAct, "Date : ");
+    $feuille->setCellValue('B'.$celluleAct, date("d.m.y"));
+
+    $feuille->setCellValue('C'.$celluleAct, "Nom et visa du contrôleur");
+    $feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+    $feuille->setCellValue('H'.$celluleAct, "Nom et visa du vérificateur");
+    $feuille->getCell('H'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $feuille->getCell('H'.$celluleAct)->getStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+
+    $celluleAct++;
+    $feuille->setCellValue('A'.$celluleAct, "Photos jointes : ");
+    $feuille->setCellValue('B'.$celluleAct, ($pv['photos_jointes'] == 1 ? "OUI" : "NON"));
+
+    $celluleAct++;
+    $feuille->setCellValue('A'.$celluleAct, "Pièces jointes : ");
+    $feuille->setCellValue('B'.$celluleAct, ($pv['pieces_jointes'] == 1 ? "OUI" : "NON"));
+
+    $celluleAct++;
+    $feuille->setCellValue('A'.$celluleAct, "Nombre d'annexes : ");
+    $feuille->setCellValue('B'.$celluleAct, $pv['nb_annexes']);
 
     // Sauvegarde du fichier
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
@@ -345,6 +373,8 @@ function creerLigneAppareil($appareils, $ind) {
     colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
     colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
     colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
+    $celluleAct++;
 }
 
 

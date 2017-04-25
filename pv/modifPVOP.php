@@ -7,6 +7,29 @@
 
     $bdd = connexion('portail_gestion');
 
+    $photosJointes = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()['photos_jointes'];
+    if (isset($_POST['photosJointes']) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
+        $photosJointes = 1;
+    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
+        $photosJointes = 0;
+
+    update($bdd, "pv_controle", "photos_jointes", $photosJointes, "id_pv_controle", "=", $_POST['idPV']);
+
+    $piecesJointes = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()['pieces_jointes'];
+    if (isset($_POST['piecesJointes']) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
+        $piecesJointes = 1;
+    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
+        $piecesJointes = 0;
+
+    update($bdd, "pv_controle", "pieces_jointes", $piecesJointes, "id_pv_controle", "=", $_POST['idPV']);
+
+    if (isset($_POST['nbAnnexes']) && is_numeric($_POST['nbAnnexes'])) {
+        $nbAnnexes = $_POST['nbAnnexes'];
+        update($bdd, "pv_controle", "nb_annexes", $nbAnnexes, "id_pv_controle", "=", $_POST['idPV']);
+    } else if (isset($_POST['nbAnnexes']) && !is_numeric($_POST['nbAnnexes'])) {
+        $nbAnnexes = "";
+    }
+
     $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
@@ -16,16 +39,6 @@
     if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
         insert($bdd, "appareils_utilises", array("null", $_POST['appareil'], $_POST['idPV']));
     }
-
-//    if (isset($_POST['photosJointes']) && $_POST['photosJointes'] != "") {
-//        if ($pv['photos_jointes'] == false) {
-//            update($bdd, "pv_controle", "photos_jointes", "true", "id_pv_controle", "=", $pv['id_pv_controle']);
-//        }
-//    } else {
-//        if ($pv['photos_jointes'] == true) {
-//            update($bdd, "pv_controle", "photos_jointes", "false", "id_pv_controle", "=", $pv['id_pv_controle']);
-//        }
-//    }
 
     $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
     $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv_controle'])->fetchAll();
@@ -65,7 +78,7 @@
 
                             <tr>
                                 <td>
-                                    <label> Appareil à ajouter : </label>
+                                    <label for="appareil"> Appareil à ajouter : </label>
                                     <select class="ui search dropdown listeAjout" name="appareil">
                                         <option selected> </option>
                                         <?php
@@ -110,32 +123,46 @@
                                 <td>
                                     <label class="labelCB"> Photos jointes ? </label>
                                     <?php
-                                        if ($pv['photos_jointes'] == true) {
+                                        if ($pv['photos_jointes'] == 1)
                                             echo '<input checked type="checkbox" name="photosJointes">';
-                                        } else {
+                                        else
                                             echo '<input type="checkbox" name="photosJointes">';
-                                        }
                                     ?>
                                 </td>
                                 <td>
                                     <label class="labelCB"> Pièces jointes ? </label>
-                                    <input type="checkbox" name="piecesJointes">
+                                    <?php
+                                        if ($pv['pieces_jointes'] == 1)
+                                            echo '<input checked type="checkbox" name="piecesJointes">';
+                                        else
+                                            echo '<input type="checkbox" name="piecesJointes">';
+                                    ?>
                                 </td>
                                 <td>
-                                    <label> Nombre d'annexes : </label>
+                                    <label> Annexes : </label>
                                     <div class="ui input">
-                                        <input type="number" name="nbAnnexes" placeholder="Nombre d'annexes">
+                                        <?php
+                                            if ($pv['nb_annexes'] != 0)
+                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value="'.$pv['nb_annexes'].'">';
+                                            else
+                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes">';
+                                        ?>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td><button class="ui right floated blue button">Valider</button></td>
+                                <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><input type="hidden" name="validerCheckbox" value="1"><button class="ui right floated blue button">Valider</button></td>
                             </tr>
                         </table>
                         <?php
-                        echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                         ?>
                     </form>
                 </td>
@@ -147,6 +174,13 @@
 
 <?php
 
+/**
+ * Affiche un message indiquant le succès où l'échec de la requète de l'utilisateur.
+ *
+ * @param String $conditionSucces Condition permettant de vérifier le succès.
+ * @param String $messageSucces Message en cas de succès.
+ * @param String $messageErreur Message en cas d'échec.
+ */
 function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
     if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
         echo '<td><div class="ui message">';
