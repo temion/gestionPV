@@ -1,12 +1,13 @@
 <?php
-include_once "../menu.php";
+    include_once "../menu.php";
+    verifSession();
+    enTete("Liste des appareils",
+        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
+        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-enTete("Liste des appareils",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
-    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
-$bdd = connexion('portail_gestion');
+    $bdd = connexion('portail_gestion');
 
-$listeAppareils = $bdd->query('select * from appareils')->fetchAll();
+    $listeAppareils = $bdd->query('select * from appareils')->fetchAll();
 ?>
 
         <div id="contenu">

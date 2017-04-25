@@ -1,13 +1,15 @@
 <?php
     include_once "../menu.php";
+    verifSession("OP");
     enTete("Liste des PV",
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+
     $bddAffaire = connexion('portail_gestion');
     $bddEquipement = connexion('theodolite');
 
     // Ensemble des affaires disponibles
-    $numAffairesInspection = $bddAffaire->query('select distinct * from affaire_inspection')->fetchAll();
+    $numAffairesInspection = selectAll($bddAffaire, "affaire_inspection")->fetchAll();
 
     $selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
     $selectEquipement = $bddEquipement->prepare('select * from equipement where idEquipement = ?');

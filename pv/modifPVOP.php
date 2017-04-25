@@ -1,24 +1,25 @@
 <?php
-include_once "../menu.php";
-enTete("Modification de PV",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
-    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+    include_once "../menu.php";
+    verifSession();
+    enTete("Modification de PV",
+        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
+        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
+    $bdd = connexion('portail_gestion');
 
-$pv = $bdd->query('select * from pv_controle where id_pv_controle = '.$_POST['idPV'])->fetch();
-$type_controle = $bdd->query('select * from type_controle where id_type = '.$pv['id_type_controle'])->fetch();
+    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+    $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
-$affaireInspection = $bdd->query('select * from affaire_inspection where id_affaire_inspection = '.$pv['id_affaire_inspection'])->fetch();
-$affaire = $bdd->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
+    $affaireInspection = selectAllFromWhere($bdd, "affaire_inspection", "id_affaire_inspection", "=", $pv['id_affaire_inspection'])->fetch();
+    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $affaireInspection['id_affaire'])->fetch();
 
-if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
-    $bdd->exec('insert into appareils_utilises values (null, '.$_POST['appareil'].', '.$_POST['idPV'].')');
-}
+    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
+        insert($bdd, "appareils_utilises", array("null", $_POST['appareil'], $_POST['idPV']));
+    }
 
-$appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
-$appareilsUtilises = $bdd->query('select * from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'])->fetchAll();
-$typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
+    $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
+    $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv_controle'])->fetchAll();
+    $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
 ?>
 
     <div id="contenu">

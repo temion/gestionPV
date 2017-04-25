@@ -222,14 +222,4 @@ function creerApercuDocuments($pv) {
 <?php
 }
 
-/**
- * Retourne un objet connexion vers la base dont le nom est indiqué en paramètre.
- *
- * @param string $base Nom de la base de données.
- * @return PDO Connexion vers la base souhaitée.
- */
-function connexion($base) {
-    return new PDO('mysql:host=localhost; dbname='.$base.'; charset=utf8', 'root', '');
-}
-
 ?>

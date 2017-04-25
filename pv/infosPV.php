@@ -1,5 +1,6 @@
 <?php
     include_once "../menu.php";
+    verifSession("OP");
     enTete("Informations affaire",
             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
@@ -10,33 +11,29 @@
         header("Location: creationPV.php?erreur=1");
     }
 
-
     $bddAffaire = connexion('portail_gestion');
-    $affaire = $bddAffaire->query('SELECT * FROM affaire WHERE num_affaire LIKE ' . $bddAffaire->quote($_POST['num_affaire']))->fetch();
+
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "num_affaire", "like", $_POST['num_affaire'])->fetch();
     // Id du récepteur de la demande
-    $idReceveur = $bddAffaire->query('select * from utilisateurs where nom like '.$bddAffaire->quote($_POST['demandeRecue']))->fetch();
+    $idReceveur = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_POST['demandeRecue'])->fetch();
     // Id de l'analyste de la demande
-    $idAnalyste = $bddAffaire->query('select * from utilisateurs where nom like '.$bddAffaire->quote($_POST['demandeAnalysee']))->fetch();
+
+    $idAnalyste = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_POST['demandeAnalysee'])->fetch();
+
+    $bddEquipement = connexion('theodolite');
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "concat(Designation, ' ', Type)", "like", $_POST['num_equipement'])->fetch();
 
     $appelOffre = 1;
     if (!isset($_POST['appelOffre'])) // Si la case n'a pas été cochée
         $appelOffre = 0;
 
-    $bddEquipement = connexion('theodolite');
-    $equipement = $bddEquipement->query('SELECT * FROM equipement WHERE concat(Designation, \' \', type) LIKE ' . $bddEquipement->quote($_POST['num_equipement']))->fetch();
+    $valeursTmp =  array("null", $affaire['id_affaire'], $equipement['idEquipement'], $idReceveur['id_utilisateur'], $idAnalyste['id_utilisateur'],
+                         $bddAffaire->quote($_POST['obtentionOffre']), $appelOffre, $_POST['numAvenant'], $bddAffaire->quote($_POST['procedure']),
+                         $bddAffaire->quote($_POST['codeInter']), "now()");
 
-    $bddAffaire->exec('insert into affaire_inspection values(null, '.$affaire['id_affaire'] . ' , 
-                                                                             '.$equipement['idEquipement'] . ' ,
-                                                                             '.$idReceveur['id_utilisateur']. ',
-                                                                             '.$idAnalyste['id_utilisateur']. ', 
-                                                                             '.$bddAffaire->quote($_POST['obtentionOffre']).',
-                                                                             '.$appelOffre.',
-                                                                             '.$_POST['numAvenant'].',
-                                                                             '.$bddAffaire->quote($_POST['procedure']).',
-                                                                             '.$bddAffaire->quote($_POST['codeInter']).',
-                                                                             now())');
+    insert($bddAffaire, "affaire_inspection", $valeursTmp);
 
-    $affaireInspection = $bddAffaire->query('select * from affaire_inspection where id_affaire_inspection = last_insert_id()')->fetch();
+    $affaireInspection = selectAllFromWhere($bddAffaire, "affaire_inspection", "id_affaire_inspection", "=", "last_insert_id()")->fetch();
 ?>
 
         <div id="contenu">

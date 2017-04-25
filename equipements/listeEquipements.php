@@ -1,18 +1,18 @@
 <?php
-include_once "../menu.php";
+    include_once "../menu.php";
+    verifSession();
+    enTete("Liste des équipements",
+        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
+        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-enTete("Liste des équipements",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
-    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+    $bdd = connexion('portail_gestion');
 
-$bdd = connexion('portail_gestion');
-
-$listeEquipements = $bdd->query('select * from equipements')->fetchAll();
-$societe = $bdd->prepare('select * from societe where id_societe = ?');
+    $listeEquipements = $bdd->query('select * from equipements')->fetchAll();
+    $societe = $bdd->prepare('select * from societe where id_societe = ?');
 ?>
 
     <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Liste des appareils</h1>
+        <h1 class="ui blue center aligned huge header">Liste des équipements</h1>
         <?php
         afficherMessage('modifs', "Succès !", "Les modifications ont été effectuées avec succès.", "Erreur", "Aucune modification n'a été effectuée.");
         ?>
@@ -50,7 +50,7 @@ $societe = $bdd->prepare('select * from societe where id_societe = ?');
     /**
      * Crée une ligne à ajouter dans le tableau comprenant les différentes informations de l'appareil à l'indice i.
      *
-     * @param array $appareils Liste des appareils de la base.
+     * @param array $equipements Liste des équipements de la base.
      * @param int $ind Indice de l'appareil à afficher.
      */
     function creerLigneAppareil($equipements, $ind) {
@@ -65,7 +65,7 @@ $societe = $bdd->prepare('select * from societe where id_societe = ?');
         echo '<td>'.($equipements[$ind]['hauteur_produit'] != "" ? $equipements[$ind]['hauteur_produit'].' m' : "").'</td>';
         echo '<td>'.($equipements[$ind]['volume'] != "" ? $equipements[$ind]['volume'].' m²' : "").'</td>';
         echo '<td>'.($equipements[$ind]['distance_points'] != "" ? $equipements[$ind]['distance_points'].' m' : "").'</td>';
-        if (isset($_SESSION) && $_SESSION['droit'] == "OP")
+        if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP")
             echo '<td><button disabled name="idEquipement" value="'.$equipements[$ind]['id_equipement'].'" class="ui right floated blue button">Modifier</button></td></tr>';
         else
             echo '<td><button name="idEquipement" value="'.$equipements[$ind]['id_equipement'].'" class="ui right floated blue button">Modifier</button></td></tr>';

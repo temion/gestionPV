@@ -1,14 +1,14 @@
 <?php
-include_once "../menu.php";
+    include_once "../menu.php";
+    verifSession("OP");
+    enTete("Modification d'un appareil existant",
+        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
+        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-$equipement = $bdd->query('select * from equipements where id_equipement = '.$_POST['idEquipement'])->fetch();
-$societe = $bdd->query('select * from societe where id_societe = '.$equipement['id_societe'])->fetch();
-$societes = $bdd->query('select * from societe')->fetchAll();
-
-enTete("Modification d'un appareil existant",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
-    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+    $bdd = connexion('portail_gestion');
+    $equipement = $bdd->query('select * from equipements where id_equipement = '.$_POST['idEquipement'])->fetch();
+    $societe = $bdd->query('select * from societe where id_societe = '.$equipement['id_societe'])->fetch();
+    $societes = $bdd->query('select * from societe')->fetchAll();
 ?>
 
 <div id="contenu">

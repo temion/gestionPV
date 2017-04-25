@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "util.inc.php";
+include_once "bdd/bdd.inc.php";
 
 if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
     $_SESSION['droit'] = $_POST['utilisateur'];
@@ -86,6 +87,19 @@ function enTete($titre, $styles, $scripts) {
         fonctionMenu();
 }
 
+/**
+ * Vérifie qu'une session est ouverte, pour éviter l'accès direct aux différentes fonctionnalités du portail.
+ *
+ * @param $droit = "" Type de droit à empêcher.
+ */
+function verifSession($droit = "") {
+    if (!isset($_SESSION['droit']) || $_SESSION['droit'] == $droit)
+        header('Location: /gestionPV/index.php');
+}
+
+/**
+ * Permet la coloration des liens actifs du menu.
+ */
 function fonctionMenu() {
     ?>
         <script>

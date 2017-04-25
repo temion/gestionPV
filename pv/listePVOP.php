@@ -1,5 +1,6 @@
 <?php
     include_once "../menu.php";
+    verifSession();
     enTete("Liste des PV",
             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
@@ -7,7 +8,7 @@
     $bddEquipement = connexion('theodolite');
 
     // Ensemble des affaires disponibles
-    $numAffairesInspection = $bddAffaire->query('select distinct * from affaire where affaire.id_affaire in (select affaire_inspection.id_affaire from affaire_inspection)')->fetchAll();
+    $numAffairesInspection = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select affaire_inspection.id_affaire from affaire_inspection)')->fetchAll();
 
     // Ensemble des PV disponibles pour l'affaire sélectionnée
     $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_affaire_inspection IN (SELECT id_affaire_inspection FROM affaire_inspection WHERE affaire_inspection.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');

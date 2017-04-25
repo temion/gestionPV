@@ -1,28 +1,27 @@
 <?php
     include_once "../menu.php";
+    verifSession("OP");
     enTete("Modification de PV",
                  array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
                  array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-    $affaireInspection = $bdd->query('select * from affaire_inspection where id_affaire_inspection = '.$_POST['idAffaire'])->fetch();
-    $affaire = $bdd->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
+    $affaireInspection = selectAllFromWhere($bdd, "affaire_inspection", "id_affaire_inspection", "=", $_POST['idAffaire'])->fetch();
+    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $affaireInspection['id_affaire'])->fetch();
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
         if (verifFormatDates($_POST['date_debut'])) {
-            $controle = $bdd->query('SELECT * FROM type_controle WHERE concat(libelle, \' (\', code, \')\') LIKE ' . $bdd->quote($_POST['controle']))->fetch();
-            $bdd->exec('INSERT INTO pv_controle VALUES (NULL, ' . $controle['id_type'] . ', ' . $_POST['idAffaire'] . ', ' . ($controle['num_controle'] + 1) . ', false, false, 0,' . $bdd->quote(conversionDate($_POST['date_debut'])) . ')') or die(print_r($bdd->errorInfo(), true));
-            $bdd->exec('UPDATE type_controle SET num_controle = num_controle + 1 WHERE id_type = ' . $controle['id_type']);
+            $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_POST['controle'])->fetch();
+            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idAffaire'], ($controle['num_controle'] + 1), "false", "false", 0, $bdd->quote(conversionDate($_POST['date_debut']))));
+            update($bdd, "type_controle", "num_controle", "num_controle + 1", "id_type", "=", $controle['id_type']);
         } else {
             $_POST['controle'] = "";
         }
     }
 
-    $controles = $bdd->query('select * from type_controle')->fetchAll();
-    $controlesEffectues = $bdd->query('select * from pv_controle where id_affaire_inspection = '.$affaireInspection['id_affaire_inspection'])->fetchAll();
+    $controles = selectAll($bdd, "type_controle")->fetchAll();
+    $controlesEffectues = selectAllFromWhere($bdd, "pv_controle", "id_affaire_inspection", "=", $affaireInspection['id_affaire_inspection'])->fetchAll();
     $typeControle = $bdd->prepare('select * from type_controle where id_type = ?');
-
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
 ?>
 
         <div id="contenu">

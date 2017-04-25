@@ -1,18 +1,19 @@
 <?php
     include_once "../menu.php";
+    verifSession("OP");
     enTete("Création de PV",
                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
                 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bddAffaires = connexion('portail_gestion');
-    $affaires = $bddAffaires->query('select * from affaire order by num_affaire asc')->fetchAll();
-    $utilisateurs = $bddAffaires->query('select * from utilisateurs')->fetchAll();
+    $affaires = selectAll($bddAffaires, "affaire")->fetchAll();
+    $utilisateurs = selectAll($bddAffaires, "utilisateurs")->fetchAll();
 
     if (isset($_GET['num_affaire'])) {
-        $affaireSelectionnee = $bddAffaires->query('select * from affaire where num_affaire like \''.$_GET['num_affaire'].'\'')->fetch();
+        $affaireSelectionnee = selectAllFromWhere($bddAffaires, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
         if ($affaireSelectionnee['id_societe'] != "") {
-            $societe = $bddAffaires->query('SELECT * FROM societe WHERE id_societe = ' . $affaireSelectionnee['id_societe'])->fetch();
-            $personneRencontree = $bddAffaires->query('SELECT * FROM client WHERE id_client = ' . $societe['ref_client'])->fetch();
+            $societe = selectAllFromWhere($bddAffaires, "societe", "id_societe", "=", $affaireSelectionnee['id_societe'])->fetch();
+            $personneRencontree = selectAllFromWhere($bddAffaires, "client", "id_client", "=", $societe['ref_client'])->fetch();
             $numCommande = 0;
             $dateDebut = 0;
         }
@@ -21,18 +22,18 @@
     $bddEquipement = connexion('theodolite');
 
     if (isset($_GET['num_affaire']) && $_GET['num_affaire'] != "")
-        $equipement = $bddEquipement->query('select * from equipement where idSociete = '.$societe['id_societe'])->fetchAll();
+        $equipement = selectAllFromWhere($bddEquipement, "equipement", "idSociete", "=", $societe['id_societe'])->fetchAll();
     else
-        $equipement = $bddEquipement->query('select * from equipement')->fetchAll();
+        $equipement = selectAll($bddEquipement, "equipement")->fetchAll();
 
 
     if (isset($_GET['num_equipement'])) {
-        $equipementSelectionne = $bddEquipement->query('select * from equipement where concat(Designation, \' \', type) LIKE \''.$_GET['num_equipement'].'\'')->fetch();
+        $equipementSelectionne = selectAllFromWhere($bddEquipement, "equipement", "concat(Designation, ' ', Type)", "like", $_GET['num_equipement'])->fetch();
         if ($equipementSelectionne['idEquipement'] != "")
-            $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$equipementSelectionne['idEquipement'])->fetch();
+            $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $equipementSelectionne['idEquipement'])->fetch();
     }
 
-    $typeControles = $bddAffaires->query('select * from type_controle')->fetchAll();
+    $typeControles = selectAll($bddAffaires, "type_controle")->fetchAll();
 ?>
 
         <div id="contenu">
