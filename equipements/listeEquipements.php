@@ -7,7 +7,7 @@
 
     $bdd = connexion('portail_gestion');
 
-    $listeEquipements = $bdd->query('select * from equipements')->fetchAll();
+    $listeEquipements = selectAll($bdd, "equipements")->fetchAll();
     $societe = $bdd->prepare('select * from societe where id_societe = ?');
 ?>
 

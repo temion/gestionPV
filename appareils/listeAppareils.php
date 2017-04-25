@@ -7,7 +7,7 @@
 
     $bdd = connexion('portail_gestion');
 
-    $listeAppareils = $bdd->query('select * from appareils')->fetchAll();
+    $listeAppareils = selectAll($bdd, "appareils")->fetchAll();
 ?>
 
         <div id="contenu">

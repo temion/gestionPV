@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once "util.inc.php";
-include_once "bdd/bdd.inc.php";
 
 if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
     $_SESSION['droit'] = $_POST['utilisateur'];

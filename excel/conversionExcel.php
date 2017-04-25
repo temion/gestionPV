@@ -8,20 +8,21 @@
 
     $bddAffaire = connexion('portail_gestion');
 
-    $pv = $bddAffaire->query('select * from pv_controle where id_pv_controle = '.$_POST['idPV'])->fetch();
-    $affaire_inspection = $bddAffaire->query('select * from affaire_inspection where id_affaire_inspection = '.$pv['id_affaire_inspection'])->fetch();
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$affaire_inspection['id_affaire'])->fetch();
-    $societeClient = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bddAffaire->query('select * from client where id_client = '.$societeClient['ref_client'])->fetch();
-    $receveur = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$affaire_inspection['id_receveur'])->fetch();
-    $analyste = $bddAffaire->query('select * from utilisateurs where id_utilisateur = '.$affaire_inspection['id_analyste'])->fetch();
+    $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+    $affaire_inspection = selectAllFromWhere($bddAffaire, "affaire_inspection", "id_affaire_inspection", "=", $pv['id_affaire_inspection'])->fetch();
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $affaire_inspection['id_affaire'])->fetch();
+    $societeClient = selectAllFromWhere($bddAffaire, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
+    $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $societeClient['ref_client'])->fetch();
+    $receveur = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $affaire_inspection['id_receveur'])->fetch();
+    $analyste = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $affaire_inspection['id_analyste'])->fetch();
 
-    $typeControle = $bddAffaire->query('select * from type_controle where id_type = '.$pv['id_type_controle'])->fetch();
+    $typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
     $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
-    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$affaire_inspection['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from ficheTechniqueEquipement where idEquipement = '.$equipement['idEquipement'])->fetch();
+
+    $bddEquipement = connexion('theodolite');
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $affaire_inspection['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "ficheTechniqueEquipement", "idEquipement", "=", $equipement['idEquipement'])->fetch();
 
     $classeur = new PHPExcel;
 
@@ -31,6 +32,8 @@
 
     $feuille->setTitle("PV n°".$pv['id_pv_controle']);
 
+    $couleurValeur = 'c0c0c0';
+
     $bordures = array(
         'borders' => array(
             'allborders' => array(
@@ -39,6 +42,9 @@
             )
         )
     );
+
+    $feuille->getColumnDimension('A')->setWidth(16);
+    $feuille->getColumnDimension('I')->setWidth(16);
 
     // Présentation PV
     $celluleAct = 4; // Cellule active
@@ -81,10 +87,14 @@
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
     $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
-    $feuille->setCellValue('I'.$celluleAct,"Numéro équipement");
+    $feuille->setCellValue('I'.$celluleAct,"Numéro équipement : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, $equipement['Designation'].' '.$equipement['Type']);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Personne rencontrée + Diamètre
     $celluleAct++;
@@ -98,10 +108,14 @@
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
     $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
-    $feuille->setCellValue('I'.$celluleAct,"Diamètre équipement");
+    $feuille->setCellValue('I'.$celluleAct,"Diamètre équipement : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, ($ficheTechniqueEquipement['diametre']/1000).' m');
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Num commande + Hauteur
     $celluleAct++;
@@ -115,10 +129,14 @@
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
     $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
-    $feuille->setCellValue('I'.$celluleAct,"Hauteur");
+    $feuille->setCellValue('I'.$celluleAct,"Hauteur : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m');
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Lieu + Hauteur produit
     $celluleAct++;
@@ -132,10 +150,14 @@
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
     $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
-    $feuille->setCellValue('I'.$celluleAct,"Hauteur produit");
+    $feuille->setCellValue('I'.$celluleAct,"Hauteur produit : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, "?");
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Début contrôle + Volume
     $celluleAct++;
@@ -154,6 +176,10 @@
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, "?");
 
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
     // Nombre génératrices + Distance entre 2 points
     $celluleAct++;
 
@@ -166,10 +192,14 @@
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
     $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
-    $feuille->setCellValue('I'.$celluleAct,"Distance entre 2 points");
+    $feuille->setCellValue('I'.$celluleAct,"Distance entre 2 points : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, "?");
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Partie documents référence
     $celluleAct = $celluleAct + 2;
@@ -195,6 +225,10 @@
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, $affaire_inspection['code_inter']);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 
     // Partie matériel utilisé
     $celluleAct = $celluleAct + 2;
@@ -260,7 +294,7 @@ function colorerCellule($classeur, $cellule, $couleur){
  * @param int $ind Indice de l'appareil à afficher.
  */
 function creerLigneAppareil($appareils, $ind) {
-    global $celluleAct, $feuille;
+    global $celluleAct, $classeur, $feuille, $bordures, $couleurValeur;
 
     $celluleAct++;
 
@@ -282,6 +316,11 @@ function creerLigneAppareil($appareils, $ind) {
     $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
     $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_calib']);
 
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
     $celluleAct++;
 
     $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
@@ -301,6 +340,11 @@ function creerLigneAppareil($appareils, $ind) {
 
     $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
     $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_valid']);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
 }
 
 

@@ -17,6 +17,16 @@
         insert($bdd, "appareils_utilises", array("null", $_POST['appareil'], $_POST['idPV']));
     }
 
+//    if (isset($_POST['photosJointes']) && $_POST['photosJointes'] != "") {
+//        if ($pv['photos_jointes'] == false) {
+//            update($bdd, "pv_controle", "photos_jointes", "true", "id_pv_controle", "=", $pv['id_pv_controle']);
+//        }
+//    } else {
+//        if ($pv['photos_jointes'] == true) {
+//            update($bdd, "pv_controle", "photos_jointes", "false", "id_pv_controle", "=", $pv['id_pv_controle']);
+//        }
+//    }
+
     $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
     $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv_controle'])->fetchAll();
     $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
@@ -82,7 +92,7 @@
                             </tr>
                             <tr>
                                 <?php
-                                    afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "    ");
+                                    afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil n'a été indiqué !");
                                 ?>
                             </tr>
                         </table>
