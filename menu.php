@@ -33,8 +33,8 @@ function enTete($titre, $styles, $scripts) {
                 <div class="menu">
                     <?php
                         if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") { ?>
-                            <a href="/gestionPV/pv/creationPV.php" class="item lienMenu">
-                                Création de PV
+                            <a href="/gestionPV/pv/creationAffaire.php" class="item lienMenu">
+                                Création d'affaires
                             </a>
                             <a href="/gestionPV/pv/listePVCA.php" class="item lienMenu">
                                 Liste des affaires d'inspection existantes

@@ -30,8 +30,6 @@
 
     $feuille = $classeur->getActiveSheet();
 
-    $feuille->setTitle("PV n°".$pv['id_pv_controle']);
-
     $couleurValeur = 'c0c0c0';
 
     $bordures = array(
@@ -47,8 +45,27 @@
     $feuille->getColumnDimension('I')->setWidth(20);
 
     // Présentation PV
-    $celluleAct = 4; // Cellule active
+    $celluleAct = 1; // Cellule active
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "Sarl SCOPEO");
 
+    $celluleAct++;
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "Route du Hoc");
+
+    $celluleAct++;
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "76600 Le Havre");
+
+    $celluleAct++;
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "Tél : 02.35.30.11.30");
+
+    $celluleAct++;
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, "Fax : 02.35.26.12.06");
+
+    $celluleAct++;
     $feuille->mergeCells('A'.$celluleAct.':D'.$celluleAct);
 
     $feuille->setCellValue('A'.$celluleAct, "Procès verbal");
@@ -264,11 +281,14 @@
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
 
     $celluleAct = $celluleAct + 2;
+    $feuille->getStyle('A'.$celluleAct.':L'.($celluleAct + 3))->applyFromArray($bordures);
+
     $feuille->mergeCells('C'.$celluleAct.':G'.($celluleAct + 3));
     $feuille->mergeCells('H'.$celluleAct.':L'.($celluleAct + 3));
 
     $feuille->setCellValue('A'.$celluleAct, "Date : ");
     $feuille->setCellValue('B'.$celluleAct, date("d.m.y"));
+    colorerCellule($classeur, 'B'.$celluleAct, $couleurValeur);
 
     $feuille->setCellValue('C'.$celluleAct, "Nom et visa du contrôleur");
     $feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -280,21 +300,29 @@
     $celluleAct++;
     $feuille->setCellValue('A'.$celluleAct, "Photos jointes : ");
     $feuille->setCellValue('B'.$celluleAct, ($pv['photos_jointes'] == 1 ? "OUI" : "NON"));
+    colorerCellule($classeur, 'B'.$celluleAct, $couleurValeur);
 
     $celluleAct++;
     $feuille->setCellValue('A'.$celluleAct, "Pièces jointes : ");
     $feuille->setCellValue('B'.$celluleAct, ($pv['pieces_jointes'] == 1 ? "OUI" : "NON"));
+    colorerCellule($classeur, 'B'.$celluleAct, $couleurValeur);
 
     $celluleAct++;
     $feuille->setCellValue('A'.$celluleAct, "Nombre d'annexes : ");
     $feuille->setCellValue('B'.$celluleAct, $pv['nb_annexes']);
+    colorerCellule($classeur, 'B'.$celluleAct, $couleurValeur);
+
+
+    $nomPV = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
+    $nomRep = explode("-", $nomPV)[0];
 
     // Sauvegarde du fichier
+    $feuille->setTitle($nomPV);
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
-    mkdir('../PV_Excel/pv_'.$pv['id_pv_controle']);
-    $writer->save('../PV_Excel/pv_'.$pv['id_pv_controle'].'/SCO'.explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']).'.xls');
+    mkdir('../PV_Excel/'.$nomRep);
+    $writer->save('../PV_Excel/'.$nomRep.'/'.$nomPV.'.xls');
 
-    header('Location: /gestionPV/pv/listePVOP.php?pdfG=1'); // Attribut pour modifier l'affichage de la page listePV
+    header('Location: /gestionPV/pv/listePVOP.php?pdfG=1&nomPV='.$nomPV); // Attribut pour modifier l'affichage de la page listePV
 ?>
 
 <?php

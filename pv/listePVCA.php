@@ -18,9 +18,6 @@
 
     <div id="contenu">
         <h1 class="ui blue center aligned huge header">Liste des affaires d'inspection</h1>
-        <?php
-        afficherMessage('pdfG', "Succès", "Votre PV a été généré avec succès !", "", "");
-        ?>
         <table class="ui celled table">
             <thead>
             <tr>

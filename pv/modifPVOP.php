@@ -52,7 +52,7 @@
             <tr>
                 <td class="partieTableau">
                     <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
-                        <?php creerApercuDetails($affaireInspection); ?>
+                        <?php creerApercuDetails($affaireInspection, $pv['date']); ?>
                         <table>
                             <?php creerApercuDocuments($affaireInspection); ?>
                             <tr>
@@ -168,6 +168,9 @@
                 </td>
             </tr>
         </table>
+        <form method="post" action="listePVOP.php">
+            <button class="ui right floated blue button">Retour à la liste des affaires</button>
+        </form>
     </div>
     </body>
 </html>

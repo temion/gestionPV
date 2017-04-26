@@ -98,6 +98,9 @@
                     </td>
                 </tr>
             </table>
+            <form method="post" action="listePVCA.php">
+                <button class="ui right floated blue button">Retour à la liste des affaires</button>
+            </form>
         </div>
     </body>
 </html>

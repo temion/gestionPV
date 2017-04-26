@@ -77,9 +77,10 @@ function infosBDD($affaireInspection) {
 /**
  * Affiche les différentes informations concernant les détails de l'affaire nécessaires pour l'aperçu du PV.
  *
- * @param array $pv Informations du PV stockées dans la base de données.
+ * @param array $affaireInspection Informations de l'affaire stockées dans la base de données.
+ * @param string $date Date du contrôle si définie.
  */
-function creerApercuDetails($affaireInspection) {
+function creerApercuDetails($affaireInspection, $date = "") {
     $infosAffaire = infosBDD($affaireInspection);
     ?>
     <table>
@@ -157,7 +158,16 @@ function creerApercuDetails($affaireInspection) {
 
         <tr>
             <td>
-
+                <?php
+                if ($date != "") {
+                    ?>
+                    <div class="field">
+                        <label>Date de début du contrôle : </label>
+                        <label> <?php echo $date; ?> </label>
+                    </div>
+                    <?php
+                }
+                ?>
             </td>
             <td>
                 <div class="field">
@@ -184,7 +194,10 @@ function creerApercuDetails($affaireInspection) {
                 </div>
             </td>
         </tr>
-        <td>
+        <tr>
+            <td>
+
+            </td>
             <td>
                 <div class="field">
                     <label>Nombre de génératrices : </label>

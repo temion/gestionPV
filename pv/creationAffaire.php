@@ -1,7 +1,7 @@
 <?php
     include_once "../menu.php";
     verifSession("OP");
-    enTete("Création de PV",
+    enTete("Création d'affaire",
                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
                 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
@@ -38,17 +38,19 @@
 
         <div id="contenu">
 
-            <h1 id="titreMenu" class="ui blue center aligned huge header">Création d'un PV</h1>
+            <h1 id="titreMenu" class="ui blue center aligned huge header">Création d'une affaire</h1>
             <?php
                 afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque.", "", "");
             ?>
 
             <form method="post" action="infosPV.php">
                 <table>
-                    <tr>
-                        <th colspan="2"><h4 class="ui dividing header">Affaire & équipement</h4></th>
-                        <th colspan="2"><h4 class="ui dividing header">Responsable de l'affaire</h4></th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th colspan="2"><h4 class="ui dividing header">Affaire & équipement</h4></th>
+                            <th colspan="2"><h4 class="ui dividing header">Responsable de l'affaire</h4></th>
+                        </tr>
+                    </thead>
 
                     <tr>
                         <td>
@@ -56,13 +58,13 @@
                                 <label>* Numéro de l'affaire : </label>
                                 <div class="field">
                                     <?php
-                                        $url = "creationPV.php?num_affaire=";
+                                        $url = "creationAffaire.php?num_affaire=";
                                         if (isset($_GET['num_equipement']))
-                                            $url = "creationPV.php?num_equipement=".$_GET['num_equipement']."&num_affaire="; // Stockage de l'url pour l'aperçu du PV
+                                            $url = "creationAffaire.php?num_equipement=".$_GET['num_equipement']."&num_affaire="; // Stockage de l'url pour l'aperçu du PV
                                     ?>
 
                                     <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_affaire">
-                                        <option selected> </option>
+                                        <option selected label="defaut"> </option>
                                         <?php
                                             for ($i = 0; $i < sizeof($affaires); $i++) {
                                                 // Garde en mémoire l'élément sélectionné
@@ -81,13 +83,13 @@
                                 <label>* Numéro de l'équipement à inspecter : </label>
                                 <div class="field">
                                     <?php
-                                        $url = "creationPV.php?num_equipement=";
+                                        $url = "creationAffaire.php?num_equipement=";
                                         if (isset($_GET['num_affaire']))
-                                            $url = "creationPV.php?num_affaire=".$_GET['num_affaire']."&num_equipement="; // Stockage de l'url pour l'aperçu du PV
+                                            $url = "creationAffaire.php?num_affaire=".$_GET['num_affaire']."&num_equipement="; // Stockage de l'url pour l'aperçu du PV
                                     ?>
 
-                                    <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_equipement">';
-                                        <option selected> </option>
+                                    <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_equipement">
+                                        <option selected label="defaut"> </option>
                                         <?php
                                             for ($i = 0; $i < sizeof($equipement); $i++) {
                                                 // Garde en mémoire l'élément sélectionné
@@ -106,7 +108,7 @@
                                 <label>* Demande reçue par : </label>
                                 <div class="field">
                                     <select class="ui search dropdown" name="demandeRecue">
-                                        <option selected> </option>
+                                        <option selected label="defaut"> </option>
                                         <?php
                                             for ($i = 0; $i < sizeof($utilisateurs); $i++) {
                                                 if ($utilisateurs[$i]['nom'] != 'root')
@@ -122,7 +124,7 @@
                                 <label>* Demande analysée par : </label>
                                 <div class="field">
                                     <select class="ui search dropdown" name="demandeAnalysee">
-                                        <option selected> </option>
+                                        <option selected label="defaut"> </option>
                                         <?php
                                             for ($i = 0; $i < sizeof($utilisateurs); $i++) {
                                                 if ($utilisateurs[$i]['nom'] != 'root')
@@ -139,7 +141,7 @@
 
                 <table>
                     <tr>
-                        <th colspan="5"><h4 class="ui dividing header">Détails de l'affaire</h4></th>
+                        <th colspan="3"><h4 class="ui dividing header">Détails de l'affaire</h4></th>
                     </tr>
                     <tr>
                         <td>
@@ -149,7 +151,7 @@
                         <td>
                             <label>* Obtention de l'offre </label>
                             <select class="ui search dropdown voieOffre" name="obtentionOffre">
-                                <option selected> </option>
+                                <option selected label="defaut"> </option>
                                 <option> Oral </option>
                                 <option> Mail </option>
                             </select>
@@ -189,7 +191,7 @@
                 <table id="apercu">
                     <tr>
                         <th colspan="2">
-                            <h3 class="ui dividing left aligned header">Aperçu du PV <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
+                            <h3 class="ui dividing left aligned header">Aperçu de l'affaire <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
                         </th>
                     </tr>
 

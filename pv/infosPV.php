@@ -8,7 +8,7 @@
     if ($_POST['num_affaire'] == "" || $_POST['num_equipement'] == "" || $_POST['demandeRecue'] == "" || $_POST['demandeAnalysee'] == "" ||
         $_POST['obtentionOffre'] == "" || $_POST['numAvenant'] == "" ||
         $_POST['procedure'] == "" || $_POST['codeInter'] == "") {
-        header("Location: creationPV.php?erreur=1");
+        header("Location: creationAffaire.php?erreur=1");
     }
 
     $bddAffaire = connexion('portail_gestion');

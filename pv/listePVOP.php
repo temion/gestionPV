@@ -23,7 +23,8 @@
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Liste des PV</h1>
             <?php
-                afficherMessage('pdfG', "Succès", "Votre PV a été généré avec succès !", "", "");
+                if (isset($_GET['nomPV']))
+                    afficherMessage('pdfG', "Succès", "Le PV ".$_GET['nomPV']." a été généré avec succès !", "", "");
             ?>
             <form method="get" action="listePVOP.php" id="choixAffaire">
                 <label for="numAffaire"> Choix de l'affaire : </label>
