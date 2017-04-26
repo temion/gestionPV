@@ -7,21 +7,8 @@
 
     $bdd = connexion('portail_gestion');
 
-    $photosJointes = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()['photos_jointes'];
-    if (isset($_POST['photosJointes']) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
-        $photosJointes = 1;
-    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
-        $photosJointes = 0;
-
-    update($bdd, "pv_controle", "photos_jointes", $photosJointes, "id_pv_controle", "=", $_POST['idPV']);
-
-    $piecesJointes = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()['pieces_jointes'];
-    if (isset($_POST['piecesJointes']) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
-        $piecesJointes = 1;
-    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
-        $piecesJointes = 0;
-
-    update($bdd, "pv_controle", "pieces_jointes", $piecesJointes, "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "pieces_jointes", etatCB($bdd, 'pieces_jointes'), "id_pv_controle", "=", $_POST['idPV']);
 
     if (isset($_POST['nbAnnexes']) && is_numeric($_POST['nbAnnexes'])) {
         $nbAnnexes = $_POST['nbAnnexes'];
@@ -124,18 +111,18 @@
                                     <label class="labelCB"> Photos jointes ? </label>
                                     <?php
                                         if ($pv['photos_jointes'] == 1)
-                                            echo '<input checked type="checkbox" name="photosJointes">';
+                                            echo '<input checked type="checkbox" name="photos_jointes">';
                                         else
-                                            echo '<input type="checkbox" name="photosJointes">';
+                                            echo '<input type="checkbox" name="photos_jointes">';
                                     ?>
                                 </td>
                                 <td>
                                     <label class="labelCB"> Pièces jointes ? </label>
                                     <?php
                                         if ($pv['pieces_jointes'] == 1)
-                                            echo '<input checked type="checkbox" name="piecesJointes">';
+                                            echo '<input checked type="checkbox" name="pieces_jointes">';
                                         else
-                                            echo '<input type="checkbox" name="piecesJointes">';
+                                            echo '<input type="checkbox" name="pieces_jointes">';
                                     ?>
                                 </td>
                                 <td>
@@ -196,4 +183,14 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
         echo '<p id="infosAction">'.$messageErreur.'</p>';
         echo '</div></td>';
     }
+}
+
+function etatCB($bdd, $var) {
+    $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()[$var];
+    if (isset($_POST[$var]) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
+        $valRet = 1;
+    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
+        $valRet = 0;
+
+    return $valRet;
 }

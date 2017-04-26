@@ -163,7 +163,7 @@ function creerApercuDetails($affaireInspection, $date = "") {
                     ?>
                     <div class="field">
                         <label>Date de début du contrôle : </label>
-                        <label> <?php echo $date; ?> </label>
+                        <label> <?php echo conversionDate($date); ?> </label>
                     </div>
                     <?php
                 }
