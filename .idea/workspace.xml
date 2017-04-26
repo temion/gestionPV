@@ -4,8 +4,8 @@
     <list default="true" id="03072153-2bba-49fb-8bb9-343234fe23e1" name="Default" comment="Corrections mineures + ajout navigation modif">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/PHPExcel" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/excel/conversionExcel.php" afterPath="$PROJECT_DIR$/excel/conversionExcel.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifPVOP.php" afterPath="$PROJECT_DIR$/pv/modifPVOP.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/util.inc.php" afterPath="$PROJECT_DIR$/util.inc.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,16 +43,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="modifPVOP.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="modifPVOP.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="177" column="24" lean-forward="false" selection-start-line="177" selection-start-column="24" selection-end-line="177" selection-end-column="24" />
+            <state relative-caret-position="1816">
+              <caret line="119" column="50" lean-forward="false" selection-start-line="119" selection-start-column="50" selection-end-line="119" selection-end-column="50" />
               <folding>
-                <marker date="1493207989828" expanded="true" signature="1740:1911" ph="select * fro... appareils" />
-                <marker date="1493207989828" expanded="true" signature="1800:1885" ph="select appar... appareils_utilises" />
-                <marker date="1493207989828" expanded="true" signature="2100:2267" ph="select * fro... appareils" />
-                <marker date="1493207989828" expanded="true" signature="2156:2241" ph="select appar... appareils_utilises" />
+                <marker date="1493209148303" expanded="true" signature="2129:2300" ph="select * fro... appareils" />
+                <marker date="1493209148303" expanded="true" signature="2189:2274" ph="select appar... appareils_utilises" />
+                <marker date="1493209148303" expanded="true" signature="2489:2656" ph="select * fro... appareils" />
+                <marker date="1493209148303" expanded="true" signature="2545:2630" ph="select appar... appareils_utilises" />
+                <marker date="1493209148303" expanded="true" signature="10975:11250" ph="..." />
+                <marker date="1493209148303" expanded="true" signature="11581:11694" ph="..." />
               </folding>
             </state>
           </provider>
@@ -75,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="51">
-              <caret line="3" column="122" lean-forward="true" selection-start-line="3" selection-start-column="122" selection-end-line="3" selection-end-column="122" />
+              <caret line="3" column="122" lean-forward="false" selection-start-line="3" selection-start-column="122" selection-end-line="3" selection-end-column="122" />
               <folding>
                 <marker date="1493121939144" expanded="true" signature="662:706" ph="delete from " />
                 <marker date="1493121939144" expanded="true" signature="726:775" ph="alter table pv_controle... " />
@@ -122,6 +124,21 @@
                 <marker date="1493124370279" expanded="true" signature="1951:1982" ph="insert into ${$table}... " />
                 <marker date="1493124370279" expanded="true" signature="1951:1995" ph="insert into ${$table}... " />
                 <marker date="1493124370279" expanded="true" signature="1951:1996" ph="insert into ${$table}... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="conversionExcel.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/excel/conversionExcel.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-975">
+              <caret line="95" column="40" lean-forward="true" selection-start-line="95" selection-start-column="40" selection-end-line="95" selection-end-column="40" />
+              <folding>
+                <marker date="1493213526395" expanded="true" signature="1289:1400" ph="select * fro... appareils" />
+                <marker date="1493213526395" expanded="true" signature="1289:1401" ph="select * fro... appareils" />
+                <marker date="1493213526395" expanded="true" signature="1289:1424" ph="select * fro... appareils" />
+                <marker date="1493213526395" expanded="true" signature="1289:1427" ph="select * fro... appareils" />
               </folding>
             </state>
           </provider>
@@ -256,12 +273,12 @@
         <option value="$PROJECT_DIR$/pv/creationAffaire.php" />
         <option value="$PROJECT_DIR$/pv/listePVCA.php" />
         <option value="$PROJECT_DIR$/pv/listePVOP.php" />
-        <option value="$PROJECT_DIR$/excel/conversionExcel.php" />
         <option value="$PROJECT_DIR$/menu.php" />
         <option value="$PROJECT_DIR$/pv/modifPVCA.php" />
         <option value="$PROJECT_DIR$/util.inc.php" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/pv/modifPVOP.php" />
+        <option value="$PROJECT_DIR$/excel/conversionExcel.php" />
       </list>
     </option>
   </component>
@@ -617,7 +634,7 @@
       <workItem from="1493014962983" duration="25555000" />
       <workItem from="1493046149301" duration="552000" />
       <workItem from="1493101945985" duration="23319000" />
-      <workItem from="1493188211866" duration="8958000" />
+      <workItem from="1493188211866" duration="14452000" />
     </task>
     <task id="LOCAL-00001" summary="ajout index.php + style (tests semanticUI)">
       <created>1491814109074</created>
@@ -794,11 +811,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493198098703</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Sauvegarde projet">
+      <created>1493208005719</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1493208005719</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="236515000" />
+    <option name="totallyTimeSpent" value="242009000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -844,7 +868,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/PHPExcel" />
     </ignored-roots>
-    <MESSAGE value="création formulaire semanticUI" />
     <MESSAGE value="manipulation base de données" />
     <MESSAGE value="Ajout d'un système d'infos sur les affaires" />
     <MESSAGE value="Ajout création et parcours de PV existants" />
@@ -869,7 +892,8 @@
     <MESSAGE value="Modification structure code BDD conversionExcel.php&#10;Amélioration fichier Excel de sortie" />
     <MESSAGE value="Implémentation annexes - photos jointes - pièces jointes dans la base des PV de contrôle et ajout d'un système de gestion de ces informations&#10;Ajout de ces informations dans le fichier Excel" />
     <MESSAGE value="Corrections mineures + ajout navigation modifPV &gt; listePV + complétion fichier Excel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Corrections mineures + ajout navigation modifPV &gt; listePV + complétion fichier Excel" />
+    <MESSAGE value="Sauvegarde projet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sauvegarde projet" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1122,6 +1146,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1206,19 +1231,6 @@
             <marker date="1493189319436" expanded="true" signature="1405:1549" ph="select * fro... affaire" />
             <marker date="1493189319436" expanded="true" signature="1456:1548" ph="select affai... affaire_inspection" />
             <marker date="1493189319436" expanded="true" signature="1602:1649" ph="select * fro... equipement" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/excel/conversionExcel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="350" column="3" lean-forward="false" selection-start-line="350" selection-start-column="3" selection-end-line="350" selection-end-column="3" />
-          <folding>
-            <marker date="1493194056330" expanded="true" signature="1289:1400" ph="select * fro... appareils" />
-            <marker date="1493194056330" expanded="true" signature="1289:1401" ph="select * fro... appareils" />
-            <marker date="1493194056330" expanded="true" signature="1289:1424" ph="select * fro... appareils" />
-            <marker date="1493194056330" expanded="true" signature="1289:1427" ph="select * fro... appareils" />
           </folding>
         </state>
       </provider>
@@ -1311,7 +1323,7 @@
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
-          <caret line="3" column="122" lean-forward="true" selection-start-line="3" selection-start-column="122" selection-end-line="3" selection-end-column="122" />
+          <caret line="3" column="122" lean-forward="false" selection-start-line="3" selection-start-column="122" selection-end-line="3" selection-end-column="122" />
           <folding>
             <marker date="1493121939144" expanded="true" signature="662:706" ph="delete from " />
             <marker date="1493121939144" expanded="true" signature="726:775" ph="alter table pv_controle... " />
@@ -1333,13 +1345,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="177" column="24" lean-forward="false" selection-start-line="177" selection-start-column="24" selection-end-line="177" selection-end-column="24" />
+        <state relative-caret-position="1816">
+          <caret line="119" column="50" lean-forward="false" selection-start-line="119" selection-start-column="50" selection-end-line="119" selection-end-column="50" />
           <folding>
-            <marker date="1493207989828" expanded="true" signature="1740:1911" ph="select * fro... appareils" />
-            <marker date="1493207989828" expanded="true" signature="1800:1885" ph="select appar... appareils_utilises" />
-            <marker date="1493207989828" expanded="true" signature="2100:2267" ph="select * fro... appareils" />
-            <marker date="1493207989828" expanded="true" signature="2156:2241" ph="select appar... appareils_utilises" />
+            <marker date="1493209148303" expanded="true" signature="2129:2300" ph="select * fro... appareils" />
+            <marker date="1493209148303" expanded="true" signature="2189:2274" ph="select appar... appareils_utilises" />
+            <marker date="1493209148303" expanded="true" signature="2489:2656" ph="select * fro... appareils" />
+            <marker date="1493209148303" expanded="true" signature="2545:2630" ph="select appar... appareils_utilises" />
+            <marker date="1493209148303" expanded="true" signature="10975:11250" ph="..." />
+            <marker date="1493209148303" expanded="true" signature="11581:11694" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/excel/conversionExcel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-975">
+          <caret line="95" column="40" lean-forward="true" selection-start-line="95" selection-start-column="40" selection-end-line="95" selection-end-column="40" />
+          <folding>
+            <marker date="1493213526395" expanded="true" signature="1289:1400" ph="select * fro... appareils" />
+            <marker date="1493213526395" expanded="true" signature="1289:1401" ph="select * fro... appareils" />
+            <marker date="1493213526395" expanded="true" signature="1289:1424" ph="select * fro... appareils" />
+            <marker date="1493213526395" expanded="true" signature="1289:1427" ph="select * fro... appareils" />
           </folding>
         </state>
       </provider>

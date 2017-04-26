@@ -10,6 +10,10 @@
     update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_POST['idPV']);
     update($bdd, "pv_controle", "pieces_jointes", etatCB($bdd, 'pieces_jointes'), "id_pv_controle", "=", $_POST['idPV']);
 
+    update($bdd, "pv_controle", "controle_interne", etatCB($bdd, 'controle_interne'), "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "controle_externe", etatCB($bdd, 'controle_externe'), "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "controle_peripherique", etatCB($bdd, 'controle_peripherique'), "id_pv_controle", "=", $_POST['idPV']);
+
     if (isset($_POST['nbAnnexes']) && is_numeric($_POST['nbAnnexes'])) {
         $nbAnnexes = $_POST['nbAnnexes'];
         update($bdd, "pv_controle", "nb_annexes", $nbAnnexes, "id_pv_controle", "=", $_POST['idPV']);
@@ -103,7 +107,37 @@
                     <form method="post" action="modifPVOP.php">
                         <table>
                             <tr>
-                                <th colspan="3"><h4 class="ui dividing header">Annexes</h4></th>
+                                <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label class="labelCB"> Contrôle interne ? </label>
+                                    <?php
+                                        if ($pv['controle_interne'] == 1)
+                                            echo '<input checked type="checkbox" name="controle_interne">';
+                                        else
+                                            echo '<input type="checkbox" name="controle_interne">';
+                                    ?>
+                                </td>
+                                <td>
+                                    <label class="labelCB"> Contrôle externe ? </label>
+                                    <?php
+                                        if ($pv['controle_externe'] == 1)
+                                            echo '<input checked type="checkbox" name="controle_externe">';
+                                        else
+                                            echo '<input type="checkbox" name="controle_externe">';
+                                    ?>
+                                </td>
+                                <td>
+                                    <label class="labelCB"> Contrôle périphérique ? </label>
+                                    <?php
+                                        if ($pv['controle_peripherique'] == 1)
+                                            echo '<input checked type="checkbox" name="controle_peripherique">';
+                                        else
+                                            echo '<input type="checkbox" name="controle_peripherique">';
+                                    ?>
+                                </td>
                             </tr>
 
                             <tr>
@@ -132,7 +166,7 @@
                                             if ($pv['nb_annexes'] != 0)
                                                 echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value="'.$pv['nb_annexes'].'">';
                                             else
-                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes">';
+                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value = "0">';
                                         ?>
                                     </div>
                                 </td>

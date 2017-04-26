@@ -46,6 +46,133 @@
 
     // Présentation PV
     $celluleAct = 1; // Cellule active
+    presentationPV($affaire, $typeControle, $pv);
+
+    // Détails de l'affaire
+    $celluleAct = $celluleAct + 2;
+    detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv);
+
+    $celluleAct = $celluleAct + 2;
+    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
+
+    // Partie documents référence
+    $celluleAct = $celluleAct + 2;
+    documentsReference($affaire_inspection);
+
+    // Partie situation de contrôle
+    $celluleAct = $celluleAct + 2;
+    situationControle($pv);
+
+    // Partie matériel utilisé
+    $celluleAct = $celluleAct + 2;
+    materielUtilise($appareils);
+
+    // Partie constatations
+    $celluleAct++;
+    constatations();
+
+    // Partie conclusions
+    $celluleAct = $celluleAct + 2;
+    conclusions();
+
+    // Partie signatures
+    $celluleAct = $celluleAct + 2;
+    signatures($pv);
+
+    // Sauvegarde du fichier et redirection vers la liste des PV
+    header('Location: /gestionPV/pv/listePVOP.php?pdfG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv));
+?>
+
+<?php
+
+/**
+ * Colore la cellule du classeur avec la couleur passée en paramètre.
+ *
+ * @param PHPExcel $classeur Classeur dans lequel se trouve la cellule.
+ * @param int $cellule Cellule à colorer.
+ * @param string $couleur Code RGB hexadécimal de la couleur.
+ */
+function colorerCellule($classeur, $cellule, $couleur){
+    $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => $couleur
+        )
+    ));
+}
+
+/**
+ * Crée une ligne à ajouter dans le tableur comprenant les différentes informations de l'appareil à l'indice i.
+ *
+ * @param array $appareils Liste des appareils de la base.
+ * @param int $ind Indice de l'appareil à afficher.
+ */
+function creerLigneAppareil($appareils, $ind) {
+    global $celluleAct, $classeur, $feuille, $bordures, $couleurValeur;
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
+    $feuille->setCellValue('A' . $celluleAct, "Système :");
+
+    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
+    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['systeme']);
+
+    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
+    $feuille->setCellValue('E'.$celluleAct, "Marque :");
+
+    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
+    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['marque']);
+
+    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
+    $feuille->setCellValue('I' . $celluleAct, "Date de calibration : ");
+
+    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
+    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_calib']);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
+    $feuille->setCellValue('A' . $celluleAct, "Type :");
+
+    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
+    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['type']);
+
+    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
+    $feuille->setCellValue('E'.$celluleAct, "N° de série :");
+
+    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
+    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['num_serie']);
+
+    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
+    $feuille->setCellValue('I' . $celluleAct, "Date de validation : ");
+
+    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
+    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_valid']);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
+    $celluleAct++;
+}
+
+/**
+ * Ecrit l'entête du PV comprenant les coordonnées de la société ainsi que le code du PV.
+ *
+ * @param array $affaire Informations de la base de données sur l'affaire concernée.
+ * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
+ * @param array $pv Informations de la base de données sur le PV généré.
+ */
+function presentationPV($affaire, $typeControle, $pv) {
+    global $classeur, $feuille, $celluleAct;
+
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
     $feuille->setCellValue('K'.$celluleAct, "Sarl SCOPEO");
 
@@ -82,9 +209,20 @@
     $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
+}
 
-    // Détails de l'affaire
-    $celluleAct++;
+/**
+ * Ecrit les détails de l'affaire.
+ *
+ * @param array $societeClient Informations de la base de données sur la société cliente à laquelle est adressé le PV.
+ * @param array $equipement Informations de la base de données sur l'équipement inspecté.
+ * @param array $client Informations de la base de données sur la personne rencontrée.
+ * @param array $ficheTechniqueEquipement Informations de la base de données sur les caractéristiques techniques de l'équipement inspecté.
+ * @param array $affaire Informations de la base de données sur l'affaire concernée.
+ * @param array $pv Informations de la base de données sur le PV généré.
+ */
+function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv) {
+    global $classeur, $feuille, $celluleAct, $bordures, $couleurValeur;
 
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
@@ -217,9 +355,15 @@
     $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
     colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+}
 
-    // Partie documents référence
-    $celluleAct = $celluleAct + 2;
+/**
+ * Ecrit la partie concernant les documents de référence.
+ *
+ * @param array $affaire_inspection Informations de la base de données sur l'affaire dans lequel se trouve le PV
+ */
+function documentsReference($affaire_inspection) {
+    global $classeur, $feuille, $celluleAct, $bordures, $couleurValeur;
 
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
@@ -244,11 +388,59 @@
     $feuille->setCellValue('K'.$celluleAct, $affaire_inspection['code_inter']);
 
     $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+
     colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
     colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+}
 
-    // Partie matériel utilisé
-    $celluleAct = $celluleAct + 2;
+/**
+ * Ecrit les informations relatives aux situations de contrôle effectués.
+ *
+ * @param array $pv Informations de la base de données sur le PV généré.
+ */
+function situationControle($pv) {
+    global $classeur, $feuille, $celluleAct, $bordures, $couleurValeur;
+
+    $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
+
+    $feuille->setCellValue('A'.$celluleAct, "Situation de contrôle");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+
+    $celluleAct++;
+
+    $feuille->mergeCells('A'.$celluleAct.':B'.$celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Contrôle interne : ");
+
+    $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
+    $feuille->setCellValue('C'.$celluleAct, ($pv['controle_interne'] == 1 ? "OUI" : "NON"));
+
+    $feuille->mergeCells('E'.$celluleAct.':F'.$celluleAct);
+    $feuille->setCellValue('E'.$celluleAct, "Contrôle externe : ");
+
+    $feuille->mergeCells('G'.$celluleAct.':H'.$celluleAct);
+    $feuille->setCellValue('G'.$celluleAct, ($pv['controle_externe'] == 1 ? "OUI" : "NON"));
+
+    $feuille->mergeCells('I'.$celluleAct.':J'.$celluleAct);
+    $feuille->setCellValue('I'.$celluleAct, "Contrôle périphérique : ");
+
+    $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
+    $feuille->setCellValue('K'.$celluleAct, ($pv['controle_peripherique'] == 1 ? "OUI" : "NON"));
+
+    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
+    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
+
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+}
+
+/**
+ * Ecrit les informations relatives au matériel utilisé pour le contrôle.
+ *
+ * @param array $appareils Informations de la base de données sur les appareils utilisés.
+ */
+function materielUtilise($appareils) {
+    global $classeur, $feuille, $celluleAct;
 
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
@@ -259,25 +451,48 @@
     for ($i = 0; $i < sizeof($appareils); $i++) {
         creerLigneAppareil($appareils, $i);
     }
+}
 
-    // Partie constatations
-    $celluleAct++;
+/**
+ * Représente la partie où l'opérateur indique ses observations et constatations.
+ */
+function constatations() {
+    global $classeur, $feuille, $celluleAct;
+
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
     $feuille->setCellValue('A'.$celluleAct, "Constatations");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
+}
 
-    // Partie conclusions
-    $celluleAct = $celluleAct + 2;
+/**
+ * Représente la partie où sont inscrites les conclusions du contrôle.
+ */
+function conclusions() {
+    global $classeur, $feuille, $celluleAct;
+
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
 
     $feuille->setCellValue('A'.$celluleAct, "Conclusions");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, '808080'); // Gris
 
-    // Partie signatures
-    $celluleAct = $celluleAct + 2;
+    for ($i = 0; $i < $celluleAct; $i++) {
+        $feuille->getCell('C'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $feuille->getCell('G'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $feuille->getCell('K'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+    }
+}
+
+/**
+ * Représente la partie où se trouvent les signatures et la présence ou non d'annexes.
+ *
+ * @param array $pv Informations de la base de données sur le PV généré.
+ */
+function signatures($pv) {
+    global $classeur, $feuille, $celluleAct, $bordures, $couleurValeur;
+
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, '426bf4'); // Bleu
 
     $celluleAct = $celluleAct + 2;
@@ -311,98 +526,26 @@
     $feuille->setCellValue('A'.$celluleAct, "Nombre d'annexes : ");
     $feuille->setCellValue('B'.$celluleAct, $pv['nb_annexes']);
     colorerCellule($classeur, 'B'.$celluleAct, $couleurValeur);
+}
 
+/**
+ * Sauvegarde le fichier Excel et retourne le nom du fichier crée.
+ *
+ * @param array $affaire Informations de la base de données sur l'affaire concernée.
+ * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
+ * @param array $pv Informations de la base de données sur le PV généré.
+ * @return string $nomPV Nom du fichier crée.
+ */
+function sauvegarde($affaire, $typeControle, $pv) {
+    global $classeur, $feuille;
 
     $nomPV = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
     $nomRep = explode("-", $nomPV)[0];
 
-    // Sauvegarde du fichier
     $feuille->setTitle($nomPV);
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
     mkdir('../PV_Excel/'.$nomRep);
     $writer->save('../PV_Excel/'.$nomRep.'/'.$nomPV.'.xls');
 
-    header('Location: /gestionPV/pv/listePVOP.php?pdfG=1&nomPV='.$nomPV); // Attribut pour modifier l'affichage de la page listePV
-?>
-
-<?php
-
-/**
- * Colore la cellule du classeur avec la couleur passée en paramètre.
- *
- * @param PHPExcel $classeur Classeur dans lequel se trouve la cellule.
- * @param int $cellule Cellule à colorer.
- * @param string $couleur Code RGB hexadécimal de la couleur.
- */
-function colorerCellule($classeur, $cellule, $couleur){
-    $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
-        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-        'startcolor' => array(
-            'rgb' => $couleur
-        )
-    ));
+    return $nomPV;
 }
-
-/**
- * Crée une ligne à ajouter dans le tableur comprenant les différentes informations de l'appareil à l'indice i.
- *
- * @param array $appareils Liste des appareils de la base.
- * @param int $ind Indice de l'appareil à afficher.
- */
-function creerLigneAppareil($appareils, $ind) {
-    global $celluleAct, $classeur, $feuille, $bordures, $couleurValeur;
-
-    $celluleAct++;
-
-    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
-    $feuille->setCellValue('A' . $celluleAct, "Système :");
-
-    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
-    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['systeme']);
-
-    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
-    $feuille->setCellValue('E'.$celluleAct, "Marque :");
-
-    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
-    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['marque']);
-
-    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
-    $feuille->setCellValue('I' . $celluleAct, "Date de calibration : ");
-
-    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
-    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_calib']);
-
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
-    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
-    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
-    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
-
-    $celluleAct++;
-
-    $feuille->mergeCells('A' . $celluleAct . ':B' . $celluleAct);
-    $feuille->setCellValue('A' . $celluleAct, "Type :");
-
-    $feuille->mergeCells('C' . $celluleAct . ':D' . $celluleAct);
-    $feuille->setCellValue('C' . $celluleAct, $appareils[$ind]['type']);
-
-    $feuille->mergeCells('E' . $celluleAct . ':F' . $celluleAct);
-    $feuille->setCellValue('E'.$celluleAct, "N° de série :");
-
-    $feuille->mergeCells('G' . $celluleAct . ':H' . $celluleAct);
-    $feuille->setCellValue('G'.$celluleAct, $appareils[$ind]['num_serie']);
-
-    $feuille->mergeCells('I' . $celluleAct . ':J' . $celluleAct);
-    $feuille->setCellValue('I' . $celluleAct, "Date de validation : ");
-
-    $feuille->mergeCells('K' . $celluleAct . ':L' . $celluleAct);
-    $feuille->setCellValue('K' . $celluleAct, $appareils[$ind]['date_valid']);
-
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
-    colorerCellule($classeur, 'C'.$celluleAct, $couleurValeur);
-    colorerCellule($classeur, 'G'.$celluleAct, $couleurValeur);
-    colorerCellule($classeur, 'K'.$celluleAct, $couleurValeur);
-
-    $celluleAct++;
-}
-
-
