@@ -12,7 +12,7 @@
         <div id="contenu">
             <h1 id="titreMenu" class="ui blue center aligned huge header">Modification de l'appareil <?php echo $appareil['systeme'].' '.$appareil['type'].' ('.$appareil['num_serie'].')' ?></h1>
 
-            <form method="post" action="verifModifAppareil.php">
+            <form method="post" class="ui form" action="verifModifAppareil.php">
                 <table class="ui celled table">
                     <thead>
                         <tr>

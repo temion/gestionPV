@@ -1,7 +1,7 @@
 <?php
     include_once "../menu.php";
     verifSession("OP");
-    enTete("Création d'affaire",
+    enTete("Création de rapport",
                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
                 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
@@ -38,12 +38,12 @@
 
         <div id="contenu">
 
-            <h1 id="titreMenu" class="ui blue center aligned huge header">Création d'une affaire</h1>
+            <h1 id="titreMenu" class="ui blue center aligned huge header">Création d'un rapport</h1>
             <?php
                 afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque.", "", "");
             ?>
 
-            <form method="post" action="infosPV.php">
+            <form method="post" action="infosRapport.php">
                 <table>
                     <thead>
                         <tr>
@@ -58,9 +58,9 @@
                                 <label>* Numéro de l'affaire : </label>
                                 <div class="field">
                                     <?php
-                                        $url = "creationAffaire.php?num_affaire=";
+                                        $url = "creationRapport.php?num_affaire=";
                                         if (isset($_GET['num_equipement']))
-                                            $url = "creationAffaire.php?num_equipement=".$_GET['num_equipement']."&num_affaire="; // Stockage de l'url pour l'aperçu du PV
+                                            $url = "creationRapport.php?num_equipement=".$_GET['num_equipement']."&num_affaire="; // Stockage de l'url pour l'aperçu du PV
                                     ?>
 
                                     <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_affaire">
@@ -83,9 +83,9 @@
                                 <label>* Numéro de l'équipement à inspecter : </label>
                                 <div class="field">
                                     <?php
-                                        $url = "creationAffaire.php?num_equipement=";
+                                        $url = "creationRapport.php?num_equipement=";
                                         if (isset($_GET['num_affaire']))
-                                            $url = "creationAffaire.php?num_affaire=".$_GET['num_affaire']."&num_equipement="; // Stockage de l'url pour l'aperçu du PV
+                                            $url = "creationRapport.php?num_affaire=".$_GET['num_affaire']."&num_equipement="; // Stockage de l'url pour l'aperçu du PV
                                     ?>
 
                                     <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_equipement">
@@ -191,7 +191,7 @@
                 <table id="apercu">
                     <tr>
                         <th colspan="2">
-                            <h3 class="ui dividing left aligned header">Aperçu de l'affaire <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
+                            <h3 class="ui dividing left aligned header">Aperçu du rapport <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
                         </th>
                     </tr>
 

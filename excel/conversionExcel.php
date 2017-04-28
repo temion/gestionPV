@@ -9,19 +9,19 @@
     $bddAffaire = connexion('portail_gestion');
 
     $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
-    $affaire_inspection = selectAllFromWhere($bddAffaire, "affaire_inspection", "id_affaire_inspection", "=", $pv['id_affaire_inspection'])->fetch();
-    $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $affaire_inspection['id_affaire'])->fetch();
+    $rapport = selectAllFromWhere($bddAffaire, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
     $societeClient = selectAllFromWhere($bddAffaire, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
     $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $societeClient['ref_client'])->fetch();
-    $receveur = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $affaire_inspection['id_receveur'])->fetch();
-    $analyste = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $affaire_inspection['id_analyste'])->fetch();
+    $receveur = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $rapport['id_receveur'])->fetch();
+    $analyste = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
 
     $typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
     $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
 
     $bddEquipement = connexion('theodolite');
-    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $affaire_inspection['id_equipement'])->fetch();
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
     $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "ficheTechniqueEquipement", "idEquipement", "=", $equipement['idEquipement'])->fetch();
 
     $classeur = new PHPExcel;
@@ -57,7 +57,7 @@
 
     // Partie documents référence
     $celluleAct = $celluleAct + 2;
-    documentsReference($affaire_inspection);
+    documentsReference($rapport);
 
     // Partie situation de contrôle
     $celluleAct = $celluleAct + 2;
@@ -81,6 +81,7 @@
 
     // Sauvegarde du fichier et redirection vers la liste des PV
     header('Location: /gestionPV/pv/listePVOP.php?pdfG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv));
+    exit;
 ?>
 
 <?php
@@ -360,9 +361,9 @@ function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEqu
 /**
  * Ecrit la partie concernant les documents de référence.
  *
- * @param array $affaire_inspection Informations de la base de données sur l'affaire dans lequel se trouve le PV
+ * @param array $rapport Informations de la base de données sur l'affaire dans lequel se trouve le PV
  */
-function documentsReference($affaire_inspection) {
+function documentsReference($rapport) {
     global $classeur, $feuille, $celluleAct, $bordures, $couleurValeur;
 
     $feuille->mergeCells('A'.$celluleAct.':L'.$celluleAct);
@@ -377,7 +378,7 @@ function documentsReference($affaire_inspection) {
     $feuille->setCellValue('A'.$celluleAct, "Suivant procédure :");
 
     $feuille->mergeCells('C'.$celluleAct.':D'.$celluleAct);
-    $feuille->setCellValue('C'.$celluleAct, $affaire_inspection['procedure_controle']);
+    $feuille->setCellValue('C'.$celluleAct, $rapport['procedure_controle']);
 
     $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
 
@@ -385,7 +386,7 @@ function documentsReference($affaire_inspection) {
     $feuille->setCellValue('I'.$celluleAct,"Code d'interprétation : ");
 
     $feuille->mergeCells('K'.$celluleAct.':L'.$celluleAct);
-    $feuille->setCellValue('K'.$celluleAct, $affaire_inspection['code_inter']);
+    $feuille->setCellValue('K'.$celluleAct, $rapport['code_inter']);
 
     $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
 
@@ -545,7 +546,8 @@ function sauvegarde($affaire, $typeControle, $pv) {
     $feuille->setTitle($nomPV);
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
     mkdir('../PV_Excel/'.$nomRep);
-    $writer->save('../PV_Excel/'.$nomRep.'/'.$nomPV.'.xls');
+    $writer->save('../PV_Excel/'.$nomRep.'/'.$nomPV.'.xlsx');
 
     return $nomPV;
 }
+

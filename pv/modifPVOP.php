@@ -24,8 +24,8 @@
     $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
-    $affaireInspection = selectAllFromWhere($bdd, "affaire_inspection", "id_affaire_inspection", "=", $pv['id_affaire_inspection'])->fetch();
-    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $affaireInspection['id_affaire'])->fetch();
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
+    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
 
     if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
         insert($bdd, "appareils_utilises", array("null", $_POST['appareil'], $_POST['idPV']));
@@ -43,9 +43,9 @@
             <tr>
                 <td class="partieTableau">
                     <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
-                        <?php creerApercuDetails($affaireInspection, $pv['date']); ?>
+                        <?php creerApercuDetails($rapport, $pv['date']); ?>
                         <table>
-                            <?php creerApercuDocuments($affaireInspection); ?>
+                            <?php creerApercuDocuments($rapport); ?>
                             <tr>
                                 <td>
 
@@ -73,9 +73,9 @@
                                     <select class="ui search dropdown listeAjout" name="appareil">
                                         <option selected> </option>
                                         <?php
-                                        for ($i = 0; $i < sizeof($appareils); $i++) {
-                                            echo '<option value="'.$appareils[$i]['id_appareil'].'">'.$appareils[$i]['systeme'].' '.$appareils[$i]['type'].' ('.$appareils[$i]['num_serie'].')</option>';
-                                        }
+                                            for ($i = 0; $i < sizeof($appareils); $i++) {
+                                                echo '<option value="'.$appareils[$i]['id_appareil'].'">'.$appareils[$i]['systeme'].' '.$appareils[$i]['type'].' ('.$appareils[$i]['num_serie'].')</option>';
+                                            }
                                         ?>
                                     </select>
                                 </td>
@@ -83,9 +83,9 @@
                                     <label> Appareils déjà ajoutés : </label>
                                     <select disabled size=4 class="ui search dropdown listeUtilises">
                                         <?php
-                                        for ($i = 0; $i < sizeof($typeAppareilsUtilises); $i++) {
-                                            echo '<option>'.$typeAppareilsUtilises[$i]['systeme'].' '.$typeAppareilsUtilises[$i]['type'].' ('.$typeAppareilsUtilises[$i]['num_serie'].')</option>';
-                                        }
+                                            for ($i = 0; $i < sizeof($typeAppareilsUtilises); $i++) {
+                                                echo '<option>'.$typeAppareilsUtilises[$i]['systeme'].' '.$typeAppareilsUtilises[$i]['type'].' ('.$typeAppareilsUtilises[$i]['num_serie'].')</option>';
+                                            }
                                         ?>
                                     </select>
                                 </td>
@@ -219,6 +219,13 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
     }
 }
 
+/**
+ * Retourne une valeur selon l'état de la checkbox dont le nom est passé en paramètre.
+ *
+ * @param PDO $bdd Base de données à modifier.
+ * @param string $var Nom de la checkbox.
+ * @return int Entier représentant le booléen dans la base (1 = vrai, 0 = faux).
+ */
 function etatCB($bdd, $var) {
     $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()[$var];
     if (isset($_POST[$var]) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée

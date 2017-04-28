@@ -8,7 +8,7 @@
     if ($_POST['num_affaire'] == "" || $_POST['num_equipement'] == "" || $_POST['demandeRecue'] == "" || $_POST['demandeAnalysee'] == "" ||
         $_POST['obtentionOffre'] == "" || $_POST['numAvenant'] == "" ||
         $_POST['procedure'] == "" || $_POST['codeInter'] == "") {
-        header("Location: creationAffaire.php?erreur=1");
+        header("Location: creationRapport.php?erreur=1");
     }
 
     $bddAffaire = connexion('portail_gestion');
@@ -31,24 +31,24 @@
                          $bddAffaire->quote($_POST['obtentionOffre']), $appelOffre, $_POST['numAvenant'], $bddAffaire->quote($_POST['procedure']),
                          $bddAffaire->quote($_POST['codeInter']), "now()");
 
-    insert($bddAffaire, "affaire_inspection", $valeursTmp);
+    insert($bddAffaire, "rapports", $valeursTmp);
 
-    $affaireInspection = selectAllFromWhere($bddAffaire, "affaire_inspection", "id_affaire_inspection", "=", "last_insert_id()")->fetch();
+    $rapport = selectAllFromWhere($bddAffaire, "rapports", "id_rapport", "=", "last_insert_id()")->fetch();
 ?>
 
         <div id="contenu">
-            <h1 class="ui blue center aligned huge header">L'affaire n°<?php echo $affaireInspection['id_affaire_inspection'] ?> a bien été crée !</h1>
+            <h1 class="ui blue center aligned huge header">Le rapport a bien été crée !</h1>
 
-            <form class="ui form" method="post" action="modifPVCA.php">
-                <?php creerApercuDetails($affaireInspection); ?>
+            <form class="ui form" method="post" action="modifRapportCA.php">
+                <?php creerApercuDetails($rapport); ?>
                 <table>
-                    <?php creerApercuDocuments($affaireInspection); ?>
+                    <?php creerApercuDocuments($rapport); ?>
                     <tr>
                         <td colspan="2"><button class="ui right floated blue button">Valider</button></td>
                     </tr>
                 </table>
                 <?php
-                    echo '<input type="hidden" name="idAffaire" value="'.$affaireInspection['id_affaire_inspection'].'">';
+                    echo '<input type="hidden" name="idAffaire" value="'.$rapport['id_rapport'].'">';
                 ?>
             </form>
         </div>

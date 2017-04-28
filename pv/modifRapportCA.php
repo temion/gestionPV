@@ -1,42 +1,43 @@
 <?php
     include_once "../menu.php";
     verifSession("OP");
-    enTete("Modification de PV",
-                 array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
-                 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+    enTete("Modification de rapport",
+             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
+             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-    $affaireInspection = selectAllFromWhere($bdd, "affaire_inspection", "id_affaire_inspection", "=", $_POST['idAffaire'])->fetch();
-    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $affaireInspection['id_affaire'])->fetch();
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idAffaire'])->fetch();
+    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
         if (verifFormatDates($_POST['date_debut'])) {
             $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_POST['controle'])->fetch();
-            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idAffaire'], ($controle['num_controle'] + 1), "false", "false", 0, $bdd->quote(conversionDate($_POST['date_debut']))));
-            update($bdd, "type_controle", "num_controle", "num_controle + 1", "id_type", "=", $controle['id_type']);
+            $nouvelleVal = $controle['num_controle'] + 1;
+            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idAffaire'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut']))));
+            update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controle['id_type']);
         } else {
             $_POST['controle'] = "";
         }
     }
 
     $controles = selectAll($bdd, "type_controle")->fetchAll();
-    $controlesEffectues = selectAllFromWhere($bdd, "pv_controle", "id_affaire_inspection", "=", $affaireInspection['id_affaire_inspection'])->fetchAll();
+    $controlesEffectues = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
     $typeControle = $bdd->prepare('select * from type_controle where id_type = ?');
 ?>
 
         <div id="contenu">
-            <h1 class="ui blue center aligned huge header">Modification de l'affaire <?php echo $affaire['num_affaire']; ?></h1>
+            <h1 class="ui blue center aligned huge header">Modification du rapport <?php echo $affaire['num_affaire']; ?></h1>
             <table id="ensTables">
                 <tr>
                     <td class="partieTableau">
                         <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
-                            <?php creerApercuDetails($affaireInspection); ?>
+                            <?php creerApercuDetails($rapport); ?>
                             <table>
-                                <?php creerApercuDocuments($affaireInspection); ?>
+                                <?php creerApercuDocuments($rapport); ?>
                                 <tr>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$affaireInspection['id_affaire_inspection'].'">';
+                                            echo '<input type="hidden" name="idPV" value="'.$rapport['id_rapport'].'">';
                                         ?>
                                     </td>
                                 </tr>
@@ -44,7 +45,7 @@
                         </form>
                     </td>
                     <td class="partieTableau">
-                        <form method="post" action="modifPVCA.php">
+                        <form method="post" action="modifRapportCA.php">
                             <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
@@ -72,7 +73,7 @@
                                 <tr>
                                     <td>
                                         <label> Contrôles déjà ajoutés : </label>
-                                        <select disabled size=4 class="ui search dropdown listeUtilises">
+                                        <select disabled size=4 class="ui search dropdown listeAjout">
                                             <?php
                                             for ($i = 0; $i < sizeof($controlesEffectues); $i++) {
                                                 $typeControle->execute(array($controlesEffectues[$i]['id_type_controle']));
@@ -98,7 +99,7 @@
                     </td>
                 </tr>
             </table>
-            <form method="post" action="listePVCA.php">
+            <form method="post" action="listeRapportsCA.php">
                 <button class="ui right floated blue button">Retour à la liste des affaires</button>
             </form>
         </div>
@@ -119,6 +120,13 @@
 
 <?php
 
+/**
+ * Affiche le message passé en paramètre.
+ *
+ * @param string $conditionSucces Condition d'affichage du message de succès.
+ * @param string $messageSucces Message à afficher en cas de succès.
+ * @param string $messageErreur Message à afficher en cas d'ererur.
+ */
 function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
     if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
         echo '<td><div class="ui message">';

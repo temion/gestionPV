@@ -55,26 +55,6 @@ function verifFormatDates($date) {
 }
 
 /**
- * Retourne les différentes informations sur chaque élément de l'affaire impliquant le PV.
- *
- * @param array $affaireInspection Affaire concernant le PV.
- * @return array Tableau comprenant toutes les informations concernant l'affaire impliquant le PV.
- */
-function infosBDD($affaireInspection) {
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
-
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
-    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
-
-    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
-
-    return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client, "equipement"=>$equipement, "ficheTechniqueEquipement"=>$ficheTechniqueEquipement);
-}
-
-/**
  * Affiche les différentes informations concernant les détails de l'affaire nécessaires pour l'aperçu du PV.
  *
  * @param array $affaireInspection Informations de l'affaire stockées dans la base de données.

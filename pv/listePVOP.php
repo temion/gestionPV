@@ -8,15 +8,15 @@
     $bddEquipement = connexion('theodolite');
 
     // Ensemble des affaires disponibles
-    $numAffairesInspection = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select affaire_inspection.id_affaire from affaire_inspection)')->fetchAll();
+    $numRapports = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports)')->fetchAll();
 
     // Ensemble des PV disponibles pour l'affaire sélectionnée
-    $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_affaire_inspection IN (SELECT id_affaire_inspection FROM affaire_inspection WHERE affaire_inspection.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
+    $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
 
     // Infos concernant les PV dans la liste
     $selectTypeControle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
-    $selectAffaireInspectionPV = $bddAffaire->prepare('select * from affaire_inspection where id_affaire_inspection = ?');
-    $selectAffaire = $bddAffaire->prepare('select * from affaire where affaire.id_affaire in (select affaire_inspection.id_affaire from affaire_inspection where id_affaire_inspection = ?)');
+    $selectRapport = $bddAffaire->prepare('select * from rapports where id_rapport = ?');
+    $selectAffaire = $bddAffaire->prepare('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports where id_rapport = ?)');
     $selectEquipement = $bddEquipement->prepare('select * from equipement where idEquipement = ?');
 ?>
 
@@ -32,11 +32,11 @@
                 <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="numAffaire">
                     <option selected> </option>
                     <?php
-                        for ($i = 0; $i < sizeof($numAffairesInspection); $i++) {
-                            if (isset($_GET['numAffaire']) && $numAffairesInspection[$i]['num_affaire'] == $_GET['numAffaire'])
-                                echo '<option selected>'.$numAffairesInspection[$i]['num_affaire'].'</option>';
+                        for ($i = 0; $i < sizeof($numRapports); $i++) {
+                            if (isset($_GET['numAffaire']) && $numRapports[$i]['num_affaire'] == $_GET['numAffaire'])
+                                echo '<option selected>'.$numRapports[$i]['num_affaire'].'</option>';
                             else
-                                echo '<option>'.$numAffairesInspection[$i]['num_affaire'].'</option>';
+                                echo '<option>'.$numRapports[$i]['num_affaire'].'</option>';
                         }
                     ?>
                 </select>
@@ -76,14 +76,14 @@
  */
 function creerLignePV($PV) {
     global $selectAffaire;
-    global $selectAffaireInspectionPV;
+    global $selectRapport;
     global $selectEquipement;
     global $selectTypeControle;
 
-    $selectAffaireInspectionPV->execute(array($PV['id_affaire_inspection']));
-    $affaireInspectionPV = $selectAffaireInspectionPV->fetch();
+    $selectRapport->execute(array($PV['id_rapport']));
+    $affaireInspectionPV = $selectRapport->fetch();
 
-    $selectAffaire->execute(array($PV['id_affaire_inspection']));
+    $selectAffaire->execute(array($PV['id_rapport']));
     $affaire = $selectAffaire->fetch();
 
     $selectEquipement->execute(array($affaireInspectionPV['id_equipement']));
@@ -95,16 +95,9 @@ function creerLignePV($PV) {
     echo '<tr><td>' . $PV['id_pv_controle'] . '</td><td>';
     echo $affaire['num_affaire'] . '</td><td>';
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
-    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.$PV['date'].'</td>';
+    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
     echo '<td>';
-    if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP") {
-        echo '<form method="post" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier</button></form>';
-    } else if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") {
-        echo '<form method="post" action="modifPVCA.php"><button name="idAffaire" value="' . $PV['id_affaire_inspection'] . '" class="ui right floated red button">Modifier</button></form></td></tr>';
-    } else {
-        echo '<form method="post" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier (opérateur)</button></form>';
-        echo '<form method="post" action="modifPVCA.php"><button name="idAffaire" value="' . $PV['id_affaire_inspection'] . '" class="ui right floated red button">Modifier (chargé d\'affaires)</button></form></td></tr>';
-    }
+    echo '<form method="post" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier</button></form>';
 }
 
 ?>
