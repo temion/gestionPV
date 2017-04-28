@@ -6,14 +6,20 @@
              array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idAffaire'])->fetch();
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+
+    if (isset($_POST['equipement_inspecte']) && $_POST['equipement_inspecte'] != "") {
+        insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_POST['equipement_inspecte']));
+    }
+
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
 
     if (isset($_POST['controle']) && $_POST['controle'] != "") {
         if (verifFormatDates($_POST['date_debut'])) {
             $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_POST['controle'])->fetch();
             $nouvelleVal = $controle['num_controle'] + 1;
-            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idAffaire'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut']))));
+            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut']))));
             update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controle['id_type']);
         } else {
             $_POST['controle'] = "";
@@ -23,6 +29,17 @@
     $controles = selectAll($bdd, "type_controle")->fetchAll();
     $controlesEffectues = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
     $typeControle = $bdd->prepare('select * from type_controle where id_type = ?');
+
+    $bddEquipement = connexion('theodolite');
+    $listeEquipement = selectAll($bddEquipement, "equipement")->fetchAll();
+    $equipementsInspectes = selectAllFromWhere($bdd, "equipements_inspectes", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
+    $designationEquipementsInspectes = $bddEquipement->prepare('select * from equipement where idEquipement = ?');
+
+    $desEquipement = array();
+    for ($i = 0; $i < sizeof($equipementsInspectes); $i++) {
+        $designationEquipementsInspectes->execute(array($equipementsInspectes[$i]['id_equipement']));
+        array_push($desEquipement, $designationEquipementsInspectes->fetchAll());
+    }
 ?>
 
         <div id="contenu">
@@ -47,9 +64,53 @@
                     <td class="partieTableau">
                         <form method="post" action="modifRapportCA.php">
                             <table>
+                                <!-- ToDo -->
+                                <tr>
+                                    <th colspan="2"><h4 class="ui dividing header">Équipements à inspecter</h4></th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label> Équipement à inspecter: </label>
+                                        <select class="ui search dropdown listeAjout" name="equipement_inspecte">
+                                            <option selected> </option>
+                                            <?php
+                                            for ($i = 0; $i < sizeof($listeEquipement); $i++) {
+                                                echo '<option value="'.$listeEquipement[$i]['idEquipement'].'">'.$listeEquipement[$i]['Designation'].' '.$listeEquipement[$i]['Type'].'</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label> Équipements déjà ajoutés : </label>
+                                        <select disabled size=4 class="ui search dropdown listeAjout">
+                                            <?php
+                                                for ($i = 0; $i < sizeof($desEquipement); $i++) {
+                                                    echo '<option>'.$desEquipement[$i][0]['Designation'].' '.$desEquipement[$i][0]['Type'].'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <?php
+//                                        afficherMessageAjout('controle', "L'équipement a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
+                                    ?>
+                                    <td colspan="2"><button class="ui right floated blue button">Ajouter cet équipement</button></td>
+                                </tr>
+                                <?php
+                                    echo '<input type="hidden" name="idRapport" value="'.$_POST['idRapport'].'">';
+                                ?>
+                            </table>
+                        </form>
+                            <!-- ToDo -->
+                        <form method="post" action="modifRapportCA.php">
+                            <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
                                 </tr>
+
 
                                 <tr>
                                     <td>
@@ -64,14 +125,6 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <label> Début prévu du contrôle le : </label>
-                                        <div class="ui input">
-                                            <input type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         <label> Contrôles déjà ajoutés : </label>
                                         <select disabled size=4 class="ui search dropdown listeAjout">
                                             <?php
@@ -84,17 +137,26 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
 
+                                <tr>
+                                    <td>
+                                        <label> Début prévu du contrôle le : </label>
+                                        <div class="ui input" >
+                                            <input style="width: 20em" type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <?php
                                         afficherMessageAjout('controle', "Le contrôle a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
                                     ?>
                                     <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
                                 </tr>
+                                <?php
+                                    echo '<input type="hidden" name="idRapport" value="'.$_POST['idRapport'].'">';
+                                ?>
                             </table>
-                            <?php
-                                echo '<input type="hidden" name="idAffaire" value="'.$_POST['idAffaire'].'">';
-                            ?>
                         </form>
                     </td>
                 </tr>
