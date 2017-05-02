@@ -5,10 +5,7 @@ include_once "excelUtil.inc.php";
 
 // Redéfinit le comportement en cas d'erreur, pour gérer la sauvegarde lorsque le fichier est ouvert
 set_error_handler(function() {
-    header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=1'); // Redirige avec un message d'erreur
-    dns_get_record("");
-    restore_error_handler(); // Restaure la gestion normale des erreurs
-    exit;
+    // Les erreurs ne bloquent plus l'exécution de l'application.
 });
 
 $bdd = connexion('portail_gestion');
@@ -219,7 +216,13 @@ function sauvegarde($affaire) {
 
     if (!is_dir($rep))
         mkdir($rep);
-    $writer->save($cheminFicher);
+
+    try {
+        $writer->save($cheminFicher);
+    } catch (PHPExcel_Writer_Exception $e) {
+        header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=1');
+        exit;
+    }
 
     return $titre;
 }

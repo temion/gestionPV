@@ -4,10 +4,7 @@
 
     // Redéfinit le comportement en cas d'erreur, pour gérer la sauvegarde lorsque le fichier est ouvert
     set_error_handler(function() {
-        header('Location: /gestionPV/pv/listePVOP.php?erreur=1'); // Redirige avec un message d'erreur
-        dns_get_record("");
-        restore_error_handler(); // Restaure la gestion normale des erreurs
-        exit;
+        // Les erreurs ne bloquent plus l'exécution de l'application.
     });
 
     $bddAffaire = connexion('portail_gestion');
@@ -325,31 +322,6 @@ function signatures($pv) {
 }
 
 /**
- * Sauvegarde le fichier Excel et retourne le nom du fichier crée.
- *
- * @param array $affaire Informations de la base de données sur l'affaire concernée.
- * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
- * @param array $pv Informations de la base de données sur le PV généré.
- * @return string $nomPV Nom du fichier crée.
- */
-function sauvegarde($affaire, $typeControle, $pv) {
-    global $classeur, $feuille;
-
-    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
-    $rep = '../PV_Excel/'.explode("-", $titre)[0].'/';
-    $cheminFichier = $rep.$titre.'.xlsx';
-
-    $feuille->setTitle($titre);
-    $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
-
-    if (!is_dir($rep))
-        mkdir($rep);
-    $writer->save($cheminFichier);
-
-    return $titre;
-}
-
-/**
  * Crée une ligne affichant les différents champs passés en paramètre.
  *
  * @param string $enonce1 Enoncé du 1er champ.
@@ -370,4 +342,35 @@ function creerLigneInfos($enonce1, $valeur1, $enonce2, $valeur2) {
     $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $gris);
     colorerCellule($classeur, 'K'.$celluleAct, $gris);
+}
+
+/**
+ * Sauvegarde le fichier Excel et retourne le nom du fichier crée.
+ *
+ * @param array $affaire Informations de la base de données sur l'affaire concernée.
+ * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
+ * @param array $pv Informations de la base de données sur le PV généré.
+ * @return string $nomPV Nom du fichier crée.
+ */
+function sauvegarde($affaire, $typeControle, $pv) {
+    global $classeur, $feuille;
+
+    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
+    $rep = '../PV_Excel/'.explode("-", $titre)[0].'/';
+    $cheminFichier = $rep.$titre.'.xlsx';
+
+    $feuille->setTitle($titre);
+    $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
+
+    if (!is_dir($rep))
+        mkdir($rep);
+
+    try {
+        $writer->save($cheminFichier);
+    } catch (PHPExcel_Writer_Exception $e) {
+        header('Location: /gestionPV/pv/listePVOP.php?erreur=1');
+        exit;
+    }
+
+    return $titre;
 }
