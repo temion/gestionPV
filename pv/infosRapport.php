@@ -48,7 +48,7 @@
                     </tr>
                 </table>
                 <?php
-                    echo '<input type="hidden" name="idAffaire" value="'.$rapport['id_rapport'].'">';
+                    echo '<input type="hidden" name="idRapport" value="'.$rapport['id_rapport'].'">';
                 ?>
             </form>
         </div>

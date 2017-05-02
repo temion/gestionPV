@@ -9,8 +9,12 @@
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
 
-    if (isset($_POST['equipement_inspecte']) && $_POST['equipement_inspecte'] != "") {
-        insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_POST['equipement_inspecte']));
+    if (isset($_POST['inspection']) && $_POST['inspection'] == "true") {
+        if (isset($_POST['equipement_inspecte']) && $_POST['equipement_inspecte'] != "") {
+            insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_POST['equipement_inspecte']));
+        } else {
+            $_POST['equipement_inspecte'] = "";
+        }
     }
 
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
@@ -95,12 +99,13 @@
 
                                 <tr>
                                     <?php
-//                                        afficherMessageAjout('controle', "L'équipement a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
+                                        afficherMessageAjout('equipement_inspecte', "L'équipement a bien été ajouté !", "Aucun équipement n'a été indiqué.");
                                     ?>
-                                    <td colspan="2"><button class="ui right floated blue button">Ajouter cet équipement</button></td>
+                                    <td colspan="2"><button class="ui right floated blue button" name="inspection">Ajouter cet équipement</button></td>
                                 </tr>
                                 <?php
                                     echo '<input type="hidden" name="idRapport" value="'.$_POST['idRapport'].'">';
+                                    echo '<input type="hidden" name="inspection" value="true">'; // Flag pour indiquer que le formulaire a été envoyé
                                 ?>
                             </table>
                         </form>
