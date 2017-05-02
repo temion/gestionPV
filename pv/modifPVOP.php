@@ -42,7 +42,7 @@
         <table id="ensTables">
             <tr>
                 <td class="partieTableau">
-                    <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
+                    <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
                         <?php creerApercuDetails($rapport, $pv['date']); ?>
                         <table>
                             <?php creerApercuDocuments($rapport); ?>

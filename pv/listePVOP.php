@@ -24,7 +24,9 @@
             <h1 class="ui blue center aligned huge header">Liste des PV</h1>
             <?php
                 if (isset($_GET['nomPV']))
-                    afficherMessage('pdfG', "Succès", "Le PV ".$_GET['nomPV']." a été généré avec succès !", "", "");
+                    afficherMessage('excelG', "Succès", "Le PV ".$_GET['nomPV']." a été généré avec succès !", "", "");
+                if (isset($_GET['erreur']))
+                    afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
             ?>
             <form method="get" action="listePVOP.php" id="choixAffaire">
                 <label for="numAffaire"> Choix de l'affaire : </label>

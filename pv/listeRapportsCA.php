@@ -18,6 +18,14 @@
 
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Liste des rapports d'inspection</h1>
+            <?php
+            if (isset($_GET['nomRapport'])) {
+                afficherMessage('excelG', "Succès", "Le rapport de l'affaire " . $_GET['nomRapport'] . " a été généré avec succès !", "", "");
+            }
+            if (isset($_GET['erreur'])) {
+                afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
+            }
+            ?>
             <table class="ui celled table">
                 <thead>
                 <tr>
@@ -41,7 +49,6 @@
 </html>
 
 <?php
-
 
 /**
  * Crée une ligne à ajouter dans le tableau comprenant les différentes informations du rapport passée en paramètre.

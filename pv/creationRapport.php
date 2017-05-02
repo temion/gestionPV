@@ -13,7 +13,8 @@
         $affaireSelectionnee = selectAllFromWhere($bddAffaires, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
         if ($affaireSelectionnee['id_societe'] != "") {
             $societe = selectAllFromWhere($bddAffaires, "societe", "id_societe", "=", $affaireSelectionnee['id_societe'])->fetch();
-            $personneRencontree = selectAllFromWhere($bddAffaires, "client", "id_client", "=", $societe['ref_client'])->fetch();
+            $odp = selectAllFromWhere($bddAffaires, "odp", "id_odp", "=", $affaireSelectionnee['id_odp'])->fetch();
+            $personneRencontree = selectAllFromWhere($bddAffaires, "client", "id_client", "=", $odp['id_client'])->fetch();
             $numCommande = 0;
             $dateDebut = 0;
         }

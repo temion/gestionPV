@@ -6,14 +6,16 @@ enTete("Accueil",
 
 if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd = connexion('portail_gestion');
-    $bdd->exec('truncate table affaire_inspection');
+    $bdd->exec('truncate table rapports');
     $bdd->exec('truncate table appareils_utilises');
     $bdd->exec('truncate table pv_controle');
+    $bdd->exec('truncate table equipements_inspectes');
     $bdd->exec('delete from appareils where id_appareil > 15');
-    $bdd->exec('alter table affaire_inspection auto_increment = 1');
+    $bdd->exec('alter table rapports auto_increment = 1');
     $bdd->exec('alter table appareils_utilises auto_increment = 1');
     $bdd->exec('alter table pv_controle auto_increment = 1');
     $bdd->exec('alter table appareils auto_increment = 1');
+    $bdd->exec('alter table equipements_inspectes auto_increment = 1');
     $bdd->exec('update type_controle set num_controle = 0');
 }
 ?>

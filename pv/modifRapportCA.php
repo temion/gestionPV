@@ -51,15 +51,18 @@
             <table id="ensTables">
                 <tr>
                     <td class="partieTableau">
-                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionExcel.php"' ?>>
+                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionRapport.php"' ?>>
                             <?php creerApercuDetails($rapport); ?>
                             <table>
                                 <?php creerApercuDocuments($rapport); ?>
                                 <tr>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$rapport['id_rapport'].'">';
+                                            echo '<input type="hidden" name="idRapport" value="'.$rapport['id_rapport'].'">';
                                         ?>
+                                    </td>
+                                    <td>
+                                        <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>
                                     </td>
                                 </tr>
                             </table>

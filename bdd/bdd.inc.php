@@ -81,21 +81,23 @@ function update($base, $table, $colonneModif, $nouvelleValeur, $colonneCondition
 }
 
 /**
- * Retourne les différentes informations sur chaque élément de l'affaire impliquant le PV.
+ * Retourne les différentes informations sur chaque élément du rapport impliquant le PV.
  *
- * @param array $affaireInspection Affaire concernant le PV.
- * @return array Tableau comprenant toutes les informations concernant l'affaire impliquant le PV.
+ * @param array $rapport Rapport contenant le PV.
+ * @return array Tableau comprenant toutes les informations concernant le rapport impliquant le PV.
  */
-function infosBDD($affaireInspection) {
+function infosBDD($rapport) {
     $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
     $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
 
-    $affaire = $bddAffaire->query('select * from affaire where id_affaire = '.$affaireInspection['id_affaire'])->fetch();
-    $societe = $bddAffaire->query('select * from societe where id_societe = '.$affaire['id_societe'])->fetch();
-    $client = $bddAffaire->query('select * from client where id_client = '.$societe['ref_client'])->fetch();
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+    $societe = selectAllFromWhere($bddAffaire, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
+    $odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
+    $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $odp['id_client'])->fetch();
 
-    $equipement = $bddEquipement->query('select * from equipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$affaireInspection['id_equipement'])->fetch();
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$rapport['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
 
     return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client, "equipement"=>$equipement, "ficheTechniqueEquipement"=>$ficheTechniqueEquipement);
 }
