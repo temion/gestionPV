@@ -14,10 +14,7 @@ if (file_exists($file)) {
     header('Pragma: public');
     header('Content-Length: ' . filesize($file));
     readfile($file);
-    header('Location: /gestionPV/pv/listePVCA.php');
     exit;
 }
-
-header('Location: /gestionPV/pv/index.php');
 exit;
 ?>

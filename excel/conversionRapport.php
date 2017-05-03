@@ -205,11 +205,7 @@ function sauvegarde($affaire) {
 
     $titre = 'SCO'.explode(" ", $affaire['num_affaire'])[1];
     $rep = '../Rapports_Excel/'.$titre.'/';
-    $cheminFicher = $rep . $titre . '.xlsx';
-
-    chmod($rep, 0777);
-    chmod($cheminFicher, 0777);
-    unlink($cheminFicher);
+    $cheminFichier = $rep . $titre . '.xlsx';
 
     $feuille->setTitle('Rapport_affaire_'.$titre);
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
@@ -218,14 +214,27 @@ function sauvegarde($affaire) {
         mkdir($rep);
 
     try {
-        $writer->save($cheminFicher);
+        $writer->save($cheminFichier);
+        telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
         header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=1');
         exit;
     }
 
-    chmod($rep, 0777);
-    chmod($cheminFicher, 0666);
-
     return $titre;
+}
+
+/**
+ * Télécharge le fichier crée.
+ * @param string $cheminFichier Chemin du fichier a télécharger.
+ */
+function telecharger($cheminFichier) {
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="'.basename($cheminFichier).'"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($cheminFichier));
+    readfile($cheminFichier);
 }

@@ -108,7 +108,7 @@ function fonctionMenu() {
                 var liens = $(".lienMenu");
                 for (var i = 0; i < liens.length; i++) {
                     liens[i].classList.remove("active", "blue");
-                    if (liens[i].href === $(location).attr('href'))
+                    if ($(location).attr('href').startsWith(liens[i].href))
                         liens[i].classList.add("active", "blue");
                 }
             })

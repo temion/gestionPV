@@ -10,6 +10,16 @@
     $bddAffaire = connexion('portail_gestion');
 
     $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+
+    // Permet de télécharger toujours la dernière version du PV
+    if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
+        $chemin = str_replace("'", "", $pv['chemin_excel']);
+        if (file_exists($chemin)) {
+            telecharger(str_replace("'", "", $pv['chemin_excel']));
+            exit;
+        }
+    }
+
     $rapport = selectAllFromWhere($bddAffaire, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
     $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
     $odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
@@ -80,7 +90,8 @@
     signatures($pv);
 
     // Sauvegarde du fichier et redirection vers la liste des PV
-    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv, $bddAffaire));
+    sauvegarde($affaire, $typeControle, $pv, $bddAffaire);
+//    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv, $bddAffaire));
     exit;
 ?>
 
@@ -380,7 +391,7 @@ function sauvegarde($affaire, $typeControle, $pv, $bdd) {
 
 /**
  * Télécharge le fichier crée.
- * @param string $cheminFichier Chemin du ficheir a télécharger.
+ * @param string $cheminFichier Chemin du fichier a télécharger.
  */
 function telecharger($cheminFichier) {
     header('Content-Description: File Transfer');
@@ -391,5 +402,4 @@ function telecharger($cheminFichier) {
     header('Pragma: public');
     header('Content-Length: ' . filesize($cheminFichier));
     readfile($cheminFichier);
-    header('Location: /gestionPV/pv/listePVCA.php');
 }
