@@ -30,6 +30,9 @@
 
     $typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
+    $constatations = selectAllFromWhere($bddAffaire, "constatations_pv", "id_pv", "=", $pv['id_pv_controle'])->fetchAll();
+    $conclusions = selectAllFromWhere($bddAffaire, "conclusions_pv", "id_pv", "=", $pv['id_pv_controle'])->fetchAll();
+
     $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
 
     $bddEquipement = connexion('theodolite');
@@ -79,11 +82,11 @@
 
     // Partie constatations
     $celluleAct = $celluleAct + 2;
-    constatations();
+    constatations($constatations);
 
     // Partie conclusions
     $celluleAct = $celluleAct + 2;
-    conclusions();
+    conclusions($conclusions);
 
     // Partie signatures
     $celluleAct = $celluleAct + 2;
@@ -262,24 +265,46 @@ function materielUtilise($appareils) {
 
 /**
  * Représente la partie où l'opérateur indique ses observations et constatations.
+ *
+ * @param array $constatations Constatations effectuées.
  */
-function constatations() {
+function constatations($constatations) {
     global $classeur, $feuille, $celluleAct, $gris;
 
     remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Constatations");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
+
+    $celluleAct++;
+
+    for ($i = 0; $i < sizeof($constatations); $i++) {
+        if ($constatations[$i]['type_constatation'] != null) {
+            $feuille->setCellValue('A'.$celluleAct, ($i + 1).') '.$constatations[$i]['type_constatation']);
+            $celluleAct++;
+        }
+        $feuille->setCellValue('A'.$celluleAct, $constatations[$i]['constatation']);
+        $celluleAct = $celluleAct + 2;
+    }
 }
 
 /**
  * Représente la partie où sont inscrites les conclusions du contrôle.
+ *
+ * @param array $conclusions Conclusions faites sur le PV.
  */
-function conclusions() {
+function conclusions($conclusions) {
     global $classeur, $feuille, $celluleAct, $gris;
 
     remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Conclusions");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
+
+    $celluleAct++;
+
+    for ($i = 0; $i < sizeof($conclusions); $i++) {
+        $feuille->setCellValue('A'.$celluleAct, $conclusions[$i]['conclusion']);
+        $celluleAct = $celluleAct + 2;
+    }
 
     // Boucle permettant d'aligner tous les éléments du tableur
     for ($i = 0; $i < $celluleAct; $i++) {

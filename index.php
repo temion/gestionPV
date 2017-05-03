@@ -50,5 +50,29 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     <form method="post" action="index.php">
         <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
     </form>
+<!--    <button id="testModal" class="ui right floated green button">Test modal</button>-->
+<!--    <div class="ui large modal">-->
+<!--        <div style="text-align: left;" class="header">Observations  <i class="close icon"></i></div>-->
+<!--        <div class="content">-->
+<!--            <form method="get" action="index.php">-->
+<!--                <div class="ui form">-->
+<!--                    <div class="field">-->
+<!--                        <label>Type d'observation</label>-->
+<!--                        <input type="text" name="typeObservation">-->
+<!--                    </div>-->
+<!--                    <div class="field">-->
+<!--                        <label>Observation</label>-->
+<!--                        <textarea rows="2" name="observation"></textarea>-->
+<!--                    </div>-->
+<!--                    <button style="margin: 0 1em 0.5em 0;" class="ui right floated blue button">Valider cette observation</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
+<script>
+    $("#testModal").on("click", function() {
+        $('.large.modal').modal('show');
+    });
+</script>

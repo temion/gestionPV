@@ -1,4 +1,8 @@
-div.header {
+:not(.modal div.header) {
+    text-align: center;
+}
+
+.header {
     text-align: center;
 }
 
@@ -14,4 +18,8 @@ div.header {
 
 .labelCB {
     margin-right: 1em;
+}
+
+#retour {
+    margin-top: 3em;
 }

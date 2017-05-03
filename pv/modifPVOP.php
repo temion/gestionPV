@@ -24,6 +24,17 @@
         $nbAnnexes = "";
     }
 
+    if (isset($_POST['constatation']) && $_POST['constatation'] != "") {
+        if (isset($_POST['typeConstatation']) && $_POST['typeConstatation'] != "")
+            insert($bdd, "constatations_pv", array("null", $_POST['idPV'], $bdd->quote($_POST['typeConstatation']), $bdd->quote($_POST['constatation'])));
+        else
+            insert($bdd, "constatations_pv", array("null", $_POST['idPV'], "null", $bdd->quote($_POST['constatation'])));
+    }
+
+    if (isset($_POST['conclusion']) && $_POST['conclusion'] != "") {
+        insert($bdd, "conclusions_pv", array("null", $_POST['idPV'], $bdd->quote($_POST['conclusion'])));
+    }
+
     $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
@@ -40,6 +51,11 @@
 
     $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$type_controle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
 ?>
+
+        <?php
+            creerModal("constatation");
+            creerModal("conclusion");
+        ?>
 
         <div id="contenu">
             <?php $nomPV = explode(" ", $affaire['num_affaire']); ?>
@@ -60,7 +76,6 @@
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                                             echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
                                         ?>
-<!--                                        <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>-->
                                     </td>
                                 </tr>
                             </table>
@@ -113,6 +128,16 @@
                                 echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                             ?>
                         </form>
+                        <table>
+                            <tr>
+                                <th colspan="2"><h4 class="ui dividing header">Constatations & conclusions</h4></th>
+                            </tr>
+
+                            <tr>
+                                <td><button id="boutonConstatation" class="ui left floated blue button">Ajouter une constatation</button></td>
+                                <td><button id="boutonConclusion" class="ui right floated blue button">Ajouter une conclusion</button></td>
+                            </tr>
+                        </table>
                         <form method="post" action="modifPVOP.php">
                             <table>
                                 <tr>
@@ -226,11 +251,21 @@
             </table>
             <form method="get" action="listePVOP.php">
                 <?php echo '<input type="hidden" name="nomPV" value="'.$titre.'">'; ?>
-                <button class="ui right floated blue button">Retour à la liste des PV</button>
+                <button id="retour" class="ui right floated blue button">Retour à la liste des PV</button>
             </form>
         </div>
     </body>
 </html>
+
+<script>
+    $("#boutonConstatation").on("click", function() {
+        $('#modalConstatation').modal('show');
+    });
+
+    $("#boutonConclusion").on("click", function() {
+        $('#modalConclusion').modal('show');
+    });
+</script>
 
 <?php
 
@@ -271,3 +306,37 @@ function etatCB($bdd, $var) {
 
     return $valRet;
 }
+
+/**
+ * Fonction permettant de créer les popups de création de constatations et conclusions.
+ * @param string $nom Constatation ou conclusion, permet de définir le contenu du popup.
+ */
+function creerModal($nom) {
+    $nomMaj = ucfirst($nom);
+    $id = "modal".$nomMaj;
+    $idType = "type".$nomMaj;
+?>
+    <div id="<?php echo $id; ?>" class="ui large modal">
+        <div style="text-align: left;" class="header"><?php echo $nomMaj;?><i class="close icon"></i></div>
+        <div class="content">
+            <form method="post" action="modifPVOP.php">
+                <div class="ui form">
+                    <?php if ($nom != "conclusion") { ?>
+                    <div class="field">
+                        <label>Type de <?php echo $nom; ?></label>
+                        <input type="text" name="<?php echo $idType; ?>">
+                    </div>
+                    <?php } ?>
+                    <div class="field">
+                        <label><?php echo $nomMaj; ?></label>
+                        <textarea rows="2" name="<?php echo $nom; ?>"></textarea>
+                    </div>
+                    <input type="hidden" name="idPV" value="<?php echo $_POST['idPV']; ?>">
+                    <button style="margin: 0 1em 0.5em 0;" class="ui right floated blue button">Valider cette <?php echo $nom; ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php
+}
+?>
