@@ -224,5 +224,8 @@ function sauvegarde($affaire) {
         exit;
     }
 
+    chmod($rep, 0777);
+    chmod($cheminFicher, 0666);
+
     return $titre;
 }

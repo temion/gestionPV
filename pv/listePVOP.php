@@ -7,6 +7,10 @@
     $bddAffaire = connexion('portail_gestion');
     $bddEquipement = connexion('theodolite');
 
+    if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
+        $_GET['numAffaire'] = "SCOPEO ".explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
+    }
+
     // Ensemble des affaires disponibles
     $numRapports = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports)')->fetchAll();
 

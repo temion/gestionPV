@@ -5,6 +5,9 @@
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
+    if (isset($_GET['idPV']) && $_GET['idPV'] != "")
+        $_POST['idPV'] = $_GET['idPV'];
+
     $bdd = connexion('portail_gestion');
 
     update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_POST['idPV']);
@@ -34,165 +37,197 @@
     $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
     $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv_controle'])->fetchAll();
     $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
+
+    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$type_controle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
 ?>
 
-    <div id="contenu">
-        <?php $nomPV = explode(" ", $affaire['num_affaire']); ?>
-        <h1 class="ui blue center aligned huge header">Modification du PV <?php echo "SCO ".$nomPV[1]."-".$type_controle['code']."-".sprintf("%03d", $pv['num_ordre']); ?></h1>
-        <table id="ensTables">
-            <tr>
-                <td class="partieTableau">
-                    <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
-                        <?php creerApercuDetails($rapport, $pv['date']); ?>
-                        <table>
-                            <?php creerApercuDocuments($rapport); ?>
-                            <tr>
-                                <td>
+        <div id="contenu">
+            <?php $nomPV = explode(" ", $affaire['num_affaire']); ?>
+            <h1 class="ui blue center aligned huge header">Modification du PV <?php echo "SCO ".$nomPV[1]."-".$type_controle['code']."-".sprintf("%03d", $pv['num_ordre']); ?></h1>
+            <table id="ensTables">
+                <tr>
+                    <td class="partieTableau">
+                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
+                            <?php creerApercuDetails($rapport, $pv['date']); ?>
+                            <table>
+                                <?php creerApercuDocuments($rapport); ?>
+                                <tr>
+                                    <td>
 
-                                </td>
-                                <td>
-                                    <?php
-                                        echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
-                                    ?>
-                                    <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </td>
-                <td class="partieTableau">
-                    <form method="post" action="modifPVOP.php">
-                        <table>
-                            <tr>
-                                <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label for="appareil"> Appareil à ajouter : </label>
-                                    <select class="ui search dropdown listeAjout" name="appareil">
-                                        <option selected> </option>
+                                    </td>
+                                    <td>
                                         <?php
-                                            for ($i = 0; $i < sizeof($appareils); $i++) {
-                                                echo '<option value="'.$appareils[$i]['id_appareil'].'">'.$appareils[$i]['systeme'].' '.$appareils[$i]['type'].' ('.$appareils[$i]['num_serie'].')</option>';
-                                            }
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                                         ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <label> Appareils déjà ajoutés : </label>
-                                    <select disabled size=4 class="ui search dropdown listeUtilises">
+                                        <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                    <td class="partieTableau">
+                        <form method="post" action="modifPVOP.php">
+                            <table>
+                                <tr>
+                                    <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label for="appareil"> Appareil à ajouter : </label>
+                                        <select class="ui search dropdown listeAjout" name="appareil">
+                                            <option selected> </option>
+                                            <?php
+                                                for ($i = 0; $i < sizeof($appareils); $i++) {
+                                                    echo '<option value="'.$appareils[$i]['id_appareil'].'">'.$appareils[$i]['systeme'].' '.$appareils[$i]['type'].' ('.$appareils[$i]['num_serie'].')</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <label> Appareils déjà ajoutés : </label>
+                                        <select disabled size=4 class="ui search dropdown listeUtilises">
+                                            <?php
+                                                for ($i = 0; $i < sizeof($typeAppareilsUtilises); $i++) {
+                                                    echo '<option>'.$typeAppareilsUtilises[$i]['systeme'].' '.$typeAppareilsUtilises[$i]['type'].' ('.$typeAppareilsUtilises[$i]['num_serie'].')</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button class="ui right floated blue button">Ajouter cet appareil</button></td>
+                                </tr>
+
+                                <tr>
+                                    <td>
                                         <?php
-                                            for ($i = 0; $i < sizeof($typeAppareilsUtilises); $i++) {
-                                                echo '<option>'.$typeAppareilsUtilises[$i]['systeme'].' '.$typeAppareilsUtilises[$i]['type'].' ('.$typeAppareilsUtilises[$i]['num_serie'].')</option>';
-                                            }
+                                            afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil n'a été indiqué !");
                                         ?>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><button class="ui right floated blue button">Ajouter cet appareil</button></td>
-                            </tr>
-                            <tr>
-                                <?php
-                                    afficherMessageAjout('appareil', "L'appareil a bien été ajouté !", "Aucun appareil n'a été indiqué !");
-                                ?>
-                            </tr>
-                        </table>
-                        <?php
-                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
-                        ?>
-                    </form>
-                    <form method="post" action="modifPVOP.php">
-                        <table>
-                            <tr>
-                                <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
-                            </tr>
+                                    </td>
+                                </tr>
+                            </table>
+                            <?php
+                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                            ?>
+                        </form>
+                        <form method="post" action="modifPVOP.php">
+                            <table>
+                                <tr>
+                                    <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
+                                </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="labelCB"> Contrôle interne ? </label>
-                                    <?php
-                                        if ($pv['controle_interne'] == 1)
-                                            echo '<input checked type="checkbox" name="controle_interne">';
-                                        else
-                                            echo '<input type="checkbox" name="controle_interne">';
-                                    ?>
-                                </td>
-                                <td>
-                                    <label class="labelCB"> Contrôle externe ? </label>
-                                    <?php
-                                        if ($pv['controle_externe'] == 1)
-                                            echo '<input checked type="checkbox" name="controle_externe">';
-                                        else
-                                            echo '<input type="checkbox" name="controle_externe">';
-                                    ?>
-                                </td>
-                                <td>
-                                    <label class="labelCB"> Contrôle périphérique ? </label>
-                                    <?php
-                                        if ($pv['controle_peripherique'] == 1)
-                                            echo '<input checked type="checkbox" name="controle_peripherique">';
-                                        else
-                                            echo '<input type="checkbox" name="controle_peripherique">';
-                                    ?>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label class="labelCB"> Photos jointes ? </label>
-                                    <?php
-                                        if ($pv['photos_jointes'] == 1)
-                                            echo '<input checked type="checkbox" name="photos_jointes">';
-                                        else
-                                            echo '<input type="checkbox" name="photos_jointes">';
-                                    ?>
-                                </td>
-                                <td>
-                                    <label class="labelCB"> Pièces jointes ? </label>
-                                    <?php
-                                        if ($pv['pieces_jointes'] == 1)
-                                            echo '<input checked type="checkbox" name="pieces_jointes">';
-                                        else
-                                            echo '<input type="checkbox" name="pieces_jointes">';
-                                    ?>
-                                </td>
-                                <td>
-                                    <label> Annexes : </label>
-                                    <div class="ui input">
+                                <tr>
+                                    <td>
+                                        <label class="labelCB"> Contrôle interne ? </label>
                                         <?php
-                                            if ($pv['nb_annexes'] != 0)
-                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value="'.$pv['nb_annexes'].'">';
+                                            if ($pv['controle_interne'] == 1)
+                                                echo '<input checked type="checkbox" name="controle_interne">';
                                             else
-                                                echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value = "0">';
+                                                echo '<input type="checkbox" name="controle_interne">';
                                         ?>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td><input type="hidden" name="validerCheckbox" value="1"><button class="ui right floated blue button">Valider</button></td>
-                            </tr>
-                        </table>
-                        <?php
-                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
-                        ?>
-                    </form>
-                </td>
-            </tr>
-        </table>
-        <form method="post" action="listePVOP.php">
-            <button class="ui right floated blue button">Retour à la liste des affaires</button>
-        </form>
-    </div>
+                                    </td>
+                                    <td>
+                                        <label class="labelCB"> Contrôle externe ? </label>
+                                        <?php
+                                            if ($pv['controle_externe'] == 1)
+                                                echo '<input checked type="checkbox" name="controle_externe">';
+                                            else
+                                                echo '<input type="checkbox" name="controle_externe">';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <label class="labelCB"> Contrôle périphérique ? </label>
+                                        <?php
+                                            if ($pv['controle_peripherique'] == 1)
+                                                echo '<input checked type="checkbox" name="controle_peripherique">';
+                                            else
+                                                echo '<input type="checkbox" name="controle_peripherique">';
+                                        ?>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="labelCB"> Photos jointes ? </label>
+                                        <?php
+                                            if ($pv['photos_jointes'] == 1)
+                                                echo '<input checked type="checkbox" name="photos_jointes">';
+                                            else
+                                                echo '<input type="checkbox" name="photos_jointes">';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <label class="labelCB"> Pièces jointes ? </label>
+                                        <?php
+                                            if ($pv['pieces_jointes'] == 1)
+                                                echo '<input checked type="checkbox" name="pieces_jointes">';
+                                            else
+                                                echo '<input type="checkbox" name="pieces_jointes">';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <label> Annexes : </label>
+                                        <div class="ui input">
+                                            <?php
+                                                if ($pv['nb_annexes'] != 0)
+                                                    echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value="'.$pv['nb_annexes'].'">';
+                                                else
+                                                    echo '<input type="number" name="nbAnnexes" placeholder="Nombre d\'annexes" value = "0">';
+                                            ?>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2"> <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?> </div>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><input type="hidden" name="validerCheckbox" value="1"><button class="ui right floated blue button">Valider</button></td>
+                                </tr>
+                            </table>
+                            <?php
+                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                            ?>
+                        </form>
+                        <form enctype="multipart/form-data" action="uploadPV.php" method="post">
+                            <table>
+                                <tr>
+                                    <th colspan="2"><h4 class="ui dividing header">Uploader le fichier Excel complété</h4></th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="taille_max" value="30000" />
+                                        <input name="pv_excel" type="file" />
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                        ?>
+                                        <button class="ui right floated blue button">Envoyer le fichier</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <?php
+                                        afficherMessage('erreurUpload', "Succès !", "Le fichier a bien été uploadé !", "Erreur", "Erreur dans l'upload du fichier");
+                                    ?>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <form method="get" action="listePVOP.php">
+                <?php echo '<input type="hidden" name="nomPV" value="'.$titre.'">'; ?>
+                <button class="ui right floated blue button">Retour à la liste des PV</button>
+            </form>
+        </div>
     </body>
 </html>
 
@@ -207,15 +242,15 @@
  */
 function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
     if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
-        echo '<td><div class="ui message">';
+        echo '<div class="ui message">';
         echo '<div class="header"> Succès !</div>';
         echo '<p id="infosAction">'.$messageSucces.'</p>';
-        echo '</div></td>';
+        echo '</div>';
     } else if (isset($_POST[$conditionSucces])) {
-        echo '<td><div class="ui message">';
+        echo '<div class="ui message">';
         echo '<div class="header"> Erreur </div>';
         echo '<p id="infosAction">'.$messageErreur.'</p>';
-        echo '</div></td>';
+        echo '</div>';
     }
 }
 

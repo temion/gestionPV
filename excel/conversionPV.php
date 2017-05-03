@@ -68,7 +68,7 @@
     materielUtilise($appareils);
 
     // Partie constatations
-    $celluleAct++;
+    $celluleAct = $celluleAct + 2;
     constatations();
 
     // Partie conclusions
@@ -80,7 +80,7 @@
     signatures($pv);
 
     // Sauvegarde du fichier et redirection vers la liste des PV
-    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv));
+    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv, $bddAffaire));
     exit;
 ?>
 
@@ -345,14 +345,15 @@ function creerLigneInfos($enonce1, $valeur1, $enonce2, $valeur2) {
 }
 
 /**
- * Sauvegarde le fichier Excel et retourne le nom du fichier crée.
+ * Sauvegarde le fichier Excel sur le serveur et retourne le nom du fichier crée.
  *
  * @param array $affaire Informations de la base de données sur l'affaire concernée.
  * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
  * @param array $pv Informations de la base de données sur le PV généré.
+ * @param PDO $bdd Base de données contenant les informations.
  * @return string $nomPV Nom du fichier crée.
  */
-function sauvegarde($affaire, $typeControle, $pv) {
+function sauvegarde($affaire, $typeControle, $pv, $bdd) {
     global $classeur, $feuille;
 
     $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
@@ -367,10 +368,28 @@ function sauvegarde($affaire, $typeControle, $pv) {
 
     try {
         $writer->save($cheminFichier);
+        update($bdd, "pv_controle", "chemin_excel", $bdd->quote($cheminFichier), "id_pv_controle", "=", $_POST['idPV']);
+        telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
         header('Location: /gestionPV/pv/listePVOP.php?erreur=1');
         exit;
     }
 
     return $titre;
+}
+
+/**
+ * Télécharge le fichier crée.
+ * @param string $cheminFichier Chemin du ficheir a télécharger.
+ */
+function telecharger($cheminFichier) {
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="'.basename($cheminFichier).'"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($cheminFichier));
+    readfile($cheminFichier);
+    header('Location: /gestionPV/pv/listePVCA.php');
 }

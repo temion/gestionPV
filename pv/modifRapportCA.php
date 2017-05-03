@@ -23,7 +23,7 @@
         if (verifFormatDates($_POST['date_debut'])) {
             $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_POST['controle'])->fetch();
             $nouvelleVal = $controle['num_controle'] + 1;
-            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut']))));
+            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut'])), "null"));
             update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controle['id_type']);
         } else {
             $_POST['controle'] = "";
@@ -170,7 +170,7 @@
                 </tr>
             </table>
             <form method="post" action="listeRapportsCA.php">
-                <button class="ui right floated blue button">Retour à la liste des affaires</button>
+                <button class="ui right floated blue button">Retour à la liste des rapports</button>
             </form>
         </div>
     </body>
