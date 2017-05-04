@@ -5,44 +5,41 @@
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    if (isset($_GET['idPV']) && $_GET['idPV'] != "")
-        $_POST['idPV'] = $_GET['idPV'];
-
     $bdd = connexion('portail_gestion');
 
-    update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_POST['idPV']);
-    update($bdd, "pv_controle", "pieces_jointes", etatCB($bdd, 'pieces_jointes'), "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_GET['idPV']);
+    update($bdd, "pv_controle", "pieces_jointes", etatCB($bdd, 'pieces_jointes'), "id_pv_controle", "=", $_GET['idPV']);
 
-    update($bdd, "pv_controle", "controle_interne", etatCB($bdd, 'controle_interne'), "id_pv_controle", "=", $_POST['idPV']);
-    update($bdd, "pv_controle", "controle_externe", etatCB($bdd, 'controle_externe'), "id_pv_controle", "=", $_POST['idPV']);
-    update($bdd, "pv_controle", "controle_peripherique", etatCB($bdd, 'controle_peripherique'), "id_pv_controle", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "controle_interne", etatCB($bdd, 'controle_interne'), "id_pv_controle", "=", $_GET['idPV']);
+    update($bdd, "pv_controle", "controle_externe", etatCB($bdd, 'controle_externe'), "id_pv_controle", "=", $_GET['idPV']);
+    update($bdd, "pv_controle", "controle_peripherique", etatCB($bdd, 'controle_peripherique'), "id_pv_controle", "=", $_GET['idPV']);
 
-    if (isset($_POST['nbAnnexes']) && is_numeric($_POST['nbAnnexes'])) {
-        $nbAnnexes = $_POST['nbAnnexes'];
-        update($bdd, "pv_controle", "nb_annexes", $nbAnnexes, "id_pv_controle", "=", $_POST['idPV']);
-    } else if (isset($_POST['nbAnnexes']) && !is_numeric($_POST['nbAnnexes'])) {
+    if (isset($_GET['nbAnnexes']) && is_numeric($_GET['nbAnnexes'])) {
+        $nbAnnexes = $_GET['nbAnnexes'];
+        update($bdd, "pv_controle", "nb_annexes", $nbAnnexes, "id_pv_controle", "=", $_GET['idPV']);
+    } else if (isset($_GET['nbAnnexes']) && !is_numeric($_GET['nbAnnexes'])) {
         $nbAnnexes = "";
     }
 
-    if (isset($_POST['constatation']) && $_POST['constatation'] != "") {
-        if (isset($_POST['typeConstatation']) && $_POST['typeConstatation'] != "")
-            insert($bdd, "constatations_pv", array("null", $_POST['idPV'], $bdd->quote($_POST['typeConstatation']), $bdd->quote($_POST['constatation'])));
+    if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
+        if (isset($_GET['typeConstatation']) && $_GET['typeConstatation'] != "")
+            insert($bdd, "constatations_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['typeConstatation']), $bdd->quote($_GET['constatation'])));
         else
-            insert($bdd, "constatations_pv", array("null", $_POST['idPV'], "null", $bdd->quote($_POST['constatation'])));
+            insert($bdd, "constatations_pv", array("null", $_GET['idPV'], "null", $bdd->quote($_GET['constatation'])));
     }
 
-    if (isset($_POST['conclusion']) && $_POST['conclusion'] != "") {
-        insert($bdd, "conclusions_pv", array("null", $_POST['idPV'], $bdd->quote($_POST['conclusion'])));
+    if (isset($_GET['conclusion']) && $_GET['conclusion'] != "") {
+        insert($bdd, "conclusions_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['conclusion'])));
     }
 
-    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_GET['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
 
-    if (isset($_POST['appareil']) && $_POST['appareil'] != "") {
-        insert($bdd, "appareils_utilises", array("null", $_POST['appareil'], $_POST['idPV']));
+    if (isset($_GET['appareil']) && $_GET['appareil'] != "") {
+        insert($bdd, "appareils_utilises", array("null", $_GET['appareil'], $_GET['idPV']));
     }
 
     $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
@@ -85,7 +82,7 @@
                         </form>
                     </td>
                     <td class="partieTableau">
-                        <form method="post" action="modifPVOP.php">
+                        <form method="get" action="modifPVOP.php">
                             <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
@@ -131,7 +128,7 @@
                                 echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                             ?>
                         </form>
-                        <form method="post" action="modifPVOP.php">
+                        <form method="get" action="modifPVOP.php">
                             <table>
                                 <tr>
                                     <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
@@ -281,12 +278,12 @@
  * @param String $messageErreur Message en cas d'échec.
  */
 function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
-    if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
+    if (isset($_GET[$conditionSucces]) && $_GET[$conditionSucces] != "") {
         echo '<div class="ui message">';
         echo '<div class="header"> Succès !</div>';
         echo '<p id="infosAction">'.$messageSucces.'</p>';
         echo '</div>';
-    } else if (isset($_POST[$conditionSucces])) {
+    } else if (isset($_GET[$conditionSucces])) {
         echo '<div class="ui message">';
         echo '<div class="header"> Erreur </div>';
         echo '<p id="infosAction">'.$messageErreur.'</p>';
@@ -302,10 +299,10 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
  * @return int Entier représentant le booléen dans la base (1 = vrai, 0 = faux).
  */
 function etatCB($bdd, $var) {
-    $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch()[$var];
-    if (isset($_POST[$var]) && isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1) // Si la case n'a pas été cochée
+    $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_GET['idPV'])->fetch()[$var];
+    if (isset($_GET[$var]) && isset($_GET['validerCheckbox']) && $_GET['validerCheckbox'] == 1) // Si la case n'a pas été cochée
         $valRet = 1;
-    else if (isset($_POST['validerCheckbox']) && $_POST['validerCheckbox'] == 1)
+    else if (isset($_GET['validerCheckbox']) && $_GET['validerCheckbox'] == 1)
         $valRet = 0;
 
     return $valRet;
@@ -324,7 +321,7 @@ function creerModal($nom) {
     <div id="<?php echo $id; ?>" class="ui large modal">
         <div style="text-align: left;" class="header"><?php echo $nomMaj;?><i class="close icon"></i></div>
         <div class="content">
-            <form method="post" action="modifPVOP.php">
+            <form method="get" action="modifPVOP.php">
                 <div class="ui form">
                     <?php if ($nom != "conclusion") { ?>
                     <div class="field">
@@ -336,7 +333,7 @@ function creerModal($nom) {
                         <label><?php echo $nomMaj; ?></label>
                         <textarea rows="2" name="<?php echo $nom; ?>"></textarea>
                     </div>
-                    <input type="hidden" name="idPV" value="<?php echo $_POST['idPV']; ?>">
+                    <input type="hidden" name="idPV" value="<?php echo $_GET['idPV']; ?>">
                     <button style="margin: 0 1em 0.5em 0;" class="ui right floated blue button">Valider cette <?php echo $nom; ?></button>
                 </div>
             </form>

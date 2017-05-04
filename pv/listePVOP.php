@@ -103,7 +103,7 @@ function creerLignePV($PV) {
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
     echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
     echo '<td>';
-    echo '<form method="post" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier</button></form>';
+    echo '<form method="get" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier</button></form>';
 }
 
 ?>

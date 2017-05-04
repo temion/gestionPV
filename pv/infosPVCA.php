@@ -6,12 +6,9 @@
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    if (isset($_GET['idPV']) && $_GET['idPV'] != "")
-        $_POST['idPV'] = $_GET['idPV'];
-
     $bdd = connexion('portail_gestion');
 
-    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_GET['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
@@ -74,7 +71,7 @@
                     </td>
                 </tr>
             </table>
-            <form method="post" action="listePVCA.php">
+            <form method="get" action="listePVCA.php">
                 <button class="ui right floated blue button">Retour à la liste des PV</button>
             </form>
         </div>

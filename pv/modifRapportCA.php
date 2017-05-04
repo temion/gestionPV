@@ -6,27 +6,27 @@
              array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
 
-    if (isset($_POST['inspection']) && $_POST['inspection'] == "true") {
-        if (isset($_POST['equipement_inspecte']) && $_POST['equipement_inspecte'] != "") {
-            insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_POST['equipement_inspecte']));
+    if (isset($_GET['inspection']) && $_GET['inspection'] == "true") {
+        if (isset($_GET['equipement_inspecte']) && $_GET['equipement_inspecte'] != "") {
+            insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_GET['equipement_inspecte']));
         } else {
-            $_POST['equipement_inspecte'] = "";
+            $_GET['equipement_inspecte'] = "";
         }
     }
 
-    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
 
-    if (isset($_POST['controle']) && $_POST['controle'] != "") {
-        if (verifFormatDates($_POST['date_debut'])) {
-            $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_POST['controle'])->fetch();
+    if (isset($_GET['controle']) && $_GET['controle'] != "") {
+        if (verifFormatDates($_GET['date_debut'])) {
+            $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_GET['controle'])->fetch();
             $nouvelleVal = $controle['num_controle'] + 1;
-            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_POST['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_POST['date_debut'])), "null"));
+            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_GET['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_GET['date_debut'])), "null"));
             update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controle['id_type']);
         } else {
-            $_POST['controle'] = "";
+            $_GET['controle'] = "";
         }
     }
 
@@ -69,7 +69,7 @@
                         </form>
                     </td>
                     <td class="partieTableau">
-                        <form method="post" action="modifRapportCA.php">
+                        <form method="get" action="modifRapportCA.php">
                             <table>
                                 <!-- ToDo -->
                                 <tr>
@@ -107,13 +107,13 @@
                                     <td colspan="2"><button class="ui right floated blue button" name="inspection">Ajouter cet équipement</button></td>
                                 </tr>
                                 <?php
-                                    echo '<input type="hidden" name="idRapport" value="'.$_POST['idRapport'].'">';
+                                    echo '<input type="hidden" name="idRapport" value="'.$_GET['idRapport'].'">';
                                     echo '<input type="hidden" name="inspection" value="true">'; // Flag pour indiquer que le formulaire a été envoyé
                                 ?>
                             </table>
                         </form>
                             <!-- ToDo -->
-                        <form method="post" action="modifRapportCA.php">
+                        <form method="get" action="modifRapportCA.php">
                             <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
@@ -162,7 +162,7 @@
                                     <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
                                 </tr>
                                 <?php
-                                    echo '<input type="hidden" name="idRapport" value="'.$_POST['idRapport'].'">';
+                                    echo '<input type="hidden" name="idRapport" value="'.$_GET['idRapport'].'">';
                                 ?>
                             </table>
                         </form>
@@ -198,12 +198,12 @@
  * @param string $messageErreur Message à afficher en cas d'ererur.
  */
 function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) {
-    if (isset($_POST[$conditionSucces]) && $_POST[$conditionSucces] != "") {
+    if (isset($_GET[$conditionSucces]) && $_GET[$conditionSucces] != "") {
         echo '<td><div class="ui message">';
         echo '<div class="header"> Succès !</div>';
         echo '<p id="infosAction">'.$messageSucces.'</p>';
         echo '</div></td>';
-    } else if (isset($_POST[$conditionSucces])) {
+    } else if (isset($_GET[$conditionSucces])) {
         echo '<td><div class="ui message">';
         echo '<div class="header"> Erreur </div>';
         echo '<p id="infosAction">'.$messageErreur.'</p>';

@@ -39,7 +39,7 @@
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Le rapport a bien été crée !</h1>
 
-            <form class="ui form" method="post" action="modifRapportCA.php">
+            <form class="ui form" method="get" action="modifRapportCA.php">
                 <?php creerApercuDetails($rapport); ?>
                 <table>
                     <?php creerApercuDocuments($rapport); ?>

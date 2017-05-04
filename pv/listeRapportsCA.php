@@ -73,6 +73,6 @@ function creerLigneRapport($rapport) {
     echo '<td>'.$affaire['num_affaire'].'</td>';
     echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
     echo '<td>'.$nbPV[0].'</td>';
-    echo '<td><form method="post" action="modifRapportCA.php"><button name="idRapport" value="' .$rapport['id_rapport'].'" class="ui right floated blue button">Modifier</button></form></td>';
+    echo '<td><form method="get" action="modifRapportCA.php"><button name="idRapport" value="' .$rapport['id_rapport'].'" class="ui right floated blue button">Modifier</button></form></td>';
 }
 ?>
