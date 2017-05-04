@@ -69,7 +69,10 @@
                                 <?php creerApercuDocuments($rapport); ?>
                                 <tr>
                                     <td>
-
+                                        <?php
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                            echo '<button class="ui left floated red button" name="reset" value="1"> Regénérer le fichier</button>';
+                                        ?>
                                     </td>
                                     <td>
                                         <?php
@@ -128,16 +131,6 @@
                                 echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                             ?>
                         </form>
-                        <table>
-                            <tr>
-                                <th colspan="2"><h4 class="ui dividing header">Constatations & conclusions</h4></th>
-                            </tr>
-
-                            <tr>
-                                <td><button id="boutonConstatation" class="ui left floated blue button">Ajouter une constatation</button></td>
-                                <td><button id="boutonConclusion" class="ui right floated blue button">Ajouter une conclusion</button></td>
-                            </tr>
-                        </table>
                         <form method="post" action="modifPVOP.php">
                             <table>
                                 <tr>
@@ -207,7 +200,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td colspan="2"> <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?> </div>
+                                    <td colspan="2"> <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?> </td>
                                 </tr>
 
                                 <tr>
@@ -220,6 +213,16 @@
                                 echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
                             ?>
                         </form>
+                        <table>
+                            <tr>
+                                <th colspan="2"><h4 class="ui dividing header">Constatations & conclusions</h4></th>
+                            </tr>
+
+                            <tr>
+                                <td><button id="boutonConstatation" class="ui left floated blue button">Ajouter une constatation</button></td>
+                                <td><button id="boutonConclusion" class="ui right floated blue button">Ajouter une conclusion</button></td>
+                            </tr>
+                        </table>
                         <form enctype="multipart/form-data" action="uploadPV.php" method="post">
                             <table>
                                 <tr>
@@ -234,6 +237,7 @@
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                            echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
                                         ?>
                                         <button class="ui right floated blue button">Envoyer le fichier</button>
                                     </td>
@@ -309,6 +313,7 @@ function etatCB($bdd, $var) {
 
 /**
  * Fonction permettant de créer les popups de création de constatations et conclusions.
+ *
  * @param string $nom Constatation ou conclusion, permet de définir le contenu du popup.
  */
 function creerModal($nom) {

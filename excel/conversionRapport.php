@@ -36,13 +36,8 @@ $bordures = array(
     )
 );
 
-$celluleAct = 2;
-$feuille->mergeCells('A' . $celluleAct . ':L' . $celluleAct);
-$feuille->setCellValue('A'.$celluleAct, "Descriptif de l'affaire");
-$feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-colorerCellule($classeur, 'A'.$celluleAct, $bleu);
-$feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+$celluleAct = 1;
+presentationRapport($affaire);
 
 $celluleAct++;
 detailsRapport($rapport, $affaire, $societeClient, $client, $receveur, $analyste);
@@ -76,6 +71,37 @@ header('Location: /gestionPV/pv/listeRapportsCA.php?excelG=1&nomRapport='.sauveg
 dns_get_record("");
 restore_error_handler();
 exit;
+
+/**
+ * Ecrit l'entête du rapport comprenant les coordonnées de la société ainsi que le numéro de l'affaire.
+ *
+ * @param array $affaire Informations de l'affaire concernée.
+ */
+function presentationRapport($affaire) {
+    global $classeur, $feuille, $celluleAct, $bleu, $bordures;
+
+    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Sarl SCOPEO");
+
+    $celluleAct++;
+    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Route du Hoc");
+
+    $celluleAct++;
+    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "76600 Le Havre");
+
+    $celluleAct++;
+    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Tél : 02.35.30.11.30");
+
+    $celluleAct++;
+    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Fax : 02.35.26.12.06");
+
+    $celluleAct++;
+    $feuille->mergeCells('A' . $celluleAct . ':L' . $celluleAct);
+    $feuille->setCellValue('A'.$celluleAct, "Descriptif de l'affaire ".$affaire['num_affaire']);
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
+    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+}
 
 /**
  * Ajoute sur le PDF les détails du rapport.

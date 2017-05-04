@@ -14,7 +14,7 @@ if (isset($_FILES['pv_excel'])) {
 
     $regEx = "#^SCO[0-9]+-[A-Z0-9]+-[0-9]+.xlsx$#";
     if (!preg_match($regEx, $file_name)) {
-        header('Location: /gestionPV/pv/modifPVOP.php?erreurUpload=0&idPV='.$_POST['idPV']);
+        header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=0&idPV='.$_POST['idPV']);
         exit;
     }
 
@@ -23,7 +23,7 @@ if (isset($_FILES['pv_excel'])) {
     update($bdd, "pv_controle", "chemin_excel", $bdd->quote($chemin), "id_pv_controle", "=", $_POST['idPV']);
     move_uploaded_file($file_tmp, $chemin);
 
-    header('Location: /gestionPV/pv/modifPVOP.php?erreurUpload=1&idPV='.$_POST['idPV']);
+    header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=1&idPV='.$_POST['idPV']);
     exit;
 }
 

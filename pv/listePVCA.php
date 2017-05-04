@@ -54,7 +54,7 @@ $selectEquipement = $bddEquipement->prepare('select * from equipement where idEq
                 <th>Numéro d'affaire</th>
                 <th>Equipement à inspecter</th>
                 <th>Contrôle</th>
-                <th>Modification</th>
+                <th>Informations</th>
             </tr>
             </thead>
             <tbody>
@@ -103,7 +103,7 @@ function creerLignePV($PV) {
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
     echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
     echo '<td>';
-    echo '<form method="post" action="downloadPV.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Télécharger</button></form>';
+    echo '<form method="post" action="infosPVCA.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Infos</button></form>';
 }
 
 ?>

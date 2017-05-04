@@ -44,7 +44,7 @@
                 afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque.", "", "");
             ?>
 
-            <form method="post" action="infosRapport.php">
+            <form method="get" action="infosRapport.php">
                 <table>
                     <thead>
                         <tr>

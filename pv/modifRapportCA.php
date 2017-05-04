@@ -62,7 +62,7 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <button id="boutonGenere" class="ui right floated blue button">Générer au format Excel</button>
+                                        <button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>
                                     </td>
                                 </tr>
                             </table>

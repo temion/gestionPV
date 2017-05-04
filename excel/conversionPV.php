@@ -15,8 +15,12 @@
     if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
         $chemin = str_replace("'", "", $pv['chemin_excel']);
         if (file_exists($chemin)) {
-            telecharger(str_replace("'", "", $pv['chemin_excel']));
-            exit;
+            if (isset($_POST['reset']) && $_POST['reset'] == 1) {
+                unlink($chemin);
+            } else {
+                telecharger(str_replace("'", "", $pv['chemin_excel']));
+                exit;
+            }
         }
     }
 

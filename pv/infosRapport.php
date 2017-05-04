@@ -5,31 +5,31 @@
             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
             array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    if ($_POST['num_affaire'] == "" || $_POST['num_equipement'] == "" || $_POST['demandeRecue'] == "" || $_POST['demandeAnalysee'] == "" ||
-        $_POST['obtentionOffre'] == "" || $_POST['numAvenant'] == "" ||
-        $_POST['procedure'] == "" || $_POST['codeInter'] == "") {
+    if ($_GET['num_affaire'] == "" || $_GET['num_equipement'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
+        $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
+        $_GET['procedure'] == "" || $_GET['codeInter'] == "") {
         header("Location: creationRapport.php?erreur=1");
     }
 
     $bddAffaire = connexion('portail_gestion');
 
-    $affaire = selectAllFromWhere($bddAffaire, "affaire", "num_affaire", "like", $_POST['num_affaire'])->fetch();
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
     // Id du récepteur de la demande
-    $idReceveur = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_POST['demandeRecue'])->fetch();
+    $idReceveur = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_GET['demandeRecue'])->fetch();
     // Id de l'analyste de la demande
 
-    $idAnalyste = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_POST['demandeAnalysee'])->fetch();
+    $idAnalyste = selectAllFromWhere($bddAffaire, "utilisateurs", "nom", "like", $_GET['demandeAnalysee'])->fetch();
 
     $bddEquipement = connexion('theodolite');
-    $equipement = selectAllFromWhere($bddEquipement, "equipement", "concat(Designation, ' ', Type)", "like", $_POST['num_equipement'])->fetch();
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "concat(Designation, ' ', Type)", "like", $_GET['num_equipement'])->fetch();
 
     $appelOffre = 1;
-    if (!isset($_POST['appelOffre'])) // Si la case n'a pas été cochée
+    if (!isset($_GET['appelOffre'])) // Si la case n'a pas été cochée
         $appelOffre = 0;
 
     $valeursTmp =  array("null", $affaire['id_affaire'], $equipement['idEquipement'], $idReceveur['id_utilisateur'], $idAnalyste['id_utilisateur'],
-                         $bddAffaire->quote($_POST['obtentionOffre']), $appelOffre, $_POST['numAvenant'], $bddAffaire->quote($_POST['procedure']),
-                         $bddAffaire->quote($_POST['codeInter']), "now()");
+                         $bddAffaire->quote($_GET['obtentionOffre']), $appelOffre, $_GET['numAvenant'], $bddAffaire->quote($_GET['procedure']),
+                         $bddAffaire->quote($_GET['codeInter']), "now()");
 
     insert($bddAffaire, "rapports", $valeursTmp);
 
