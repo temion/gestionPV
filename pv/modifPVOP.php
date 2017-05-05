@@ -6,20 +6,7 @@
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
-
-    update($bdd, "pv_controle", "photos_jointes", etatCB($bdd, 'photos_jointes'), "id_pv_controle", "=", $_GET['idPV']);
-    update($bdd, "pv_controle", "pieces_jointes", etatCB($bdd, 'pieces_jointes'), "id_pv_controle", "=", $_GET['idPV']);
-
-    update($bdd, "pv_controle", "controle_interne", etatCB($bdd, 'controle_interne'), "id_pv_controle", "=", $_GET['idPV']);
-    update($bdd, "pv_controle", "controle_externe", etatCB($bdd, 'controle_externe'), "id_pv_controle", "=", $_GET['idPV']);
-    update($bdd, "pv_controle", "controle_peripherique", etatCB($bdd, 'controle_peripherique'), "id_pv_controle", "=", $_GET['idPV']);
-
-    if (isset($_GET['nbAnnexes']) && is_numeric($_GET['nbAnnexes'])) {
-        $nbAnnexes = $_GET['nbAnnexes'];
-        update($bdd, "pv_controle", "nb_annexes", $nbAnnexes, "id_pv_controle", "=", $_GET['idPV']);
-    } else if (isset($_GET['nbAnnexes']) && !is_numeric($_GET['nbAnnexes'])) {
-        $nbAnnexes = "";
-    }
+    $bddEquipement = connexion('theodolite');
 
     if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
         if (isset($_GET['typeConstatation']) && $_GET['typeConstatation'] != "")
@@ -32,19 +19,20 @@
         insert($bdd, "conclusions_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['conclusion'])));
     }
 
-    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_GET['idPV'])->fetch();
+    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+    $societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
+    $odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
+    $client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
+    $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
 
-    if (isset($_GET['appareil']) && $_GET['appareil'] != "") {
-        insert($bdd, "appareils_utilises", array("null", $_GET['appareil'], $_GET['idPV']));
-    }
-
-    $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
-    $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv_controle'])->fetchAll();
-    $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
+    $appareils = $bdd->query('select * from appareils where appareils.id_appareil not in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv'].')')->fetchAll();
+    $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv'])->fetchAll();
+    $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv'].')')->fetchAll();
 
     $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$type_controle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
 ?>
@@ -61,19 +49,175 @@
                 <tr>
                     <td class="partieTableau">
                         <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
-                            <?php creerApercuDetails($rapport, $pv['date']); ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <table>
+                                <tr>
+                                    <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="field">
+                                            <label>Clients : </label>
+                                            <label> <?php echo $societe['nom_societe']; ?> </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>N° Equipement : </label>
+                                            <label> <?php echo $equipement['Designation'].' '.$equipement['Type']; ?> </label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="field">
+                                            <label>Personne rencontrée : </label>
+                                            <label> <?php echo $client['nom']; ?> </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Diamètre : </label>
+                                            <label> <?php echo ($ficheTechniqueEquipement['diametre']/1000).' m'; ?> </label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="field">
+                                            <div class="field">
+                                                <label>Numéro de commande client : </label>
+                                                <label> <?php echo $affaire['commande']; ?> </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Hauteur : </label>
+                                            <label> <?php echo ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m'; ?> </label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="field">
+                                            <label>Lieu : </label>
+                                            <label> <?php echo  $affaire['lieu_intervention']; ?> </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Hauteur produit : </label>
+                                            <label> ? </label>
+                                            <!--                    <div class="field">-->
+                                            <!--                        <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
+                                            <!--                    </div>-->
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="field">
+                                            <label>Date de début du contrôle : </label>
+                                            <label> <?php echo conversionDate($pv['date_debut']); ?> </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Volume : </label>
+                                            <label> ? </label>
+                                            <!--                    <div class="field">-->
+                                            <!--                        <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
+                                            <!--                    </div>-->
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Distance entre 2 points : </label>
+                                            <label> ? </label>
+                                            <!--                    <div class="field">-->
+                                            <!--                        <input type="text" name="distance_points" placeholder="Distance (m)">-->
+                                            <!--                    </div>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <div class="field">
+                                            <label>Nombre de génératrices : </label>
+                                            <label> <?php echo $ficheTechniqueEquipement['nbGeneratrice']; ?> </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             <table>
                                 <?php creerApercuDocuments($rapport); ?>
                                 <tr>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                                             echo '<button class="ui left floated red button" name="reset" value="1"> Regénérer le fichier</button>';
                                         ?>
                                     </td>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                                             echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
                                         ?>
                                     </td>
@@ -82,7 +226,7 @@
                         </form>
                     </td>
                     <td class="partieTableau">
-                        <form method="get" action="modifPVOP.php">
+                        <form method="get" action="ajoutAppareilPV.php">
                             <table>
                                 <tr>
                                     <th colspan="2"><h4 class="ui dividing header">Appareils utilisés</h4></th>
@@ -113,7 +257,9 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><button class="ui right floated blue button">Ajouter cet appareil</button></td>
+                                    <td>
+                                        <input type="hidden" name="idPV" value="<?php echo $pv['id_pv']; ?>">
+                                        <button class="ui right floated blue button">Ajouter cet appareil</button></td>
                                 </tr>
 
                                 <tr>
@@ -125,10 +271,10 @@
                                 </tr>
                             </table>
                             <?php
-                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                             ?>
                         </form>
-                        <form method="get" action="modifPVOP.php">
+                        <form method="get" action="ajoutSituationPV.php">
                             <table>
                                 <tr>
                                     <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
@@ -203,11 +349,14 @@
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td><input type="hidden" name="validerCheckbox" value="1"><button class="ui right floated blue button">Valider</button></td>
+                                    <td>
+                                        <input type="hidden" name="idPV" value="<?php echo $pv['id_pv']; ?>">
+                                        <button class="ui right floated blue button">Valider</button>
+                                    </td>
                                 </tr>
                             </table>
                             <?php
-                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                             ?>
                         </form>
                         <table>
@@ -233,7 +382,7 @@
                                     </td>
                                     <td>
                                         <?php
-                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                                             echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
                                         ?>
                                         <button class="ui right floated blue button">Envoyer le fichier</button>
@@ -289,23 +438,6 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
         echo '<p id="infosAction">'.$messageErreur.'</p>';
         echo '</div>';
     }
-}
-
-/**
- * Retourne une valeur selon l'état de la checkbox dont le nom est passé en paramètre.
- *
- * @param PDO $bdd Base de données à modifier.
- * @param string $var Nom de la checkbox.
- * @return int Entier représentant le booléen dans la base (1 = vrai, 0 = faux).
- */
-function etatCB($bdd, $var) {
-    $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv_controle", "=", $_GET['idPV'])->fetch()[$var];
-    if (isset($_GET[$var]) && isset($_GET['validerCheckbox']) && $_GET['validerCheckbox'] == 1) // Si la case n'a pas été cochée
-        $valRet = 1;
-    else if (isset($_GET['validerCheckbox']) && $_GET['validerCheckbox'] == 1)
-        $valRet = 0;
-
-    return $valRet;
 }
 
 /**

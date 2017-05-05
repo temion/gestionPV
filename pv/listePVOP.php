@@ -19,7 +19,6 @@
 
     // Infos concernant les PV dans la liste
     $selectTypeControle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
-    $selectRapport = $bddAffaire->prepare('select * from rapports where id_rapport = ?');
     $selectAffaire = $bddAffaire->prepare('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports where id_rapport = ?)');
     $selectEquipement = $bddEquipement->prepare('select * from equipement where idEquipement = ?');
 ?>
@@ -82,28 +81,24 @@
  */
 function creerLignePV($PV) {
     global $selectAffaire;
-    global $selectRapport;
     global $selectEquipement;
     global $selectTypeControle;
-
-    $selectRapport->execute(array($PV['id_rapport']));
-    $affaireInspectionPV = $selectRapport->fetch();
 
     $selectAffaire->execute(array($PV['id_rapport']));
     $affaire = $selectAffaire->fetch();
 
-    $selectEquipement->execute(array($affaireInspectionPV['id_equipement']));
+    $selectEquipement->execute(array($PV['id_equipement']));
     $equipement = $selectEquipement->fetch();
 
     $selectTypeControle->execute(array($PV['id_type_controle']));
     $typeControle = $selectTypeControle->fetch();
 
-    echo '<tr><td>' . $PV['id_pv_controle'] . '</td><td>';
+    echo '<tr><td>' . $PV['id_pv'] . '</td><td>';
     echo $affaire['num_affaire'] . '</td><td>';
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
-    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
+    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date_debut']).'</td>';
     echo '<td>';
-    echo '<form method="get" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Modifier</button></form>';
+    echo '<form method="get" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Modifier</button></form>';
 }
 
 ?>

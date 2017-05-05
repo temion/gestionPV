@@ -9,13 +9,15 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd->exec('truncate table rapports');
     $bdd->exec('truncate table appareils_utilises');
     $bdd->exec('truncate table pv_controle');
-    $bdd->exec('truncate table equipements_inspectes');
+    $bdd->exec('truncate table conclusions_pv');
+    $bdd->exec('truncate table constatations_pv');
     $bdd->exec('delete from appareils where id_appareil > 15');
     $bdd->exec('alter table rapports auto_increment = 1');
     $bdd->exec('alter table appareils_utilises auto_increment = 1');
     $bdd->exec('alter table pv_controle auto_increment = 1');
     $bdd->exec('alter table appareils auto_increment = 1');
-    $bdd->exec('alter table equipements_inspectes auto_increment = 1');
+    $bdd->exec('alter table conclusions_pv auto_increment = 1');
+    $bdd->exec('alter table constatations_pv auto_increment = 1');
     $bdd->exec('update type_controle set num_controle = 0');
 }
 ?>
@@ -50,25 +52,6 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     <form method="post" action="index.php">
         <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
     </form>
-<!--    <button id="testModal" class="ui right floated green button">Test modal</button>-->
-<!--    <div class="ui large modal">-->
-<!--        <div style="text-align: left;" class="header">Observations  <i class="close icon"></i></div>-->
-<!--        <div class="content">-->
-<!--            <form method="get" action="index.php">-->
-<!--                <div class="ui form">-->
-<!--                    <div class="field">-->
-<!--                        <label>Type d'observation</label>-->
-<!--                        <input type="text" name="typeObservation">-->
-<!--                    </div>-->
-<!--                    <div class="field">-->
-<!--                        <label>Observation</label>-->
-<!--                        <textarea rows="2" name="observation"></textarea>-->
-<!--                    </div>-->
-<!--                    <button style="margin: 0 1em 0.5em 0;" class="ui right floated blue button">Valider cette observation</button>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
 
 <script>

@@ -95,9 +95,5 @@ function infosBDD($rapport) {
     $odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
     $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $odp['id_client'])->fetch();
 
-    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = $bddEquipement->query('select * from fichetechniqueequipement where idEquipement = '.$rapport['id_equipement'])->fetch();
-    $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
-
-    return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client, "equipement"=>$equipement, "ficheTechniqueEquipement"=>$ficheTechniqueEquipement);
+    return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client);
 }

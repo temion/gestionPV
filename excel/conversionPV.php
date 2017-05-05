@@ -9,16 +9,16 @@
 
     $bddAffaire = connexion('portail_gestion');
 
-    $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv_controle", "=", $_POST['idPV'])->fetch();
+    $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv", "=", $_POST['idPV'])->fetch();
 
     // Permet de télécharger toujours la dernière version du PV
-    if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
-        $chemin = str_replace("'", "", $pv['chemin_excel']);
+    if (isset($pv['chemin_fichier']) && $pv['chemin_fichier'] != null) {
+        $chemin = str_replace("'", "", $pv['chemin_fichier']);
         if (file_exists($chemin)) {
             if (isset($_POST['reset']) && $_POST['reset'] == 1) {
                 unlink($chemin);
             } else {
-                telecharger(str_replace("'", "", $pv['chemin_excel']));
+                telecharger(str_replace("'", "", $pv['chemin_fichier']));
                 exit;
             }
         }
@@ -34,13 +34,13 @@
 
     $typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 
-    $constatations = selectAllFromWhere($bddAffaire, "constatations_pv", "id_pv", "=", $pv['id_pv_controle'])->fetchAll();
-    $conclusions = selectAllFromWhere($bddAffaire, "conclusions_pv", "id_pv", "=", $pv['id_pv_controle'])->fetchAll();
+    $constatations = selectAllFromWhere($bddAffaire, "constatations_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
+    $conclusions = selectAllFromWhere($bddAffaire, "conclusions_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
 
-    $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv_controle'].')')->fetchAll();
+    $appareils = $bddAffaire->query('select * from appareils where id_appareil in (select id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv'].')')->fetchAll();
 
     $bddEquipement = connexion('theodolite');
-    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $rapport['id_equipement'])->fetch();
+    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
     $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "ficheTechniqueEquipement", "idEquipement", "=", $equipement['idEquipement'])->fetch();
 
     $classeur = new PHPExcel;
@@ -397,7 +397,7 @@ function sauvegarde($affaire, $typeControle, $pv, $bdd) {
     global $classeur, $feuille;
 
     $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
-        $rep = '../documents/PV_Excel/'.explode("-", $titre)[0].'/';
+    $rep = '../documents/PV_Excel/'.explode("-", $titre)[0].'/';
     $cheminFichier = $rep.$titre.'.xlsx';
 
     $feuille->setTitle($titre);
@@ -408,7 +408,7 @@ function sauvegarde($affaire, $typeControle, $pv, $bdd) {
 
     try {
         $writer->save($cheminFichier);
-        update($bdd, "pv_controle", "chemin_excel", $bdd->quote($cheminFichier), "id_pv_controle", "=", $_POST['idPV']);
+        update($bdd, "pv_controle", "chemin_fichier", $bdd->quote($cheminFichier), "id_pv", "=", $_POST['idPV']);
         telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
         header('Location: /gestionPV/pv/listePVOP.php?erreur=1');

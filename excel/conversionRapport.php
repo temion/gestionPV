@@ -20,6 +20,7 @@ $analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rap
 
 $listePV = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
 $type_controle = $bdd->prepare('select * from type_controle where id_type = ?');
+$prep_discipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
 
 $classeur = new PHPExcel;
 
@@ -203,16 +204,19 @@ function creerListeLivrables($listePV, $affaire) {
  * @param array $affaire Tableau contenant les informations concernant l'affaire suivie.
  */
 function creerInfosPV($pv, $affaire) {
-    global $feuille, $celluleAct, $type_controle, $bordures;
+    global $feuille, $celluleAct, $type_controle, $prep_discipline, $bordures;
 
     $type_controle->execute(array($pv['id_type_controle']));
     $type = $type_controle->fetch();
 
+    $prep_discipline->execute(array($pv['id_discipline']));
+    $discipline = $prep_discipline->fetch();
+
     remplirCellules($feuille, 'D'.$celluleAct, 'E'.$celluleAct, 'SCO '.explode(" ", $affaire['num_affaire'])[1]);
-    remplirCellules($feuille, 'F'.$celluleAct, "", "?");
+    remplirCellules($feuille, 'F'.$celluleAct, "", $discipline['code']);
     remplirCellules($feuille, 'G'.$celluleAct, "", $type['code']);
     remplirCellules($feuille, 'H'.$celluleAct, "", $pv['num_ordre']);
-    remplirCellules($feuille, 'I'.$celluleAct, "", conversionDate($pv['date']));
+    remplirCellules($feuille, 'I'.$celluleAct, "", conversionDate($pv['date_debut']));
     remplirCellules($feuille, 'J'.$celluleAct, "", "?");
 
     $feuille->getStyle('D'.$celluleAct.':J'.$celluleAct)->applyFromArray($bordures);
@@ -229,8 +233,10 @@ function creerInfosPV($pv, $affaire) {
 function sauvegarde($affaire) {
     global $classeur, $feuille;
 
+    global $affaire;
+
     $titre = 'SCO'.explode(" ", $affaire['num_affaire'])[1];
-    $rep = '../Rapports_Excel/'.$titre.'/';
+    $rep = '../documents/Rapports_Excel/'.$titre.'/';
     $cheminFichier = $rep . $titre . '.xlsx';
 
     $feuille->setTitle('Rapport_affaire_'.$titre);
@@ -243,7 +249,7 @@ function sauvegarde($affaire) {
         $writer->save($cheminFichier);
         telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
-        header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=1');
+        header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=&');
         exit;
     }
 

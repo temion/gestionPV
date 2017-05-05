@@ -12,10 +12,10 @@ if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
 }
 
 // Ensemble des affaires disponibles
-$numRapports = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports where rapports.id_rapport in (select pv_controle.id_rapport from pv_controle where chemin_excel is not null))')->fetchAll();
+$numRapports = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports where rapports.id_rapport in (select pv_controle.id_rapport from pv_controle where chemin_fichier is not null))')->fetchAll();
 
 // Ensemble des PV disponibles pour l'affaire sélectionnée
-$listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?)) and chemin_excel is not null;');
+$listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?)) and chemin_fichier is not null;');
 
 // Infos concernant les PV dans la liste
 $selectTypeControle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
@@ -92,18 +92,18 @@ function creerLignePV($PV) {
     $selectAffaire->execute(array($PV['id_rapport']));
     $affaire = $selectAffaire->fetch();
 
-    $selectEquipement->execute(array($affaireInspectionPV['id_equipement']));
+    $selectEquipement->execute(array($PV['id_equipement']));
     $equipement = $selectEquipement->fetch();
 
     $selectTypeControle->execute(array($PV['id_type_controle']));
     $typeControle = $selectTypeControle->fetch();
 
-    echo '<tr><td>' . $PV['id_pv_controle'] . '</td><td>';
+    echo '<tr><td>' . $PV['id_pv'] . '</td><td>';
     echo $affaire['num_affaire'] . '</td><td>';
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
-    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
+    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date_debut']).'</td>';
     echo '<td>';
-    echo '<form method="get" action="modifPVCA.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Infos</button></form>';
+    echo '<form method="get" action="modifPVCA.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Infos</button></form>';
 }
 
 ?>

@@ -7,10 +7,6 @@ td {
     padding: 0 2em 1em 2em;
 }
 
-button-button[name="utilisateur"] {
-    width: 15em;
-}
-
 table {
     margin: auto;
 }
@@ -26,10 +22,6 @@ table {
 
 .listeAjout {
     width: 20em;
-}
-
-#contenu {
-    padding: 1em 5em 2em 20em;
 }
 
 #ensTables {

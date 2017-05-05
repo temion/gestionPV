@@ -31,7 +31,6 @@
                 <tr>
                     <th>Identifiant rapport</th>
                     <th>Numéro d'affaire</th>
-                    <th>Equipement à inspecter</th>
                     <th>Nombre de PV</th>
                     <th>Modification</th>
                 </tr>
@@ -63,15 +62,12 @@ function creerLigneRapport($rapport) {
     $selectAffaire->execute(array($rapport['id_affaire']));
     $affaire = $selectAffaire->fetch();
 
-    $selectEquipement->execute(array($rapport['id_equipement']));
-    $equipement = $selectEquipement->fetch();
 
     $comptePV->execute(array($rapport['id_rapport']));
     $nbPV = $comptePV->fetch();
 
     echo '<tr><td>'.$rapport['id_rapport'].'</td>';
     echo '<td>'.$affaire['num_affaire'].'</td>';
-    echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
     echo '<td>'.$nbPV[0].'</td>';
     echo '<td><form method="get" action="modifRapportCA.php"><button name="idRapport" value="' .$rapport['id_rapport'].'" class="ui right floated blue button">Modifier</button></form></td>';
 }

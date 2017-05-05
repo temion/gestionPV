@@ -2,176 +2,227 @@
     include_once "../menu.php";
     verifSession("OP");
     enTete("Modification de rapport",
-             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
+             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/modifRapport.css", "../style/menu.css"),
              array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
     $bdd = connexion('portail_gestion');
+
+    if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
+        creerRapport($bdd);
+        $_GET['idRapport'] = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", "last_insert_id()")->fetch()['id_rapport'];
+    }
+
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+    $societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
+    $odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
+    $client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
 
-    if (isset($_GET['inspection']) && $_GET['inspection'] == "true") {
-        if (isset($_GET['equipement_inspecte']) && $_GET['equipement_inspecte'] != "") {
-            insert($bdd, "equipements_inspectes", array("null", $rapport['id_rapport'], $_GET['equipement_inspecte']));
-        } else {
-            $_GET['equipement_inspecte'] = "";
-        }
-    }
-
-//    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
-
-    if (isset($_GET['controle']) && $_GET['controle'] != "") {
-        if (verifFormatDates($_GET['date_debut'])) {
-            $controle = selectAllFromWhere($bdd, "type_controle", "concat(libelle, ' (', code, ')')", "like", $_GET['controle'])->fetch();
-            $nouvelleVal = $controle['num_controle'] + 1;
-            insert($bdd, "pv_controle", array("null", $controle['id_type'], $_GET['idRapport'], $nouvelleVal, "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_GET['date_debut'])), "null"));
-            update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controle['id_type']);
-        } else {
-            $_GET['controle'] = "";
-        }
-    }
+    $receveur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_receveur'])->fetch();
+    $analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
 
     $controles = selectAll($bdd, "type_controle")->fetchAll();
-    $controlesEffectues = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
-    $typeControle = $bdd->prepare('select * from type_controle where id_type = ?');
+
+    $disciplines = selectAll($bdd, "type_discipline")->fetchAll();
 
     $bddEquipement = connexion('theodolite');
     $listeEquipement = selectAll($bddEquipement, "equipement")->fetchAll();
-    $equipementsInspectes = selectAllFromWhere($bdd, "equipements_inspectes", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
-    $designationEquipementsInspectes = $bddEquipement->prepare('select * from equipement where idEquipement = ?');
 
-    $desEquipement = array();
-    for ($i = 0; $i < sizeof($equipementsInspectes); $i++) {
-        $designationEquipementsInspectes->execute(array($equipementsInspectes[$i]['id_equipement']));
-        array_push($desEquipement, $designationEquipementsInspectes->fetchAll());
-    }
+    $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
 ?>
 
         <div id="contenu">
             <h1 class="ui blue center aligned huge header">Modification du rapport <?php echo $affaire['num_affaire']; ?></h1>
-            <table id="ensTables">
-                <tr>
-                    <td class="partieTableau">
-                        <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionRapport.php"' ?>>
-                            <?php creerApercuDetails($rapport); ?>
-                            <table>
-                                <?php creerApercuDocuments($rapport); ?>
-                                <tr>
-                                    <td>
-                                        <?php
-                                            echo '<input type="hidden" name="idRapport" value="'.$rapport['id_rapport'].'">';
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                    </td>
-                    <td class="partieTableau">
-                        <form method="get" action="modifRapportCA.php">
-                            <table>
-                                <!-- ToDo -->
-                                <tr>
-                                    <th colspan="2"><h4 class="ui dividing header">Équipements à inspecter</h4></th>
-                                </tr>
+            <?php
+            afficherMessage('ajout', "Succès !", "Le PV a bien été crée.",
+                                 "Erreur", "Veuillez remplir tous les champs précédés d'un astérisque par des valeurs valides.");
+            ?>
 
-                                <tr>
-                                    <td>
-                                        <label> Équipement à inspecter: </label>
-                                        <select class="ui search dropdown listeAjout" name="equipement_inspecte">
-                                            <option selected> </option>
-                                            <?php
-                                            for ($i = 0; $i < sizeof($listeEquipement); $i++) {
-                                                echo '<option value="'.$listeEquipement[$i]['idEquipement'].'">'.$listeEquipement[$i]['Designation'].' '.$listeEquipement[$i]['Type'].'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <label> Équipements déjà ajoutés : </label>
-                                        <select disabled size=4 class="ui search dropdown listeAjout">
-                                            <?php
-                                                for ($i = 0; $i < sizeof($desEquipement); $i++) {
-                                                    echo '<option>'.$desEquipement[$i][0]['Designation'].' '.$desEquipement[$i][0]['Type'].'</option>';
-                                                }
-                                            ?>
-                                        </select>
-                                    </td>
-                                </tr>
+            <div class="ensTables">
+                <table>
+                    <tr>
+                        <th colspan="3"><h4 class="ui dividing header">Détails de l'affaire</h4></th>
+                    </tr>
 
-                                <tr>
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Clients : </label>
+                                <label> <?php echo $societe['nom_societe']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Lieu : </label>
+                                <label> <?php echo $affaire['lieu_intervention']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Demande reçue par : </label>
+                                <label> <?php echo $receveur['nom']; ?> </label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Nom (Coord.) : </label>
+                                <label> <?php echo $client['nom']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Téléphone : </label>
+                                <label> <?php echo $client['tel']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Demande analysée par : </label>
+                                <label> <?php echo $analyste['nom']; ?> </label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Appel d'offre ? </label>
+                                <label> <?php echo ($rapport['appel_offre'] ? "Oui" : "Non"); ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Avenant affaire n° : </label>
+                                <label> <?php echo $rapport['avenant_affaire']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Obtention de l'offre par : </label>
+                                <label> <?php echo $rapport['obtention']; ?> </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <th colspan="2"><h4 class="ui dividing header">Documents de référence</h4></th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Procédure de contrôle : </label>
+                                <label> <?php echo $rapport['procedure_controle']; ?> </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field">
+                                <label class="desc">Code d'interprétation : </label>
+                                <label> <?php echo $rapport['code_inter']; ?> </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="ensTables">
+                <form method="get" action="ajoutPV.php">
+                    <table>
+                        <tr>
+                            <th colspan="2"><h4 class="ui dividing header">Ajout d'un PV de contrôle</h4></th>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="desc" for="appareil"> * Équipement à contrôler : </label>
+                                <select class="ui search dropdown listeAjout" name="equipement">
+                                    <option selected> </option>
                                     <?php
-                                        afficherMessageAjout('equipement_inspecte', "L'équipement a bien été ajouté !", "Aucun équipement n'a été indiqué.");
+                                    for ($i = 0; $i < sizeof($listeEquipement); $i++) {
+                                        echo '<option value="'.$listeEquipement[$i]['idEquipement'].'">'.$listeEquipement[$i]['Type'].' '.$listeEquipement[$i]['Designation'].'</option>';
+                                    }
                                     ?>
-                                    <td colspan="2"><button class="ui right floated blue button" name="inspection">Ajouter cet équipement</button></td>
-                                </tr>
-                                <?php
-                                    echo '<input type="hidden" name="idRapport" value="'.$_GET['idRapport'].'">';
-                                    echo '<input type="hidden" name="inspection" value="true">'; // Flag pour indiquer que le formulaire a été envoyé
-                                ?>
-                            </table>
-                        </form>
-                            <!-- ToDo -->
-                        <form method="get" action="modifRapportCA.php">
-                            <table>
-                                <tr>
-                                    <th colspan="2"><h4 class="ui dividing header">Contrôles à effectuer</h4></th>
-                                </tr>
-
-
-                                <tr>
-                                    <td>
-                                        <label> Contrôles à effectuer : </label>
-                                        <select class="ui search dropdown listeAjout" name="controle">
-                                            <option selected> </option>
-                                            <?php
-                                                for ($i = 0; $i < sizeof($controles); $i++) {
-                                                    echo '<option>'.$controles[$i]['libelle'].' ('.$controles[$i]['code'].')</option>';
-                                                }
-                                            ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <label> Contrôles déjà ajoutés : </label>
-                                        <select disabled size=4 class="ui search dropdown listeAjout">
-                                            <?php
-                                            for ($i = 0; $i < sizeof($controlesEffectues); $i++) {
-                                                $typeControle->execute(array($controlesEffectues[$i]['id_type_controle']));
-                                                $infosControle = $typeControle->fetch();
-                                                echo '<option>'.$infosControle['libelle'].' ('.$infosControle['code'].') - '.conversionDate($controlesEffectues[$i]['date']).'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label> Début prévu du contrôle le : </label>
-                                        <div class="ui input" >
-                                            <input style="width: 20em" type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
+                                </select>
+                            </td>
+                            <td>
+                                <label class="desc" for="controleur"> Responsable du contrôle : </label>
+                                <select class="ui search dropdown listeAjout" name="controleur">
+                                    <option selected> </option>
                                     <?php
-                                        afficherMessageAjout('controle', "Le contrôle a bien été ajouté !", "Aucun contrôle n'a été indiqué.");
+                                    for ($i = 0; $i < sizeof($listeUtilisateurs); $i++) {
+                                        echo '<option value="'.$listeUtilisateurs[$i]['id_utilisateur'].'">'.$listeUtilisateurs[$i]['nom'].'</option>';
+                                    }
                                     ?>
-                                    <td colspan="2"><button class="ui right floated blue button">Ajouter ce contrôle</button></td>
-                                </tr>
-                                <?php
-                                    echo '<input type="hidden" name="idRapport" value="'.$_GET['idRapport'].'">';
-                                ?>
-                            </table>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-            <form method="post" action="listeRapportsCA.php">
-                <button class="ui right floated blue button">Retour à la liste des rapports</button>
-            </form>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="desc" for="appareil"> * Contrôle à effectuer : </label>
+                                <select class="ui search dropdown listeAjout" name="controle">
+                                    <option selected> </option>
+                                    <?php
+                                    for ($i = 0; $i < sizeof($controles); $i++) {
+                                        echo '<option value="'.$controles[$i]['id_type'].'">'.$controles[$i]['libelle'].' ('.$controles[$i]['code'].')</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <label class="desc" for="appareil"> * Discipline du PV : </label>
+                                <select class="ui search dropdown listeAjout" name="discipline">
+                                    <option selected> </option>
+                                    <?php
+                                    for ($i = 0; $i < sizeof($disciplines); $i++) {
+                                        echo '<option value="'.$disciplines[$i]['id_discipline'].'">'.$disciplines[$i]['libelle'].' ('.$disciplines[$i]['code'].')</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label class="desc"> * Date de début prévue : </label>
+                                <div class="ui input" >
+                                    <input type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
+                                </div>
+                            </td>
+
+                            <td>
+                                <label class="desc"> * Date de fin prévue : </label>
+                                <div class="ui input" >
+                                    <input type="date" name="date_fin" placeholder="(JJ-MM-AAAA)">
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
+                                <button class="ui right floated blue button">Ajouter ce PV au rapport</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+                <div class="boutons">
+                    <form action="listeRapportsCA.php"><button class="ui right floated blue button">Retour à la liste des rapports</button></form>
+                    <form method="post" action="../excel/conversionRapport.php">
+                        <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
+                        <button class="ui right floated blue button">Générer le rapport au format Excel</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </body>
 </html>
@@ -209,4 +260,30 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
         echo '<p id="infosAction">'.$messageErreur.'</p>';
         echo '</div></td>';
     }
+}
+
+function creerRapport($bdd) {
+    if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
+        $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
+        $_GET['procedure'] == "" || $_GET['codeInter'] == "") {
+        header("Location: creationRapport.php?erreur=1");
+        exit;
+    }
+
+    $affaire = selectAllFromWhere($bdd, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
+
+    // Id du récepteur de la demande
+    $idReceveur = selectAllFromWhere($bdd, "utilisateurs", "nom", "like", $_GET['demandeRecue'])->fetch();
+    // Id de l'analyste de la demande
+    $idAnalyste = selectAllFromWhere($bdd, "utilisateurs", "nom", "like", $_GET['demandeAnalysee'])->fetch();
+
+    $appelOffre = 1;
+    if (!isset($_GET['appelOffre'])) // Si la case n'a pas été cochée
+        $appelOffre = 0;
+
+    $valeursTmp =  array("null", $affaire['id_affaire'], $idReceveur['id_utilisateur'], $idAnalyste['id_utilisateur'],
+                        $bdd->quote($_GET['obtentionOffre']), $appelOffre, $_GET['numAvenant'], $bdd->quote($_GET['procedure']),
+                        $bdd->quote($_GET['codeInter']), "now()");
+
+    insert($bdd, "rapports", $valeursTmp);
 }

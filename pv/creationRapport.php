@@ -44,12 +44,11 @@
                 afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque.", "", "");
             ?>
 
-            <form method="get" action="infosRapport.php">
+            <form method="get" action="modifRapportCA.php">
                 <table>
                     <thead>
                         <tr>
-                            <th colspan="2"><h4 class="ui dividing header">Affaire & équipement</h4></th>
-                            <th colspan="2"><h4 class="ui dividing header">Responsable de l'affaire</h4></th>
+                            <th colspan="3"><h4 class="ui dividing header">Détails de l'affaire</h4></th>
                         </tr>
                     </thead>
 
@@ -73,31 +72,6 @@
                                                     echo '<option selected>'.$affaires[$i]['num_affaire'].'</option>';
                                                 else
                                                     echo '<option>'.$affaires[$i]['num_affaire'].'</option>';
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>* Numéro de l'équipement à inspecter : </label>
-                                <div class="field">
-                                    <?php
-                                        $url = "creationRapport.php?num_equipement=";
-                                        if (isset($_GET['num_affaire']))
-                                            $url = "creationRapport.php?num_affaire=".$_GET['num_affaire']."&num_equipement="; // Stockage de l'url pour l'aperçu du PV
-                                    ?>
-
-                                    <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="num_equipement">
-                                        <option selected label="defaut"> </option>
-                                        <?php
-                                            for ($i = 0; $i < sizeof($equipement); $i++) {
-                                                // Garde en mémoire l'élément sélectionné
-                                                if (isset($_GET['num_equipement']) &&  $equipement[$i]['Designation'].' '.$equipement[$i]['Type'] == $_GET['num_equipement'])
-                                                    echo '<option selected>'.$equipement[$i]['Designation'].' '.$equipement[$i]['Type'].'</option>';
-                                                else
-                                                    echo '<option>'.$equipement[$i]['Designation'].' '.$equipement[$i]['Type'].'</option>';
                                             }
                                         ?>
                                     </select>
@@ -141,9 +115,6 @@
                 </table>
 
                 <table>
-                    <tr>
-                        <th colspan="3"><h4 class="ui dividing header">Détails de l'affaire</h4></th>
-                    </tr>
                     <tr>
                         <td>
                             <label class="labelCB"> Appel d'offre ? </label>
@@ -346,6 +317,7 @@
                     </tr>
                 </table>
 
+                <input type="hidden" name="ajoutRapport" value="1">
                 <button class="ui right floated blue button">Valider</button>
             </form>
         </div>

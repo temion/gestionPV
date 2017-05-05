@@ -23,3 +23,14 @@
 #retour {
     margin-top: 3em;
 }
+
+#infosAction {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+#contenu {
+    padding: 1em 5em 2em 20em;
+}
