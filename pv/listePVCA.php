@@ -1,7 +1,7 @@
 <?php
 include_once "../menu.php";
 verifSession();
-enTete("Liste des PV",
+enTete("Liste des PV générés",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 $bddAffaire = connexion('portail_gestion');
@@ -103,7 +103,7 @@ function creerLignePV($PV) {
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
     echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date']).'</td>';
     echo '<td>';
-    echo '<form method="get" action="infosPVCA.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Infos</button></form>';
+    echo '<form method="get" action="modifPVCA.php"><button name="idPV" value="' . $PV['id_pv_controle'] . '" class="ui right floated blue button">Infos</button></form>';
 }
 
 ?>

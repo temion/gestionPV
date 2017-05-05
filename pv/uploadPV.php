@@ -18,8 +18,8 @@ if (isset($_FILES['pv_excel'])) {
         exit;
     }
 
-    mkdir("../PV_Excel/" . explode("-", $file_name)[0]);
-    $chemin = "../PV_Excel/" . explode("-", $file_name)[0].'/'.$file_name;
+    mkdir("../documents/PV_Excel/" . explode("-", $file_name)[0]);
+    $chemin = "../documents/PV_Excel/" . explode("-", $file_name)[0].'/'.$file_name;
     update($bdd, "pv_controle", "chemin_excel", $bdd->quote($chemin), "id_pv_controle", "=", $_POST['idPV']);
     move_uploaded_file($file_tmp, $chemin);
 

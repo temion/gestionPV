@@ -397,7 +397,7 @@ function sauvegarde($affaire, $typeControle, $pv, $bdd) {
     global $classeur, $feuille;
 
     $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
-    $rep = '../PV_Excel/'.explode("-", $titre)[0].'/';
+        $rep = '../documents/PV_Excel/'.explode("-", $titre)[0].'/';
     $cheminFichier = $rep.$titre.'.xlsx';
 
     $feuille->setTitle($titre);

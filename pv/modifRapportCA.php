@@ -17,7 +17,7 @@
         }
     }
 
-    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
+//    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
 
     if (isset($_GET['controle']) && $_GET['controle'] != "") {
         if (verifFormatDates($_GET['date_debut'])) {

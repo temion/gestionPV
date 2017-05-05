@@ -2,7 +2,7 @@
 
     include_once "../menu.php";
     verifSession("OP");
-    enTete("Liste des PV",
+    enTete("Modification des PV",
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
         array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
@@ -55,7 +55,7 @@
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv_controle'].'">';
-                                            echo '<input type="hidden" name="lienRetour" value="infosPVCA">';
+                                            echo '<input type="hidden" name="lienRetour" value="modifPVCA">';
                                         ?>
                                         <button class="ui right floated blue button">Envoyer le fichier</button>
                                     </td>

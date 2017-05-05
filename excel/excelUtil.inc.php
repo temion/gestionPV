@@ -1,8 +1,8 @@
 <?php
 
-require_once("../PHPExcel/Classes/PHPExcel.php");
+require_once("../lib/PHPExcel/Classes/PHPExcel.php");
 
-require_once("../PHPExcel/Classes/PHPExcel/IOFactory.php");
+require_once("../lib/PHPExcel/Classes/PHPExcel/IOFactory.php");
 
 $gris = 'c0c0c0';
 $jaune = 'f5f90c';
