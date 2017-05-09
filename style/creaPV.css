@@ -8,7 +8,6 @@ select:disabled {
 
 table {
     margin: 2em auto 0 auto;
-
 }
 
 th {
@@ -26,12 +25,6 @@ td {
 
 #apercu {
     margin-top: 10em;
-}
-
-#infosAction {
-    color: red;
-    text-align: center;
-    font-weight: bold;
 }
 
 #contenu {

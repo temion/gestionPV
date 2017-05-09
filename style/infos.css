@@ -28,12 +28,6 @@ table {
     margin: 5em auto 0 auto;
 }
 
-#infosAction {
-    color: red;
-    text-align: center;
-    font-weight: bold;
-}
-
 .partieTableau {
     width: 50em;
 }

@@ -125,7 +125,7 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $ficheTechni
         <td>
             <div class="field">
                 <label>Lieu : </label>
-                <label> <?php echo  $affaire['lieu_intervention']; ?> </label>
+                <label> <?php echo $affaire['lieu_intervention']; ?> </label>
             </div>
         </td>
         <td>

@@ -10,17 +10,10 @@ td {
 
 table {
     margin: 2em auto 0 auto;
-
 }
 
 select {
     width: 15em;
-}
-
-#infosAction {
-    color: red;
-    text-align: center;
-    font-weight: bold;
 }
 
 #contenu {

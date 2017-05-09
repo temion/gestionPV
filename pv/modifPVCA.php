@@ -43,7 +43,7 @@
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
-                                            if ($pv['chemin_fichier'] == null)
+                                            if ($pv['chemin_excel'] == null)
                                                 echo '<button disabled id="boutonGenere" class="ui left floated blue button">Télécharger le fichier Excel</button>';
                                             else
                                                 echo '<button id="boutonGenere" class="ui left floated blue button">Télécharger le fichier Excel</button>';

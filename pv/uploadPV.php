@@ -20,7 +20,7 @@ if (isset($_FILES['pv_excel'])) {
 
     mkdir("../documents/PV_Excel/" . explode("-", $file_name)[0]);
     $chemin = "../documents/PV_Excel/" . explode("-", $file_name)[0].'/'.$file_name;
-    update($bdd, "pv_controle", "chemin_fichier", $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
+    update($bdd, "pv_controle", "chemin_excel", $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
     move_uploaded_file($file_tmp, $chemin);
 
     header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=1&idPV='.$_POST['idPV']);

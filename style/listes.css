@@ -29,9 +29,3 @@ button > a {
 #contenu {
     padding: 1em 5em 0 20em;
 }
-
-#infosAction {
-    color: red;
-    text-align: center;
-    font-weight: bold;
-}

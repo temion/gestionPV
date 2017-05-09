@@ -12,13 +12,13 @@
     $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv", "=", $_POST['idPV'])->fetch();
 
     // Permet de télécharger toujours la dernière version du PV
-    if (isset($pv['chemin_fichier']) && $pv['chemin_fichier'] != null) {
-        $chemin = str_replace("'", "", $pv['chemin_fichier']);
+    if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
+        $chemin = str_replace("'", "", $pv['chemin_excel']);
         if (file_exists($chemin)) {
             if (isset($_POST['reset']) && $_POST['reset'] == 1) {
                 unlink($chemin);
             } else {
-                telecharger(str_replace("'", "", $pv['chemin_fichier']));
+                telecharger(str_replace("'", "", $pv['chemin_excel']));
                 exit;
             }
         }
@@ -59,8 +59,14 @@
         )
     );
 
-    $feuille->getColumnDimension('A')->setWidth(20);
-    $feuille->getColumnDimension('I')->setWidth(20);
+    $feuille->getColumnDimension('A')->setWidth(19);
+    $feuille->getColumnDimension('B')->setWidth(10);
+    $feuille->getColumnDimension('C')->setWidth(8);
+    $feuille->getColumnDimension('D')->setWidth(8);
+    $feuille->getColumnDimension('E')->setWidth(15);
+    $feuille->getColumnDimension('F')->setWidth(10);
+    $feuille->getColumnDimension('G')->setWidth(10);
+    $feuille->getColumnDimension('H')->setWidth(10);
 
     // Présentation PV
     $celluleAct = 1; // Cellule active
@@ -71,7 +77,7 @@
     detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv);
 
     $celluleAct = $celluleAct + 2;
-    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
+    colorerCellule($classeur, 'A'.$celluleAct.':H'.$celluleAct, $bleu); // Bleu
 
     // Partie documents référence
     $celluleAct = $celluleAct + 2;
@@ -118,23 +124,26 @@ function creerLigneAppareil($appareils, $ind) {
 
     creerChamp($feuille, $celluleAct, 'A', 'B', "Système : ", 'C', 'D', $appareils[$ind]['systeme']);
     creerChamp($feuille, $celluleAct, 'E', 'F', "Marque : ", 'G', 'H', $appareils[$ind]['marque']);
-    creerChamp($feuille, $celluleAct, 'I', 'J', "Date de calibration : ", 'K', 'L', $appareils[$ind]['date_calib']);
 
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A'.$celluleAct.':H'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $gris);
     colorerCellule($classeur, 'G'.$celluleAct, $gris);
-    colorerCellule($classeur, 'K'.$celluleAct, $gris);
 
     $celluleAct++;
 
     creerChamp($feuille, $celluleAct, 'A', 'B', "Type : ", 'C', 'D', $appareils[$ind]['type']);
     creerChamp($feuille, $celluleAct, 'E', 'F', "N° de série : ", 'G', 'H', $appareils[$ind]['num_serie']);
-    creerChamp($feuille, $celluleAct, 'I', 'J', "Date de validation : ", 'K', 'L', $appareils[$ind]['date_valid']);
 
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A'.$celluleAct.':H'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $gris);
     colorerCellule($classeur, 'G'.$celluleAct, $gris);
-    colorerCellule($classeur, 'K'.$celluleAct, $gris);
+
+    $celluleAct++;
+    creerChamp($feuille, $celluleAct, 'A', 'B', "Date de calibration : ", 'C', 'D', $appareils[$ind]['date_calib']);
+    creerChamp($feuille, $celluleAct, 'E', 'F', "Date de validation : ", 'G', 'H', $appareils[$ind]['date_valid']);
+    $feuille->getStyle('A'.$celluleAct.':H'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $gris);
+    colorerCellule($classeur, 'G'.$celluleAct, $gris);
 
     $celluleAct++;
 }
@@ -150,31 +159,31 @@ function creerLigneAppareil($appareils, $ind) {
 function presentationPV($affaire, $typeControle, $discipline, $pv) {
     global $classeur, $feuille, $celluleAct, $bleu;
 
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Sarl SCOPEO");
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "Sarl SCOPEO");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Route du Hoc");
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "Route du Hoc");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "76600 Le Havre");
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "76600 Le Havre");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Tél : 02.35.30.11.30");
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "Tél : 02.35.30.11.30");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Fax : 02.35.26.12.06");
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "Fax : 02.35.26.12.06");
 
     $celluleAct++;
-    remplirCellules($feuille, 'A'.$celluleAct, 'D'.$celluleAct, "Procès Verbal");
-    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    remplirCellules($feuille, 'A'.$celluleAct, 'B'.$celluleAct, "Procès Verbal");
+    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-    remplirCellules($feuille, 'E'.$celluleAct, 'H'.$celluleAct, "Inspection & contrôle");
+    remplirCellules($feuille, 'D'.$celluleAct, 'E'.$celluleAct, "Inspection & contrôle");
     $feuille->getCell('E'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-    remplirCellules($feuille, 'I'.$celluleAct, 'L'.$celluleAct, "SCO ".explode(" ", $affaire['num_affaire'])[1].' '.$discipline['code'].' '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
-    $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    remplirCellules($feuille, 'G'.$celluleAct, 'H'.$celluleAct, "SCO ".explode(" ", $affaire['num_affaire'])[1].' '.$discipline['code'].' '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
+    $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
-    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
+    colorerCellule($classeur, 'A'.$celluleAct.':H'.$celluleAct, $bleu); // Bleu
 }
 
 /**
@@ -190,7 +199,7 @@ function presentationPV($affaire, $typeControle, $discipline, $pv) {
 function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv) {
     global $classeur, $feuille, $celluleAct, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Détails de l'affaire");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Détails de l'affaire");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -221,7 +230,7 @@ function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEqu
 function documentsReference($rapport) {
     global $classeur, $feuille, $celluleAct, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Documents de référence : ");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Documents de référence : ");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -236,7 +245,7 @@ function documentsReference($rapport) {
 function situationControle($pv) {
     global $classeur, $feuille, $celluleAct, $bordures, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Situation de contrôle : ");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Situation de contrôle : ");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -244,12 +253,16 @@ function situationControle($pv) {
 
     creerChamp($feuille, $celluleAct, 'A', 'B', "Contrôle interne ? ", 'C', 'D', ($pv['controle_interne'] == 1 ? "OUI" : "NON"));
     creerChamp($feuille, $celluleAct, 'E', 'F', "Contrôle externe ? ", 'G', 'H', ($pv['controle_externe'] == 1 ? "OUI" : "NON"));
-    creerChamp($feuille, $celluleAct, 'I', 'J', "Contrôle périphérique ? ", 'K', 'L', ($pv['controle_peripherique'] == 1 ? "OUI" : "NON"));
 
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A'.$celluleAct.':H'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $gris);
     colorerCellule($classeur, 'G'.$celluleAct, $gris);
-    colorerCellule($classeur, 'K'.$celluleAct, $gris);
+
+    $celluleAct++;
+    creerChamp($feuille, $celluleAct, 'A', 'B', "Contrôle périphérique ? ", 'C', 'D', ($pv['controle_peripherique'] == 1 ? "OUI" : "NON"));
+
+    $feuille->getStyle('A'.$celluleAct.':D'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'C'.$celluleAct, $gris);
 }
 
 /**
@@ -260,7 +273,7 @@ function situationControle($pv) {
 function materielUtilise($appareils) {
     global $classeur, $feuille, $celluleAct, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Matériel utilisé");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Matériel utilisé");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -277,7 +290,7 @@ function materielUtilise($appareils) {
 function constatations($constatations) {
     global $classeur, $feuille, $celluleAct, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Constatations");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Constatations");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -301,7 +314,7 @@ function constatations($constatations) {
 function conclusions($conclusions) {
     global $classeur, $feuille, $celluleAct, $gris;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'L'.$celluleAct, "Conclusions");
+    remplirCellules($feuille, 'A'.$celluleAct, 'H'.$celluleAct, "Conclusions");
     $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     colorerCellule($classeur, 'A'.$celluleAct, $gris); // Gris
 
@@ -316,7 +329,6 @@ function conclusions($conclusions) {
     for ($i = 0; $i < $celluleAct; $i++) {
         $feuille->getCell('C'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $feuille->getCell('G'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-        $feuille->getCell('K'.$i)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
     }
 }
 
@@ -328,13 +340,13 @@ function conclusions($conclusions) {
 function signatures($pv) {
     global $classeur, $feuille, $celluleAct, $bordures, $gris, $bleu;
 
-    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
+    colorerCellule($classeur, 'A'.$celluleAct.':H'.$celluleAct, $bleu); // Bleu
 
     $celluleAct = $celluleAct + 2;
-    $feuille->getStyle('A'.$celluleAct.':L'.($celluleAct + 3))->applyFromArray($bordures);
+    $feuille->getStyle('A'.$celluleAct.':H'.($celluleAct + 3))->applyFromArray($bordures);
 
-    $feuille->mergeCells('C'.$celluleAct.':G'.($celluleAct + 3));
-    $feuille->mergeCells('H'.$celluleAct.':L'.($celluleAct + 3));
+    $feuille->mergeCells('C'.$celluleAct.':E'.($celluleAct + 3));
+    $feuille->mergeCells('F'.$celluleAct.':H'.($celluleAct + 3));
 
     $feuille->setCellValue('A'.$celluleAct, "Date : ");
     $feuille->setCellValue('B'.$celluleAct, date("d.m.y"));
@@ -343,9 +355,9 @@ function signatures($pv) {
     $feuille->setCellValue('C'.$celluleAct, "Nom et visa du contrôleur");
     $feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     $feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-    $feuille->setCellValue('H'.$celluleAct, "Nom et visa du vérificateur");
-    $feuille->getCell('H'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $feuille->getCell('H'.$celluleAct)->getStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+    $feuille->setCellValue('F'.$celluleAct, "Nom et visa du vérificateur");
+    $feuille->getCell('F'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $feuille->getCell('F'.$celluleAct)->getStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 
     $celluleAct++;
     $feuille->setCellValue('A'.$celluleAct, "Photos jointes : ");
@@ -376,14 +388,11 @@ function creerLigneInfos($enonce1, $valeur1, $enonce2, $valeur2) {
 
     $celluleAct++;
     creerChamp($feuille, $celluleAct, 'A', 'B', $enonce1, 'C', 'D',  $valeur1);
+    creerChamp($feuille, $celluleAct, 'E', 'F', $enonce2, 'G', 'H',  $valeur2);
 
-    $feuille->mergeCells('E'.$celluleAct.':H'.$celluleAct);
-
-    creerChamp($feuille, $celluleAct, 'I', 'J', $enonce2, 'K', 'L',  $valeur2);
-
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A'.$celluleAct.':H'.$celluleAct)->applyFromArray($bordures);
     colorerCellule($classeur, 'C'.$celluleAct, $gris);
-    colorerCellule($classeur, 'K'.$celluleAct, $gris);
+    colorerCellule($classeur, 'G'.$celluleAct, $gris);
 }
 
 /**
@@ -411,7 +420,7 @@ function sauvegarde($affaire, $typeControle, $discipline, $pv, $bdd) {
 
     try {
         $writer->save($cheminFichier);
-        update($bdd, "pv_controle", "chemin_fichier", $bdd->quote($cheminFichier), "id_pv", "=", $_POST['idPV']);
+        update($bdd, "pv_controle", "chemin_excel", $bdd->quote($cheminFichier), "id_pv", "=", $_POST['idPV']);
         telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
         header('Location: /gestionPV/pv/listePVOP.php?erreur=1');
