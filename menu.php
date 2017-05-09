@@ -39,7 +39,7 @@ function enTete($titre, $styles, $scripts) {
                         <a href="/gestionPV/pv/listeRapportsCA.php" class="item lienMenu">
                             Liste des rapports d'inspection existants
                         </a><a href="/gestionPV/pv/listePVCA.php" class="item lienMenu">
-                            Liste des PV générés
+                            Liste des PV
                         </a>
                     <?php
                     } else { ?>

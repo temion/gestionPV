@@ -12,10 +12,10 @@ if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
 }
 
 // Ensemble des affaires disponibles
-$numRapports = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports where rapports.id_rapport in (select pv_controle.id_rapport from pv_controle where chemin_fichier is not null))')->fetchAll();
+$numAffaires = $bddAffaire->query('select * from affaire where affaire.id_affaire in (select rapports.id_affaire from rapports)')->fetchAll();
 
 // Ensemble des PV disponibles pour l'affaire sélectionnée
-$listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?)) and chemin_fichier is not null;');
+$listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
 
 // Infos concernant les PV dans la liste
 $selectTypeControle = $bddAffaire->prepare('select * from type_controle where id_type = ?');
@@ -38,11 +38,11 @@ $selectEquipement = $bddEquipement->prepare('select * from equipement where idEq
             <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="ui search dropdown" name="numAffaire">
                 <option selected> </option>
                 <?php
-                for ($i = 0; $i < sizeof($numRapports); $i++) {
-                    if (isset($_GET['numAffaire']) && $numRapports[$i]['num_affaire'] == $_GET['numAffaire'])
-                        echo '<option selected>'.$numRapports[$i]['num_affaire'].'</option>';
+                for ($i = 0; $i < sizeof($numAffaires); $i++) {
+                    if (isset($_GET['numAffaire']) && $numAffaires[$i]['num_affaire'] == $_GET['numAffaire'])
+                        echo '<option selected>'.$numAffaires[$i]['num_affaire'].'</option>';
                     else
-                        echo '<option>'.$numRapports[$i]['num_affaire'].'</option>';
+                        echo '<option>'.$numAffaires[$i]['num_affaire'].'</option>';
                 }
                 ?>
             </select>

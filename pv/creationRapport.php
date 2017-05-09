@@ -111,7 +111,6 @@
                             </div>
                         </td>
                     </tr>
-
                 </table>
 
                 <table>
@@ -163,7 +162,7 @@
                 <table id="apercu">
                     <tr>
                         <th colspan="2">
-                            <h3 class="ui dividing left aligned header">Aperçu du rapport <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
+                            <h3 class="ui dividing left aligned header">Aperçu de l'affaire <?php if (isset($_GET['num_affaire'])) echo $affaireSelectionnee['num_affaire'] ?> </h3>
                         </th>
                     </tr>
 
@@ -180,18 +179,6 @@
                                 </label>
                             </div>
                         </td>
-                        <td>
-                            <div class="field">
-                                <label>N° Equipement : </label>
-                                <label>
-                                    <?php
-                                        if (isset($equipementSelectionne)) {
-                                            echo $equipementSelectionne['Designation'].' '.$equipementSelectionne['Type'];
-                                        }
-                                    ?>
-                                </label>
-                            </div>
-                        </td>
                     </tr>
 
                     <tr>
@@ -203,17 +190,6 @@
                                         if (isset($personneRencontree)) {
                                             echo $personneRencontree['nom'];
                                         }
-                                    ?>
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>Diamètre : </label>
-                                <label>
-                                    <?php
-                                        if (isset($ficheTechniqueEquipement))
-                                            echo ($ficheTechniqueEquipement['diametre']/1000).' m';
                                     ?>
                                 </label>
                             </div>
@@ -235,17 +211,6 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="field">
-                                <label>Hauteur : </label>
-                                <label>
-                                    <?php
-                                        if (isset($ficheTechniqueEquipement))
-                                            echo ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m';
-                                        ?>
-                                </label>
-                            </div>
-                        </td>
                     </tr>
 
                     <tr>
@@ -257,59 +222,6 @@
                                         if (isset($affaireSelectionnee)) {
                                             echo $affaireSelectionnee['lieu_intervention'];
                                         }
-                                    ?>
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>Hauteur produit : </label>
-                                <label>
-                                    <?php /* ToDo */ ?>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>Volume : </label>
-                                <label>
-                                    <?php /* ToDo */ ?>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>Distance entre 2 points : </label>
-                                <label>
-                                    <?php /* ToDo */ ?>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-
-                        </td>
-                        <td>
-                            <div class="field">
-                                <label>Nombre de génératrices : </label>
-                                <label>
-                                    <?php
-                                    if (isset($ficheTechniqueEquipement))
-                                        echo $ficheTechniqueEquipement['nbGeneratrice'];
                                     ?>
                                 </label>
                             </div>

@@ -21,6 +21,7 @@
 
     $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
     $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
+    $discipline = selectAllFromWhere($bdd, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
 
     $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
     $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
@@ -34,7 +35,7 @@
     $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv'])->fetchAll();
     $typeAppareilsUtilises = $bdd->query('select * from appareils where appareils.id_appareil in (select appareils_utilises.id_appareil from appareils_utilises where id_pv_controle = '.$pv['id_pv'].')')->fetchAll();
 
-    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$type_controle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
+    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$type_controle['code'].'-'.$discipline['code'].'-'.sprintf("%03d", $pv['num_ordre']);
 ?>
 
         <?php
@@ -44,168 +45,12 @@
 
         <div id="contenu">
             <?php $nomPV = explode(" ", $affaire['num_affaire']); ?>
-            <h1 class="ui blue center aligned huge header">Modification du PV <?php echo "SCO ".$nomPV[1]."-".$type_controle['code']."-".sprintf("%03d", $pv['num_ordre']); ?></h1>
+            <h1 class="ui blue center aligned huge header">Modification du PV <?php echo $titre; ?></h1>
             <table id="ensTables">
                 <tr>
                     <td class="partieTableau">
                         <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            <table>
-                                <tr>
-                                    <th colspan="2"><h3 class="ui right aligned header"><?php echo $affaire['num_affaire']; ?></h3></th>
-                                </tr>
-                                <tr>
-                                    <th colspan="2"><h4 class="ui dividing header">Détail de l'affaire</h4></th>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="field">
-                                            <label>Clients : </label>
-                                            <label> <?php echo $societe['nom_societe']; ?> </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>N° Equipement : </label>
-                                            <label> <?php echo $equipement['Designation'].' '.$equipement['Type']; ?> </label>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="field">
-                                            <label>Personne rencontrée : </label>
-                                            <label> <?php echo $client['nom']; ?> </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Diamètre : </label>
-                                            <label> <?php echo ($ficheTechniqueEquipement['diametre']/1000).' m'; ?> </label>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="field">
-                                            <div class="field">
-                                                <label>Numéro de commande client : </label>
-                                                <label> <?php echo $affaire['commande']; ?> </label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Hauteur : </label>
-                                            <label> <?php echo ($ficheTechniqueEquipement['hauteurEquipement']/1000).' m'; ?> </label>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="field">
-                                            <label>Lieu : </label>
-                                            <label> <?php echo  $affaire['lieu_intervention']; ?> </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Hauteur produit : </label>
-                                            <label> ? </label>
-                                            <!--                    <div class="field">-->
-                                            <!--                        <input type="text" name="hauteur_produit" placeholder="Hauteur du produit (m)">-->
-                                            <!--                    </div>-->
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="field">
-                                            <label>Date de début du contrôle : </label>
-                                            <label> <?php echo conversionDate($pv['date_debut']); ?> </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Volume : </label>
-                                            <label> ? </label>
-                                            <!--                    <div class="field">-->
-                                            <!--                        <input type="text" name="volume_equipement" placeholder="Volume (m²)">-->
-                                            <!--                    </div>-->
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Distance entre 2 points : </label>
-                                            <label> ? </label>
-                                            <!--                    <div class="field">-->
-                                            <!--                        <input type="text" name="distance_points" placeholder="Distance (m)">-->
-                                            <!--                    </div>-->
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                        <div class="field">
-                                            <label>Nombre de génératrices : </label>
-                                            <label> <?php echo $ficheTechniqueEquipement['nbGeneratrice']; ?> </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            <?php creerApercuModif($affaire, $societe, $equipement, $client, $ficheTechniqueEquipement, $pv); ?>
                             <table>
                                 <?php creerApercuDocuments($rapport); ?>
                                 <tr>

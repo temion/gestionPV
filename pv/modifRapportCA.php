@@ -37,7 +37,6 @@
             afficherMessage('ajout', "Succès !", "Le PV a bien été crée.",
                                  "Erreur", "Veuillez remplir tous les champs précédés d'un astérisque par des valeurs valides.");
             ?>
-
             <div class="ensTables">
                 <table>
                     <tr>
@@ -155,7 +154,8 @@
                                     <option selected> </option>
                                     <?php
                                     for ($i = 0; $i < sizeof($listeUtilisateurs); $i++) {
-                                        echo '<option value="'.$listeUtilisateurs[$i]['id_utilisateur'].'">'.$listeUtilisateurs[$i]['nom'].'</option>';
+                                        if ($listeUtilisateurs[$i]['nom'] != 'root')
+                                            echo '<option value="'.$listeUtilisateurs[$i]['id_utilisateur'].'">'.$listeUtilisateurs[$i]['nom'].'</option>';
                                     }
                                     ?>
                                 </select>
@@ -216,7 +216,13 @@
                 </form>
 
                 <div class="boutons">
-                    <form action="listeRapportsCA.php"><button class="ui right floated blue button">Retour à la liste des rapports</button></form>
+                    <form method="get" action="listeRapportsCA.php">
+                        <button class="ui right floated blue button">Retour à la liste des rapports</button>
+                    </form>
+                    <form method="get" action="listePVCA.php">
+                        <input type="hidden" name="numAffaire" value="<?php echo $affaire['num_affaire']; ?>">
+                        <button class="ui right floated blue button">Détails des PV du rapport</button>
+                    </form>
                     <form method="post" action="../excel/conversionRapport.php">
                         <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                         <button class="ui right floated blue button">Générer le rapport au format Excel</button>
@@ -282,7 +288,7 @@ function creerRapport($bdd) {
         $appelOffre = 0;
 
     $valeursTmp =  array("null", $affaire['id_affaire'], $idReceveur['id_utilisateur'], $idAnalyste['id_utilisateur'],
-                        $bdd->quote($_GET['obtentionOffre']), $appelOffre, $_GET['numAvenant'], $bdd->quote($_GET['procedure']),
+                        $bdd->quote($_GET['obtentionOffre']), $appelOffre, $bdd->quote($_GET['numAvenant']), $bdd->quote($_GET['procedure']),
                         $bdd->quote($_GET['codeInter']), "now()");
 
     insert($bdd, "rapports", $valeursTmp);

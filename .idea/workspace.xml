@@ -2,26 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03072153-2bba-49fb-8bb9-343234fe23e1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pv/ajoutAppareilPV.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pv/ajoutPV.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pv/ajoutSituationPV.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/style/modifRapport.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/pv/infosRapport.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bdd/bdd.inc.php" afterPath="$PROJECT_DIR$/bdd/bdd.inc.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/excel/conversionPV.php" afterPath="$PROJECT_DIR$/excel/conversionPV.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/excel/conversionRapport.php" afterPath="$PROJECT_DIR$/excel/conversionRapport.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/menu.php" afterPath="$PROJECT_DIR$/menu.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/creationRapport.php" afterPath="$PROJECT_DIR$/pv/creationRapport.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/listePVCA.php" afterPath="$PROJECT_DIR$/pv/listePVCA.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/listePVOP.php" afterPath="$PROJECT_DIR$/pv/listePVOP.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/listeRapportsCA.php" afterPath="$PROJECT_DIR$/pv/listeRapportsCA.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifPVCA.php" afterPath="$PROJECT_DIR$/pv/modifPVCA.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifPVOP.php" afterPath="$PROJECT_DIR$/pv/modifPVOP.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifRapportCA.php" afterPath="$PROJECT_DIR$/pv/modifRapportCA.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/uploadPV.php" afterPath="$PROJECT_DIR$/pv/uploadPV.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/style/infos.css" afterPath="$PROJECT_DIR$/style/infos.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/style/menu.css" afterPath="$PROJECT_DIR$/style/menu.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/util.inc.php" afterPath="$PROJECT_DIR$/util.inc.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,75 +38,43 @@
       <file leaf-file-name="modifRapportCA.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pv/modifRapportCA.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3757">
-              <caret line="221" column="76" lean-forward="false" selection-start-line="221" selection-start-column="76" selection-end-line="221" selection-end-column="76" />
+            <state relative-caret-position="3706">
+              <caret line="218" column="67" lean-forward="false" selection-start-line="218" selection-start-column="67" selection-end-line="218" selection-end-column="67" />
+              <folding>
+                <marker date="1494313236166" expanded="true" signature="11619:11709" ph="..." />
+                <marker date="1494313236166" expanded="true" signature="11976:12182" ph="{...}" />
+                <marker date="1494313236166" expanded="true" signature="12032:12182" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="modifRapport.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/style/modifRapport.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="modifPVOP.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
+      <file leaf-file-name="menu.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/style/menu.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="119" lean-forward="false" selection-start-line="30" selection-start-column="119" selection-end-line="30" selection-end-column="119" />
-              <folding>
-                <marker date="1493985128760" expanded="true" signature="2160:2322" ph="select * fro... appareils" />
-                <marker date="1493985128760" expanded="true" signature="2220:2305" ph="select appar... appareils_utilises" />
-                <marker date="1493985128760" expanded="true" signature="2502:2660" ph="select * fro... appareils" />
-                <marker date="1493985128760" expanded="true" signature="2558:2643" ph="select appar... appareils_utilises" />
-              </folding>
+            <state relative-caret-position="527">
+              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="modifPVCA.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/modifPVCA.php">
+      <file leaf-file-name="listes.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/style/listes.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1309">
-              <caret line="77" column="93" lean-forward="false" selection-start-line="77" selection-start-column="93" selection-end-line="77" selection-end-column="93" />
-              <folding>
-                <marker date="1493985696383" expanded="true" signature="1985:2034" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listeRapportsCA.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/listeRapportsCA.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="69" column="48" lean-forward="false" selection-start-line="69" selection-start-column="48" selection-end-line="69" selection-end-column="48" />
-              <folding>
-                <marker date="1493984977199" expanded="true" signature="707:749" ph="select * fro... affaire" />
-                <marker date="1493984977199" expanded="true" signature="802:849" ph="select * fro... equipement" />
-                <marker date="1493984977199" expanded="true" signature="891:944" ph="select count... pv_controle" />
-                <marker date="1493984977199" expanded="true" signature="977:1057" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="listePVOP.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/listePVOP.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
-              <folding>
-                <marker date="1493978843808" expanded="true" signature="869:961" ph="select disti... affaire_inspection" />
-                <marker date="1493978843808" expanded="true" signature="920:946" ph="select id_af... " />
-                <marker date="1493978843808" expanded="true" signature="920:952" ph="select affai... affaire_inspection" />
-                <marker date="1493978843808" expanded="true" signature="920:960" ph="select rappo... rapports" />
-                <marker date="1493978843808" expanded="true" signature="1078:1092" ph="select * fro... pv_controle" />
-                <marker date="1493978843808" expanded="true" signature="1078:1256" ph="SELECT * FRO... pv_controle" />
-                <marker date="1493978843808" expanded="true" signature="1078:1257" ph="select * fro... pv_controle" />
-                <marker date="1493978843808" expanded="true" signature="1137:1255" ph="SELECT id_af... affaire_inspection" />
-                <marker date="1493978843808" expanded="true" signature="1199:1254" ph="SELECT id_af... affaire" />
-                <marker date="1493978843808" expanded="true" signature="1355:1400" ph="select * fro... type_controle" />
-                <marker date="1493978843808" expanded="true" signature="1447:1560" ph="select * fro... affaire" />
-                <marker date="1493978843808" expanded="true" signature="1498:1559" ph="select affai... affaire_inspection" />
-                <marker date="1493978843808" expanded="true" signature="1613:1660" ph="select * fro... equipement" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -125,22 +82,20 @@
       <file leaf-file-name="listePVCA.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pv/listePVCA.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-649">
-              <caret line="24" column="2" lean-forward="false" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+            <state relative-caret-position="238">
+              <caret line="14" column="128" lean-forward="true" selection-start-line="14" selection-start-column="128" selection-end-line="14" selection-end-column="128" />
               <folding>
-                <marker date="1493985282648" expanded="true" signature="821:1024" ph="select * fro... affaire" />
-                <marker date="1493985282648" expanded="true" signature="872:912" ph="select rappo... rapports" />
-                <marker date="1493985282648" expanded="true" signature="872:1023" ph="select rappo... rapports" />
-                <marker date="1493985282648" expanded="true" signature="943:1022" ph="select pv_co... pv_controle" />
-                <marker date="1493985282648" expanded="true" signature="1133:1311" ph="SELECT * FRO... pv_controle" />
-                <marker date="1493985282648" expanded="true" signature="1133:1342" ph="SELECT * FRO... pv_controle" />
-                <marker date="1493985282648" expanded="true" signature="1192:1310" ph="SELECT id_ra... rapports" />
-                <marker date="1493985282648" expanded="true" signature="1254:1309" ph="SELECT id_af... affaire" />
-                <marker date="1493985282648" expanded="true" signature="1433:1478" ph="select * fro... type_controle" />
-                <marker date="1493985282648" expanded="true" signature="1521:1564" ph="select * fro... rapports" />
-                <marker date="1493985282648" expanded="true" signature="1607:1720" ph="select * fro... affaire" />
-                <marker date="1493985282648" expanded="true" signature="1658:1719" ph="select rappo... rapports" />
-                <marker date="1493985282648" expanded="true" signature="1769:1816" ph="select * fro... equipement" />
+                <marker date="1494313570183" expanded="true" signature="821:915" ph="select * fro... affaire" />
+                <marker date="1494313570183" expanded="true" signature="872:912" ph="select rappo... rapports" />
+                <marker date="1494313570183" expanded="true" signature="872:915" ph="select rappo... rapports" />
+                <marker date="1494313570183" expanded="true" signature="1022:1200" ph="SELECT * FRO... pv_controle" />
+                <marker date="1494313570183" expanded="true" signature="1081:1199" ph="SELECT id_ra... rapports" />
+                <marker date="1494313570183" expanded="true" signature="1143:1198" ph="SELECT id_af... affaire" />
+                <marker date="1494313570183" expanded="true" signature="1291:1336" ph="select * fro... type_controle" />
+                <marker date="1494313570183" expanded="true" signature="1379:1422" ph="select * fro... rapports" />
+                <marker date="1494313570183" expanded="true" signature="1465:1578" ph="select * fro... affaire" />
+                <marker date="1494313570183" expanded="true" signature="1516:1577" ph="select rappo... rapports" />
+                <marker date="1494313570183" expanded="true" signature="1627:1674" ph="select * fro... equipement" />
               </folding>
             </state>
           </provider>
@@ -149,40 +104,60 @@
       <file leaf-file-name="creationRapport.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pv/creationRapport.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5398">
-              <caret line="319" column="66" lean-forward="false" selection-start-line="319" selection-start-column="66" selection-end-line="319" selection-end-column="66" />
+            <state relative-caret-position="-380">
+              <caret line="167" column="0" lean-forward="true" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
               <folding>
-                <marker date="1493984812454" expanded="true" signature="15087:15111" ph="..." />
+                <marker date="1493994696485" expanded="true" signature="11474:11498" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ajoutSituationPV.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/ajoutSituationPV.php">
+      <file leaf-file-name="modifPVOP.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="74" lean-forward="false" selection-start-line="26" selection-start-column="74" selection-end-line="26" selection-end-column="74" />
+            <state relative-caret-position="271">
+              <caret line="52" column="128" lean-forward="true" selection-start-line="52" selection-start-column="28" selection-end-line="52" selection-end-column="128" />
+              <folding>
+                <marker date="1494314794477" expanded="true" signature="2276:2438" ph="select * fro... appareils" />
+                <marker date="1494314794477" expanded="true" signature="2336:2421" ph="select appar... appareils_utilises" />
+                <marker date="1494314794477" expanded="true" signature="2618:2776" ph="select * fro... appareils" />
+                <marker date="1494314794477" expanded="true" signature="2674:2759" ph="select appar... appareils_utilises" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="util.inc.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/util.inc.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1088">
+              <caret line="64" column="36" lean-forward="false" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ajoutPV.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/ajoutPV.php">
+      <file leaf-file-name="modifPVCA.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pv/modifPVCA.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="285" lean-forward="false" selection-start-line="11" selection-start-column="285" selection-end-line="11" selection-end-column="285" />
-              <folding />
+            <state relative-caret-position="-142">
+              <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding>
+                <marker date="1494314817776" expanded="true" signature="1810:1860" ph="..." />
+                <marker date="1494314817776" expanded="true" signature="2019:2159" ph="..." />
+                <marker date="1494314817776" expanded="true" signature="2040:2159" ph="..." />
+                <marker date="1494314817776" expanded="true" signature="2087:2159" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ajoutAppareilPV.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pv/ajoutAppareilPV.php">
+      <file leaf-file-name="uploadPV.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pv/uploadPV.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="85" />
+            <state relative-caret-position="238">
+              <caret line="14" column="46" lean-forward="false" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -200,7 +175,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$_POST</find>
       <find>$_post</find>
       <find>$_get</find>
       <find>$_GET</find>
@@ -230,6 +204,7 @@
       <find>$rapport</find>
       <find>date</find>
       <find>equipements_inspectes</find>
+      <find>$titre</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;id_rapport&quot;</replace>
@@ -251,7 +226,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pv/listePV.php" />
         <option value="$PROJECT_DIR$/style/creaPV.css" />
         <option value="$PROJECT_DIR$/equipements/verifModifEquipement.php" />
         <option value="$PROJECT_DIR$/appareils/ajoutAppareil.php" />
@@ -281,26 +255,27 @@
         <option value="$PROJECT_DIR$/pdf/Page.php" />
         <option value="$PROJECT_DIR$/pdf/pdf.inc.php" />
         <option value="$PROJECT_DIR$/pdf/PV_PDF.php" />
-        <option value="$PROJECT_DIR$/menu.php" />
-        <option value="$PROJECT_DIR$/style/infos.css" />
         <option value="$PROJECT_DIR$/style/modifRapport.css" />
         <option value="$PROJECT_DIR$/style/menu.css" />
         <option value="$PROJECT_DIR$/pv/ajoutAppareilPV.php" />
         <option value="$PROJECT_DIR$/pv/ajoutSituationPV.php" />
         <option value="$PROJECT_DIR$/pv/listePVOP.php" />
         <option value="$PROJECT_DIR$/pv/ajoutPV.php" />
-        <option value="$PROJECT_DIR$/pv/uploadPV.php" />
-        <option value="$PROJECT_DIR$/excel/conversionPV.php" />
         <option value="$PROJECT_DIR$/pv/infosRapport.php" />
-        <option value="$PROJECT_DIR$/pv/creationRapport.php" />
         <option value="$PROJECT_DIR$/pv/listeRapportsCA.php" />
-        <option value="$PROJECT_DIR$/pv/modifPVOP.php" />
-        <option value="$PROJECT_DIR$/pv/listePVCA.php" />
-        <option value="$PROJECT_DIR$/pv/modifPVCA.php" />
         <option value="$PROJECT_DIR$/bdd/bdd.inc.php" />
-        <option value="$PROJECT_DIR$/pv/modifRapportCA.php" />
         <option value="$PROJECT_DIR$/excel/conversionRapport.php" />
         <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/pv/creationRapport.php" />
+        <option value="$PROJECT_DIR$/style/ajout.css" />
+        <option value="$PROJECT_DIR$/style/infos.css" />
+        <option value="$PROJECT_DIR$/excel/conversionPV.php" />
+        <option value="$PROJECT_DIR$/pv/uploadPV.php" />
+        <option value="$PROJECT_DIR$/pv/modifRapportCA.php" />
+        <option value="$PROJECT_DIR$/pv/listePVCA.php" />
+        <option value="$PROJECT_DIR$/menu.php" />
+        <option value="$PROJECT_DIR$/pv/modifPVOP.php" />
+        <option value="$PROJECT_DIR$/pv/modifPVCA.php" />
         <option value="$PROJECT_DIR$/util.inc.php" />
       </list>
     </option>
@@ -369,6 +344,48 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="style" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gestionPV" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pv" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -419,132 +436,6 @@
             <PATH_ELEMENT USER_OBJECT="appareils">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="style" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pv" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="excel" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="equipements" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="documents" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bdd" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="appareils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -694,7 +585,8 @@
       <workItem from="1493810799185" duration="7155000" />
       <workItem from="1493879588951" duration="8295000" />
       <workItem from="1493897408113" duration="11358000" />
-      <workItem from="1493966109951" duration="16709000" />
+      <workItem from="1493966109951" duration="23666000" />
+      <workItem from="1494311245710" duration="3527000" />
     </task>
     <task id="LOCAL-00001" summary="ajout index.php + style (tests semanticUI)">
       <created>1491814109074</created>
@@ -955,11 +847,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493966694284</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="ajout d'un contrôleur dédié au PV, d'un système d'avancement et d'un équipement par PV dans la base + modifs en conséquence">
+      <created>1493987174993</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1493987174993</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="360468000" />
+    <option name="totallyTimeSpent" value="370952000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -976,10 +875,8 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1328125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -987,11 +884,13 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298969" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1005,7 +904,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/PHPExcel" />
     </ignored-roots>
-    <MESSAGE value="Restructuration des fichiers + mise en place documentation PHP" />
     <MESSAGE value="Mise en place association controles - appareils pour chaque PV&#10;Refonte du fichier Excel de sortie" />
     <MESSAGE value="Choix d'équipement en fonction de la société impliquée dans l'affaire" />
     <MESSAGE value="Création des fonctions d'affichage d'aperçu PV" />
@@ -1030,16 +928,16 @@
     <MESSAGE value="Téléchargement et upload fichiers côté CA" />
     <MESSAGE value="Passage en méthode get dans la plupart des formulaires" />
     <MESSAGE value="backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="backup" />
+    <MESSAGE value="ajout d'un contrôleur dédié au PV, d'un système d'avancement et d'un équipement par PV dans la base + modifs en conséquence" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout d'un contrôleur dédié au PV, d'un système d'avancement et d'un équipement par PV dans la base + modifs en conséquence" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pdf/PV_PDF.php" />
     <entry file="file://$PROJECT_DIR$/lib/PHPExcel/install.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="346">
@@ -1102,7 +1000,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
           <caret line="45" column="54" lean-forward="false" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1110,7 +1007,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1118,62 +1014,7 @@
     <entry file="file://$PROJECT_DIR$/lib/mpdf60/examples/alpha09.png" />
     <entry file="file://$PROJECT_DIR$/lib/mpdf60/examples/ColorGammaGradient.png" />
     <entry file="file://$PROJECT_DIR$/lib/mpdf60/mpdf.php" />
-    <entry file="file://$PROJECT_DIR$/menu.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="28" lean-forward="false" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/ajout.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="27" lean-forward="false" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/creaPV.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/infos.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/menu.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/ajoutAppareil.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/ajoutAppareil.php" />
     <entry file="file://$PROJECT_DIR$/excel/excelUtil.inc.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
@@ -1189,17 +1030,6 @@
           <folding>
             <marker date="1493986454443" expanded="true" signature="1157:1202" ph="select * fro... type_controle" />
             <marker date="1493986454443" expanded="true" signature="1240:1293" ph="select * fro... type_discipline" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/excel/conversionPV.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="45" column="9" lean-forward="false" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
-          <folding>
-            <marker date="1493979687605" expanded="true" signature="2091:2220" ph="select * fro... appareils" />
-            <marker date="1493979687605" expanded="true" signature="2137:2203" ph="select id_ap... appareils_utilises" />
           </folding>
         </state>
       </provider>
@@ -1335,69 +1165,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pv/infosRapport.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="42" column="22" lean-forward="false" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util.inc.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style/modifRapport.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/uploadPV.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="2" lean-forward="true" selection-start-line="29" selection-start-column="2" selection-end-line="29" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/modifRapportCA.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3757">
-          <caret line="221" column="76" lean-forward="false" selection-start-line="221" selection-start-column="76" selection-end-line="221" selection-end-column="76" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="119" lean-forward="false" selection-start-line="30" selection-start-column="119" selection-end-line="30" selection-end-column="119" />
-          <folding>
-            <marker date="1493985128760" expanded="true" signature="2160:2322" ph="select * fro... appareils" />
-            <marker date="1493985128760" expanded="true" signature="2220:2305" ph="select appar... appareils_utilises" />
-            <marker date="1493985128760" expanded="true" signature="2502:2660" ph="select * fro... appareils" />
-            <marker date="1493985128760" expanded="true" signature="2558:2643" ph="select appar... appareils_utilises" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/modifPVCA.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1309">
-          <caret line="77" column="93" lean-forward="false" selection-start-line="77" selection-start-column="93" selection-end-line="77" selection-end-column="93" />
-          <folding>
-            <marker date="1493985696383" expanded="true" signature="1985:2034" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/infosRapport.php" />
     <entry file="file://$PROJECT_DIR$/pv/listeRapportsCA.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
@@ -1433,38 +1201,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pv/listePVCA.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-649">
-          <caret line="24" column="2" lean-forward="false" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
-          <folding>
-            <marker date="1493985282648" expanded="true" signature="821:1024" ph="select * fro... affaire" />
-            <marker date="1493985282648" expanded="true" signature="872:912" ph="select rappo... rapports" />
-            <marker date="1493985282648" expanded="true" signature="872:1023" ph="select rappo... rapports" />
-            <marker date="1493985282648" expanded="true" signature="943:1022" ph="select pv_co... pv_controle" />
-            <marker date="1493985282648" expanded="true" signature="1133:1311" ph="SELECT * FRO... pv_controle" />
-            <marker date="1493985282648" expanded="true" signature="1133:1342" ph="SELECT * FRO... pv_controle" />
-            <marker date="1493985282648" expanded="true" signature="1192:1310" ph="SELECT id_ra... rapports" />
-            <marker date="1493985282648" expanded="true" signature="1254:1309" ph="SELECT id_af... affaire" />
-            <marker date="1493985282648" expanded="true" signature="1433:1478" ph="select * fro... type_controle" />
-            <marker date="1493985282648" expanded="true" signature="1521:1564" ph="select * fro... rapports" />
-            <marker date="1493985282648" expanded="true" signature="1607:1720" ph="select * fro... affaire" />
-            <marker date="1493985282648" expanded="true" signature="1658:1719" ph="select rappo... rapports" />
-            <marker date="1493985282648" expanded="true" signature="1769:1816" ph="select * fro... equipement" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pv/creationRapport.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5398">
-          <caret line="319" column="66" lean-forward="false" selection-start-line="319" selection-start-column="66" selection-end-line="319" selection-end-column="66" />
-          <folding>
-            <marker date="1493984812454" expanded="true" signature="15087:15111" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pv/ajoutSituationPV.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -1485,6 +1221,165 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/creaPV.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="28" lean-forward="false" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/ajout.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="27" lean-forward="false" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/infos.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="38" column="1" lean-forward="false" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/excel/conversionPV.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4890">
+          <caret line="100" column="53" lean-forward="false" selection-start-line="100" selection-start-column="53" selection-end-line="100" selection-end-column="53" />
+          <folding>
+            <marker date="1494312427539" expanded="true" signature="2214:2343" ph="select * fro... appareils" />
+            <marker date="1494312427539" expanded="true" signature="2260:2326" ph="select id_ap... appareils_utilises" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/menu.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="41" column="40" lean-forward="false" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/modifPVOP.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="52" column="128" lean-forward="true" selection-start-line="52" selection-start-column="28" selection-end-line="52" selection-end-column="128" />
+          <folding>
+            <marker date="1494314794477" expanded="true" signature="2276:2438" ph="select * fro... appareils" />
+            <marker date="1494314794477" expanded="true" signature="2336:2421" ph="select appar... appareils_utilises" />
+            <marker date="1494314794477" expanded="true" signature="2618:2776" ph="select * fro... appareils" />
+            <marker date="1494314794477" expanded="true" signature="2674:2759" ph="select appar... appareils_utilises" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="64" column="36" lean-forward="false" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/modifPVCA.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-142">
+          <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <marker date="1494314817776" expanded="true" signature="1810:1860" ph="..." />
+            <marker date="1494314817776" expanded="true" signature="2019:2159" ph="..." />
+            <marker date="1494314817776" expanded="true" signature="2040:2159" ph="..." />
+            <marker date="1494314817776" expanded="true" signature="2087:2159" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/uploadPV.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="46" lean-forward="false" selection-start-line="14" selection-start-column="46" selection-end-line="14" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/creationRapport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-380">
+          <caret line="167" column="0" lean-forward="true" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
+          <folding>
+            <marker date="1493994696485" expanded="true" signature="11474:11498" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/modifRapportCA.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3706">
+          <caret line="218" column="67" lean-forward="false" selection-start-line="218" selection-start-column="67" selection-end-line="218" selection-end-column="67" />
+          <folding>
+            <marker date="1494313236166" expanded="true" signature="11619:11709" ph="..." />
+            <marker date="1494313236166" expanded="true" signature="11976:12182" ph="{...}" />
+            <marker date="1494313236166" expanded="true" signature="12032:12182" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/modifRapport.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pv/listePVCA.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="128" lean-forward="true" selection-start-line="14" selection-start-column="128" selection-end-line="14" selection-end-column="128" />
+          <folding>
+            <marker date="1494313570183" expanded="true" signature="821:915" ph="select * fro... affaire" />
+            <marker date="1494313570183" expanded="true" signature="872:912" ph="select rappo... rapports" />
+            <marker date="1494313570183" expanded="true" signature="872:915" ph="select rappo... rapports" />
+            <marker date="1494313570183" expanded="true" signature="1022:1200" ph="SELECT * FRO... pv_controle" />
+            <marker date="1494313570183" expanded="true" signature="1081:1199" ph="SELECT id_ra... rapports" />
+            <marker date="1494313570183" expanded="true" signature="1143:1198" ph="SELECT id_af... affaire" />
+            <marker date="1494313570183" expanded="true" signature="1291:1336" ph="select * fro... type_controle" />
+            <marker date="1494313570183" expanded="true" signature="1379:1422" ph="select * fro... rapports" />
+            <marker date="1494313570183" expanded="true" signature="1465:1578" ph="select * fro... affaire" />
+            <marker date="1494313570183" expanded="true" signature="1516:1577" ph="select rappo... rapports" />
+            <marker date="1494313570183" expanded="true" signature="1627:1674" ph="select * fro... equipement" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/listes.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style/menu.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
       </provider>

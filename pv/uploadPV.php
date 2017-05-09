@@ -12,7 +12,7 @@ if (isset($_FILES['pv_excel'])) {
     $tmp = explode(".", $_FILES['pv_excel']['name']);
     $file_ext = strtolower(end($tmp));
 
-    $regEx = "#^SCO[0-9]+-[A-Z0-9]+-[0-9]+.xlsx$#";
+    $regEx = "#^SCO[0-9]+-[A-Z0-9]+-[A-Z0-9]+-[0-9]+.xlsx$#";
     if (!preg_match($regEx, $file_name)) {
         header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=0&idPV='.$_POST['idPV']);
         exit;

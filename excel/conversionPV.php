@@ -33,6 +33,7 @@
     $analyste = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
 
     $typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
+    $discipline = selectAllFromWhere($bddAffaire, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
 
     $constatations = selectAllFromWhere($bddAffaire, "constatations_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
     $conclusions = selectAllFromWhere($bddAffaire, "conclusions_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
@@ -63,7 +64,7 @@
 
     // Présentation PV
     $celluleAct = 1; // Cellule active
-    presentationPV($affaire, $typeControle, $pv);
+    presentationPV($affaire, $typeControle, $discipline, $pv);
 
     // Détails de l'affaire
     $celluleAct = $celluleAct + 2;
@@ -97,7 +98,7 @@
     signatures($pv);
 
     // Sauvegarde du fichier et redirection vers la liste des PV
-    sauvegarde($affaire, $typeControle, $pv, $bddAffaire);
+    sauvegarde($affaire, $typeControle, $discipline, $pv, $bddAffaire);
 //    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv, $bddAffaire));
     exit;
 ?>
@@ -143,9 +144,10 @@ function creerLigneAppareil($appareils, $ind) {
  *
  * @param array $affaire Informations de la base de données sur l'affaire concernée.
  * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
+ * @param array $discipline Informations de la base de données sur le type de discipline effectué.
  * @param array $pv Informations de la base de données sur le PV généré.
  */
-function presentationPV($affaire, $typeControle, $pv) {
+function presentationPV($affaire, $typeControle, $discipline, $pv) {
     global $classeur, $feuille, $celluleAct, $bleu;
 
     remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Sarl SCOPEO");
@@ -169,7 +171,7 @@ function presentationPV($affaire, $typeControle, $pv) {
     remplirCellules($feuille, 'E'.$celluleAct, 'H'.$celluleAct, "Inspection & contrôle");
     $feuille->getCell('E'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-    remplirCellules($feuille, 'I'.$celluleAct, 'L'.$celluleAct, "SCO ".explode(" ", $affaire['num_affaire'])[1].' ? '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
+    remplirCellules($feuille, 'I'.$celluleAct, 'L'.$celluleAct, "SCO ".explode(" ", $affaire['num_affaire'])[1].' '.$discipline['code'].' '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
     $feuille->getCell('I'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
@@ -389,14 +391,15 @@ function creerLigneInfos($enonce1, $valeur1, $enonce2, $valeur2) {
  *
  * @param array $affaire Informations de la base de données sur l'affaire concernée.
  * @param array $typeControle Informations de la base de données sur le type de contrôle effectué.
+ * @param array $discipline Informations de la base de données sur le type de discipline effectué.
  * @param array $pv Informations de la base de données sur le PV généré.
  * @param PDO $bdd Base de données contenant les informations.
  * @return string $nomPV Nom du fichier crée.
  */
-function sauvegarde($affaire, $typeControle, $pv, $bdd) {
+function sauvegarde($affaire, $typeControle, $discipline, $pv, $bdd) {
     global $classeur, $feuille;
 
-    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.sprintf("%03d", $pv['num_ordre']);
+    $titre = "SCO".explode(" ",$affaire['num_affaire'])[1].'-'.$typeControle['code'].'-'.$discipline['code'].'-'.sprintf("%03d", $pv['num_ordre']);
     $rep = '../documents/PV_Excel/'.explode("-", $titre)[0].'/';
     $cheminFichier = $rep.$titre.'.xlsx';
 
