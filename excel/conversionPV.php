@@ -11,6 +11,12 @@
 
     $pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv", "=", $_POST['idPV'])->fetch();
 
+    if (isset($_POST['pdf']) && $_POST['pdf'] == 1) {
+        $chemin = str_replace("'", "", $pv['chemin_pdf']);
+        telecharger($chemin);
+        exit;
+    }
+
     // Permet de télécharger toujours la dernière version du PV
     if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
         $chemin = str_replace("'", "", $pv['chemin_excel']);
@@ -60,10 +66,10 @@
     );
 
     $feuille->getColumnDimension('A')->setWidth(19);
-    $feuille->getColumnDimension('B')->setWidth(10);
+    $feuille->getColumnDimension('B')->setWidth(9);
     $feuille->getColumnDimension('C')->setWidth(8);
     $feuille->getColumnDimension('D')->setWidth(8);
-    $feuille->getColumnDimension('E')->setWidth(15);
+    $feuille->getColumnDimension('E')->setWidth(13);
     $feuille->getColumnDimension('F')->setWidth(10);
     $feuille->getColumnDimension('G')->setWidth(10);
     $feuille->getColumnDimension('H')->setWidth(10);
@@ -105,7 +111,6 @@
 
     // Sauvegarde du fichier et redirection vers la liste des PV
     sauvegarde($affaire, $typeControle, $discipline, $pv, $bddAffaire);
-//    header('Location: /gestionPV/pv/listePVOP.php?excelG=1&nomPV='.sauvegarde($affaire, $typeControle, $pv, $bddAffaire));
     exit;
 ?>
 

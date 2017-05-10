@@ -1,30 +1,65 @@
 <?php
 include_once '../bdd/bdd.inc.php';
 
-$bdd = connexion('portail_gestion');
+print_r($_POST['nomFichier']);
+upload($_POST['nomFichier']);
 
-if (isset($_FILES['pv_excel'])) {
-    $errors = array();
-    $file_name = $_FILES['pv_excel']['name'];
-    $file_size = $_FILES['pv_excel']['size'];
-    $file_tmp = $_FILES['pv_excel']['tmp_name'];
-    $file_type = $_FILES['pv_excel']['type'];
-    $tmp = explode(".", $_FILES['pv_excel']['name']);
-    $file_ext = strtolower(end($tmp));
+/**
+ * Upload le fichier correspondant à la variable $_FILES[$nomFichier].
+ *
+ * @param string $nomFichier Nom du fichier dans la superglobale $_FILES.
+ */
+function upload($nomFichier) {
+    $bdd = connexion('portail_gestion');
 
-    $regEx = "#^SCO[0-9]+-[A-Z0-9]+-[A-Z0-9]+-[0-9]+.xlsx$#";
-    if (!preg_match($regEx, $file_name)) {
-        header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=0&idPV='.$_POST['idPV']);
+    echo '<h1> '.$nomFichier.' </h1>';
+    if (isset($_FILES[$nomFichier])) {
+        echo '<h1> Oui </h1>';
+        $errors = array();
+        $file_name = $_FILES[$nomFichier]['name'];
+        $file_size = $_FILES[$nomFichier]['size'];
+        $file_tmp = $_FILES[$nomFichier]['tmp_name'];
+        $file_type = $_FILES[$nomFichier]['type'];
+        $tmp = explode(".", $_FILES[$nomFichier]['name']);
+        $file_ext = strtolower(end($tmp));
+
+        $nomValid = "#^SCO[0-9]+-[A-Z0-9]+-[A-Z0-9]+-[0-9]+";
+
+        $regEx = $nomValid;
+        if ($nomFichier == 'pv_excel')
+            $regEx .= ".xlsx$#";
+        else if ($nomFichier == 'pv_pdf')
+            $regEx .= ".pdf$#";
+        else
+            erreur();
+
+        echo '<h1>'.$regEx.'</h1>';
+        if (!preg_match($regEx, $file_name))
+            erreur();
+
+        if ($nomFichier == 'pv_excel') {
+            $rep = 'PV_Excel';
+            $colonne = "chemin_excel";
+        } else if ($nomFichier == 'pv_pdf') {
+            $rep = 'PV_PDF';
+            $colonne = "chemin_pdf";
+        }
+
+        mkdir("../documents/$rep/" . explode("-", $file_name)[0]);
+        $chemin = "../documents/$rep/" . explode("-", $file_name)[0] . '/' . $file_name;
+        update($bdd, "pv_controle", "$colonne", $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
+        move_uploaded_file($file_tmp, $chemin);
+
+        header('Location: /gestionPV/pv/' . $_POST['lienRetour'] . '.php?erreurUpload=0&idPV=' . $_POST['idPV']);
         exit;
     }
-
-    mkdir("../documents/PV_Excel/" . explode("-", $file_name)[0]);
-    $chemin = "../documents/PV_Excel/" . explode("-", $file_name)[0].'/'.$file_name;
-    update($bdd, "pv_controle", "chemin_excel", $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
-    move_uploaded_file($file_tmp, $chemin);
-
-    header('Location: /gestionPV/pv/'.$_POST['lienRetour'].'.php?erreurUpload=1&idPV='.$_POST['idPV']);
-    exit;
 }
 
+/**
+ * Retourne à la page précédente en renvoyant une erreur.
+ */
+function erreur() {
+    header('Location: /gestionPV/pv/' . $_POST['lienRetour'] . '.php?erreurUpload=1&idPV=' . $_POST['idPV']);
+    exit;
+}
 ?>

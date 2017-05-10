@@ -57,13 +57,24 @@
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
-                                            echo '<button class="ui left floated red button" name="reset" value="1"> Regénérer le fichier</button>';
+                                            echo '<button class="ui left floated red button" title="Restaure le fichier du serveur dans son état d\'origine" name="reset" value="1"> Regénérer le fichier</button>';
                                         ?>
                                     </td>
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
                                             echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                                            if ($pv['chemin_pdf'] != null) {
+                                                $chemin = str_replace("'", "", $pv['chemin_pdf']);
+                                                if (file_exists($chemin))
+                                                    echo '<button class="ui left floated blue button" name="pdf" value="1">Télécharger le fichier PDF</button>';
+                                            } else
+                                                echo '<button disabled style="pointer-events: auto;" title="Aucun fichier n\'a encore été uploadé" class="ui left floated blue button" name="reset" value="1">Télécharger le fichier PDF</button>';
                                         ?>
                                     </td>
                                 </tr>
@@ -214,12 +225,13 @@
                                 <td><button id="boutonConclusion" class="ui right floated blue button">Ajouter une conclusion</button></td>
                             </tr>
                         </table>
-                        <form enctype="multipart/form-data" action="uploadPV.php" method="post">
-                            <table>
-                                <tr>
-                                    <th colspan="2"><h4 class="ui dividing header">Uploader le fichier Excel complété</h4></th>
-                                </tr>
 
+                        <table>
+                            <tr>
+                                <th colspan="2"><h4 class="ui dividing header">Uploader les fichiers</h4></th>
+                            </tr>
+
+                            <form enctype="multipart/form-data" action="uploadPV.php" method="post">
                                 <tr>
                                     <td>
                                         <input type="hidden" name="taille_max" value="30000" />
@@ -228,19 +240,39 @@
                                     <td>
                                         <?php
                                             echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                                            echo '<input type="hidden" name="nomFichier" value="pv_excel">';
                                             echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
                                         ?>
-                                        <button class="ui right floated blue button">Envoyer le fichier</button>
+                                        <button class="ui right floated blue button">Uploader au format Excel</button>
                                     </td>
                                 </tr>
+                            </form>
 
+                            <!--
+                            <form enctype="multipart/form-data" action="uploadPV.php" method="post">
                                 <tr>
-                                    <?php
-                                        afficherMessage('erreurUpload', "Succès !", "Le fichier a bien été uploadé !", "Erreur", "Erreur dans l'upload du fichier");
-                                    ?>
+                                    <td>
+                                        <input type="hidden" name="taille_max" value="30000" />
+                                        <input name="pv_pdf" type="file" />
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">';
+                                            echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
+                                            echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
+                                        ?>
+                                        <button class="ui right floated blue button">Uploader au format PDF</button>
+                                    </td>
                                 </tr>
-                            </table>
-                        </form>
+                            </form>
+                            -->
+
+                            <tr>
+                                <?php
+                                    afficherMessage('erreurUpload', "Erreur", "Erreur dans l'upload du fichier", "Succès","Le fichier a bien été uploadé !");
+                                ?>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>

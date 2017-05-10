@@ -22,7 +22,7 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
 }
 ?>
 
-<div id="contenu">
+<div id="contenu" bgcolor = "chucknorris">
     <h1 id="titre" class="ui blue center aligned huge header">Portail de gestion des PV</h1>
 
     <div class="ui message">

@@ -188,7 +188,7 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $ficheTechni
 function creerApercuDocuments($pv) {
     ?>
     <tr>
-        <th colspan="2"><h4 class="ui dividing header">Document de référence</h4></th>
+        <th colspan="3"><h4 class="ui dividing header">Document de référence</h4></th>
     </tr>
 
     <tr>
@@ -198,6 +198,7 @@ function creerApercuDocuments($pv) {
                 <label> <?php echo $pv['procedure_controle']; ?> </label>
             </div>
         </td>
+        <td></td>
         <td>
             <div class="field">
                 <label>Code d'interprétation : </label>
