@@ -1,0 +1,69 @@
+#enTete {
+    text-align: right;
+}
+
+table {
+    margin-top: 2%;
+    width: 100%;
+}
+
+#presentation, .separateur {
+    background-color: #426bf4;
+}
+
+#presentation td {
+    width: 33.33%;
+    font-weight: bold;
+}
+
+#presentation #td1 {
+    text-align: left;
+}
+
+#presentation #td2 {
+    text-align: center;
+}
+
+#presentation #td3 {
+    text-align: right;
+}
+
+.details, .signatures {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.titre {
+    width: inherit;
+    background-color: #c0c0c0;
+}
+
+.titre td {
+    width: inherit;
+    text-align: center;
+}
+
+.details td {
+    border: 1px solid black;
+    width: 25%;
+    text-align: left;
+}
+
+.constatation, .conclusion {
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+.signatures td {
+    border: 1px solid black;
+    width: 17%;
+}
+
+.visa {
+    vertical-align: text-top;
+    text-align: center;
+}
+
+.info {
+    background-color: #c0c0c0;
+}

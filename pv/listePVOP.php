@@ -53,6 +53,7 @@
                         <th>Numéro d'affaire</th>
                         <th>Equipement à inspecter</th>
                         <th>Contrôle</th>
+                        <th>Générer PDF (test)</th>
                         <th>Modification</th>
                     </tr>
                 </thead>
@@ -96,9 +97,9 @@ function creerLignePV($PV) {
     echo '<tr><td>' . $PV['id_pv'] . '</td><td>';
     echo $affaire['num_affaire'] . '</td><td>';
     echo $equipement['Designation'].' '.$equipement['Type'].'</td><td>';
-    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date_debut']).'</td>';
-    echo '<td>';
-    echo '<form method="get" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Modifier</button></form>';
+    echo $typeControle['libelle'].' '.$PV['num_ordre'].' - Début prévu le '.conversionDate($PV['date_debut']).'</td><td>';
+    echo '<form method="post" action="../creationPDF/creationPDF.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Générer</button></form></td><td>';
+    echo '<form method="get" action="modifPVOP.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
 }
 
 ?>
