@@ -3,7 +3,7 @@ require_once "../util.inc.php";
 require_once "excelUtil.inc.php";
 
 // Redéfinit le comportement en cas d'erreur, pour gérer la sauvegarde lorsque le fichier est ouvert
-set_error_handler(function() {
+set_error_handler(function () {
     // Les erreurs ne bloquent plus l'exécution de l'application.
 });
 
@@ -18,8 +18,8 @@ $receveur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rap
 $analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
 
 $listePV = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
-$type_controle = $bdd->prepare('select * from type_controle where id_type = ?');
-$prep_discipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
+$type_controle = $bdd->prepare('SELECT * FROM type_controle WHERE id_type = ?');
+$prep_discipline = $bdd->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 
 $classeur = new PHPExcel;
 
@@ -45,13 +45,13 @@ detailsRapport($rapport, $affaire, $societeClient, $client, $receveur, $analyste
 $celluleAct++;
 $celluleAct++;
 
-remplirCellules($feuille, 'A'.$celluleAct, 'B'.$celluleAct, "Titre : ");
-remplirCellules($feuille, 'C'.$celluleAct, 'L'.$celluleAct, $affaire['libelle']);
+remplirCellules($feuille, 'A' . $celluleAct, 'B' . $celluleAct, "Titre : ");
+remplirCellules($feuille, 'C' . $celluleAct, 'L' . $celluleAct, $affaire['libelle']);
 
-colorerCellule($classeur, 'A'.$celluleAct, $gris);
-colorerCellule($classeur, 'C'.$celluleAct, $jaune);
-$feuille->getCell('C'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-$feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+colorerCellule($classeur, 'A' . $celluleAct, $gris);
+colorerCellule($classeur, 'C' . $celluleAct, $jaune);
+$feuille->getCell('C' . $celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+$feuille->getStyle('A' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
 $celluleAct++;
 $celluleAct++;
@@ -66,7 +66,7 @@ $feuille->getColumnDimension('J')->setWidth(15);
 
 sauvegarde($affaire);
 
-header('Location: /gestionPV/pv/listeRapportsCA.php?excelG=1&nomRapport='.sauvegarde($affaire));
+header('Location: /gestionPV/pv/listeRapportsCA.php?excelG=1&nomRapport=' . sauvegarde($affaire));
 
 dns_get_record("");
 restore_error_handler();
@@ -80,27 +80,27 @@ exit;
 function presentationRapport($affaire) {
     global $classeur, $feuille, $celluleAct, $bleu, $bordures;
 
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Sarl SCOPEO");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, "Sarl SCOPEO");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Route du Hoc");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, "Route du Hoc");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "76600 Le Havre");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, "76600 Le Havre");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Tél : 02.35.30.11.30");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, "Tél : 02.35.30.11.30");
 
     $celluleAct++;
-    remplirCellules($feuille, 'K'.$celluleAct, 'L'.$celluleAct, "Fax : 02.35.26.12.06");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, "Fax : 02.35.26.12.06");
 
     $celluleAct++;
     $feuille->mergeCells('A' . $celluleAct . ':L' . $celluleAct);
-    $feuille->setCellValue('A'.$celluleAct, "Descriptif de l'affaire ".$affaire['num_affaire']);
-    $feuille->getCell('A'.$celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $feuille->setCellValue('A' . $celluleAct, "Descriptif de l'affaire " . $affaire['num_affaire']);
+    $feuille->getCell('A' . $celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-    colorerCellule($classeur, 'A'.$celluleAct.':L'.$celluleAct, $bleu); // Bleu
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'A' . $celluleAct . ':L' . $celluleAct, $bleu); // Bleu
+    $feuille->getStyle('A' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 }
 
 /**
@@ -117,26 +117,26 @@ function detailsRapport($rapport, $affaire, $societeClient, $client, $receveur, 
     global $classeur, $feuille, $celluleAct, $jaune, $bordures;
 
     creerLigneDetails("Client : ", $societeClient['nom_societe'], "Lieu : ", $affaire['lieu_intervention'], "Demande reçue par : ", $receveur['nom']);
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
     creerLigneDetails("Nom (Coord.) : ", $client['nom'], "Téléphone : ", $client['tel'], "Demande analysée par : ", $analyste['nom']);
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('A' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
-    creerLigneDetails("Appel d'offre ? ", ($rapport['appel_offre'] == 1 ? "OUI" : "NON"), "Avenant affaire n° : ", $rapport['avenant_affaire'], "Obtention de l'offre : ",  $rapport['obtention']);
-    $feuille->getStyle('A'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    creerLigneDetails("Appel d'offre ? ", ($rapport['appel_offre'] == 1 ? "OUI" : "NON"), "Avenant affaire n° : ", $rapport['avenant_affaire'], "Obtention de l'offre : ", $rapport['obtention']);
+    $feuille->getStyle('A' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
-    remplirCellules($feuille, 'I'.$celluleAct, "", "Date : ");
-    remplirCellules($feuille, 'J'.$celluleAct, "", conversionDate(explode(" ", $rapport['date'])[0]));
-    $feuille->getStyle('I'.$celluleAct.':L'.$celluleAct)->applyFromArray($bordures);
+    remplirCellules($feuille, 'I' . $celluleAct, "", "Date : ");
+    remplirCellules($feuille, 'J' . $celluleAct, "", conversionDate(explode(" ", $rapport['date'])[0]));
+    $feuille->getStyle('I' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
-    remplirCellules($feuille, 'K'.$celluleAct, "", "Heure : ");
-    remplirCellules($feuille, 'L'.$celluleAct, "", explode(" ", $rapport['date'])[1]);
+    remplirCellules($feuille, 'K' . $celluleAct, "", "Heure : ");
+    remplirCellules($feuille, 'L' . $celluleAct, "", explode(" ", $rapport['date'])[1]);
 
-    colorerCellule($classeur, 'J'.$celluleAct, $jaune);
-    colorerCellule($classeur, 'L'.$celluleAct, $jaune);
+    colorerCellule($classeur, 'J' . $celluleAct, $jaune);
+    colorerCellule($classeur, 'L' . $celluleAct, $jaune);
 }
 
 /**
@@ -152,18 +152,18 @@ function detailsRapport($rapport, $affaire, $societeClient, $client, $receveur, 
 function creerLigneDetails($enonce1, $valeur1, $enonce2, $valeur2, $enonce3, $valeur3) {
     global $feuille, $celluleAct, $classeur, $jaune;
 
-    remplirCellules($feuille,'A'.$celluleAct, 'B'.$celluleAct, $enonce1);
-    remplirCellules($feuille,'C'.$celluleAct, 'D'.$celluleAct, $valeur1);
+    remplirCellules($feuille, 'A' . $celluleAct, 'B' . $celluleAct, $enonce1);
+    remplirCellules($feuille, 'C' . $celluleAct, 'D' . $celluleAct, $valeur1);
 
-    remplirCellules($feuille,'E'.$celluleAct, 'F'.$celluleAct, $enonce2);
-    remplirCellules($feuille,'G'.$celluleAct, 'H'.$celluleAct, $valeur2);
+    remplirCellules($feuille, 'E' . $celluleAct, 'F' . $celluleAct, $enonce2);
+    remplirCellules($feuille, 'G' . $celluleAct, 'H' . $celluleAct, $valeur2);
 
-    remplirCellules($feuille,'I'.$celluleAct, 'J'.$celluleAct, $enonce3);
-    remplirCellules($feuille,'K'.$celluleAct, 'L'.$celluleAct, $valeur3);
+    remplirCellules($feuille, 'I' . $celluleAct, 'J' . $celluleAct, $enonce3);
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, $valeur3);
 
-    colorerCellule($classeur, 'C'.$celluleAct, $jaune);
-    colorerCellule($classeur, 'G'.$celluleAct, $jaune);
-    colorerCellule($classeur, 'K'.$celluleAct, $jaune);
+    colorerCellule($classeur, 'C' . $celluleAct, $jaune);
+    colorerCellule($classeur, 'G' . $celluleAct, $jaune);
+    colorerCellule($classeur, 'K' . $celluleAct, $jaune);
 }
 
 /**
@@ -175,20 +175,20 @@ function creerLigneDetails($enonce1, $valeur1, $enonce2, $valeur2, $enonce3, $va
 function creerListeLivrables($listePV, $affaire) {
     global $classeur, $feuille, $celluleAct, $gris, $bordures;
 
-    remplirCellules($feuille, 'A'.$celluleAct, 'B'.$celluleAct, "Liste des livrables : ");
-    $feuille->getStyle('A'.$celluleAct.':B'.$celluleAct)->applyFromArray($bordures);
+    remplirCellules($feuille, 'A' . $celluleAct, 'B' . $celluleAct, "Liste des livrables : ");
+    $feuille->getStyle('A' . $celluleAct . ':B' . $celluleAct)->applyFromArray($bordures);
 
-    colorerCellule($classeur, 'A'.$celluleAct, $gris);
+    colorerCellule($classeur, 'A' . $celluleAct, $gris);
 
-    remplirCellules($feuille, 'D'.$celluleAct, 'E'.$celluleAct, "Numéro d'affaire");
-    remplirCellules($feuille, 'F'.$celluleAct, "", "Discipline");
-    remplirCellules($feuille, 'G'.$celluleAct, "", "Type de contrôle");
-    remplirCellules($feuille, 'H'.$celluleAct, "", "Numéro d'ordre");
-    remplirCellules($feuille, 'I'.$celluleAct, "", "Début prévu le");
-    remplirCellules($feuille, 'J'.$celluleAct, "", "Avancement");
+    remplirCellules($feuille, 'D' . $celluleAct, 'E' . $celluleAct, "Numéro d'affaire");
+    remplirCellules($feuille, 'F' . $celluleAct, "", "Discipline");
+    remplirCellules($feuille, 'G' . $celluleAct, "", "Type de contrôle");
+    remplirCellules($feuille, 'H' . $celluleAct, "", "Numéro d'ordre");
+    remplirCellules($feuille, 'I' . $celluleAct, "", "Début prévu le");
+    remplirCellules($feuille, 'J' . $celluleAct, "", "Avancement");
 
-    colorerCellule($classeur, 'D'.$celluleAct.':J'.$celluleAct, $gris);
-    $feuille->getStyle('D'.$celluleAct.':j'.$celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'D' . $celluleAct . ':J' . $celluleAct, $gris);
+    $feuille->getStyle('D' . $celluleAct . ':j' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
     for ($i = 0; $i < sizeof($listePV); $i++) {
@@ -211,14 +211,14 @@ function creerInfosPV($pv, $affaire) {
     $prep_discipline->execute(array($pv['id_discipline']));
     $discipline = $prep_discipline->fetch();
 
-    remplirCellules($feuille, 'D'.$celluleAct, 'E'.$celluleAct, 'SCO '.explode(" ", $affaire['num_affaire'])[1]);
-    remplirCellules($feuille, 'F'.$celluleAct, "", $discipline['code']);
-    remplirCellules($feuille, 'G'.$celluleAct, "", $type['code']);
-    remplirCellules($feuille, 'H'.$celluleAct, "", $pv['num_ordre']);
-    remplirCellules($feuille, 'I'.$celluleAct, "", conversionDate($pv['date_debut']));
-    remplirCellules($feuille, 'J'.$celluleAct, "", "?");
+    remplirCellules($feuille, 'D' . $celluleAct, 'E' . $celluleAct, 'SCO ' . explode(" ", $affaire['num_affaire'])[1]);
+    remplirCellules($feuille, 'F' . $celluleAct, "", $discipline['code']);
+    remplirCellules($feuille, 'G' . $celluleAct, "", $type['code']);
+    remplirCellules($feuille, 'H' . $celluleAct, "", $pv['num_ordre']);
+    remplirCellules($feuille, 'I' . $celluleAct, "", conversionDate($pv['date_debut']));
+    remplirCellules($feuille, 'J' . $celluleAct, "", $pv['avancement']);
 
-    $feuille->getStyle('D'.$celluleAct.':J'.$celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('D' . $celluleAct . ':J' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
 }
@@ -234,11 +234,11 @@ function sauvegarde($affaire) {
 
     global $affaire;
 
-    $titre = 'SCO'.explode(" ", $affaire['num_affaire'])[1];
-    $rep = '../documents/Rapports_Excel/'.$titre.'/';
+    $titre = 'SCO' . explode(" ", $affaire['num_affaire'])[1];
+    $rep = '../documents/Rapports_Excel/' . $titre . '/';
     $cheminFichier = $rep . $titre . '.xlsx';
 
-    $feuille->setTitle('Rapport_affaire_'.$titre);
+    $feuille->setTitle('Rapport_affaire_' . $titre);
     $writer = PHPExcel_IOFactory::createWriter($classeur, 'Excel2007');
 
     if (!is_dir($rep))
@@ -262,7 +262,7 @@ function sauvegarde($affaire) {
 function telecharger($cheminFichier) {
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="'.basename($cheminFichier).'"');
+    header('Content-Disposition: attachment; filename="' . basename($cheminFichier) . '"');
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');

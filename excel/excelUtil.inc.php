@@ -1,5 +1,4 @@
 <?php
-
 require_once("../lib/PHPExcel/Classes/PHPExcel.php");
 require_once("../lib/PHPExcel/Classes/PHPExcel/IOFactory.php");
 
@@ -19,7 +18,7 @@ function remplirCellules($feuille, $celluleA, $celluleB, $contenu) {
     if ($celluleB == "")
         $celluleB = $celluleA;
 
-    $feuille->mergeCells($celluleA.':'.$celluleB);
+    $feuille->mergeCells($celluleA . ':' . $celluleB);
     $feuille->setCellValue($celluleA, $contenu);
 }
 
@@ -30,7 +29,7 @@ function remplirCellules($feuille, $celluleA, $celluleB, $contenu) {
  * @param string $cellule Cellule à colorer.
  * @param string $couleur Code RGB hexadécimal de la couleur.
  */
-function colorerCellule($classeur, $cellule, $couleur){
+function colorerCellule($classeur, $cellule, $couleur) {
     $classeur->getActiveSheet()->getStyle($cellule)->getFill()->applyFromArray(array(
         'type' => PHPExcel_Style_Fill::FILL_SOLID,
         'startcolor' => array(
@@ -52,8 +51,8 @@ function colorerCellule($classeur, $cellule, $couleur){
  * @param string $contenuValeur Valeur du champ.
  */
 function creerChamp($feuille, $celluleAct, $celluleEnonce1, $celluleEnonce2, $contenuEnonce, $celluleValeur1, $celluleValeur2, $contenuValeur) {
-    remplirCellules($feuille, $celluleEnonce1.$celluleAct, $celluleEnonce2.$celluleAct, $contenuEnonce);
-    remplirCellules($feuille, $celluleValeur1.$celluleAct, $celluleValeur2.$celluleAct, $contenuValeur);
+    remplirCellules($feuille, $celluleEnonce1 . $celluleAct, $celluleEnonce2 . $celluleAct, $contenuEnonce);
+    remplirCellules($feuille, $celluleValeur1 . $celluleAct, $celluleValeur2 . $celluleAct, $contenuValeur);
 }
 
 ?>

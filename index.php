@@ -11,18 +11,18 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd->exec('truncate table pv_controle');
     $bdd->exec('truncate table conclusions_pv');
     $bdd->exec('truncate table constatations_pv');
-    $bdd->exec('delete from appareils where id_appareil > 15');
-    $bdd->exec('alter table rapports auto_increment = 1');
-    $bdd->exec('alter table appareils_utilises auto_increment = 1');
-    $bdd->exec('alter table pv_controle auto_increment = 1');
-    $bdd->exec('alter table appareils auto_increment = 1');
-    $bdd->exec('alter table conclusions_pv auto_increment = 1');
-    $bdd->exec('alter table constatations_pv auto_increment = 1');
-    $bdd->exec('update type_controle set num_controle = 0');
+    $bdd->exec('DELETE FROM appareils WHERE id_appareil > 15');
+    $bdd->exec('ALTER TABLE rapports AUTO_INCREMENT = 1');
+    $bdd->exec('ALTER TABLE appareils_utilises AUTO_INCREMENT = 1');
+    $bdd->exec('ALTER TABLE pv_controle AUTO_INCREMENT = 1');
+    $bdd->exec('ALTER TABLE appareils AUTO_INCREMENT = 1');
+    $bdd->exec('ALTER TABLE conclusions_pv AUTO_INCREMENT = 1');
+    $bdd->exec('ALTER TABLE constatations_pv AUTO_INCREMENT = 1');
+    $bdd->exec('UPDATE type_controle SET num_controle = 0');
 }
 ?>
 
-<div id="contenu" bgcolor = "chucknorris">
+<div id="contenu">
     <h1 id="titreDoc" class="ui blue center aligned huge header">Portail de gestion des PV</h1>
 
     <div class="ui message">
@@ -30,7 +30,8 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
             Bienvenue !
         </div>
         <p>
-            Bienvenue sur le système de gestion des PV. Utilisez le menu latéral pour accéder aux différentes fonctionnalités disponibles.
+            Bienvenue sur le système de gestion des PV. Utilisez le menu latéral pour accéder aux différentes
+            fonctionnalités disponibles.
         </p>
     </div>
     <div id="boutonsUtilisateur">
@@ -55,7 +56,7 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
 </div>
 
 <script>
-    $("#testModal").on("click", function() {
+    $("#testModal").on("click", function () {
         $('.large.modal').modal('show');
     });
 </script>

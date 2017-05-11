@@ -12,7 +12,7 @@ upload($_POST['nomFichier']);
 function upload($nomFichier) {
     $bdd = connexion('portail_gestion');
 
-    echo '<h1> '.$nomFichier.' </h1>';
+    echo '<h1> ' . $nomFichier . ' </h1>';
     if (isset($_FILES[$nomFichier])) {
         echo '<h1> Oui </h1>';
         $errors = array();
@@ -33,7 +33,7 @@ function upload($nomFichier) {
         else
             erreur();
 
-        echo '<h1>'.$regEx.'</h1>';
+        echo '<h1>' . $regEx . '</h1>';
         if (!preg_match($regEx, $file_name))
             erreur();
 
@@ -62,4 +62,5 @@ function erreur() {
     header('Location: /gestionPV/pv/' . $_POST['lienRetour'] . '.php?erreurUpload=1&idPV=' . $_POST['idPV']);
     exit;
 }
+
 ?>

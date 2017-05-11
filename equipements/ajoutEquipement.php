@@ -1,19 +1,19 @@
 <?php
-    require_once "../menu.php";
-    verifSession("OP");
-    enTete("Ajout d'un nouvel équipement",
-        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
-        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+require_once "../menu.php";
+verifSession("OP");
+enTete("Ajout d'un nouvel équipement",
+    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
+    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-    $bdd = connexion('portail_gestion');
-    $societes = selectAll($bdd, "societe")->fetchAll();
+$bdd = connexion('portail_gestion');
+$societes = selectAll($bdd, "societe")->fetchAll();
 ?>
 
 <div id="contenu">
     <h1 id="titreMenu" class="ui blue center aligned huge header">Ajout d'un équipement à la base</h1>
     <?php
-        afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque avec des valeurs valides.", "", "");
-        afficherMessage('ajout', "Succès !", "L'équipement a bien été ajouté à la base !", "", "");
+    afficherMessage('erreur', "Erreur", "Veuillez remplir tous les champs précédés par un astérisque avec des valeurs valides.", "", "");
+    afficherMessage('ajout', "Succès !", "L'équipement a bien été ajouté à la base !", "", "");
     ?>
 
     <form method="post" action="verifAjoutEquipement.php">
@@ -23,10 +23,10 @@
                     <div class="field">
                         <label>* Société propriétaire : </label>
                         <select class="ui search dropdown" name="societe">
-                            <option selected> </option>
+                            <option selected></option>
                             <?php
                             for ($i = 0; $i < sizeof($societes); $i++) {
-                                echo '<option>'.$societes[$i]['nom_societe'].'</option>';
+                                echo '<option>' . $societes[$i]['nom_societe'] . '</option>';
                             }
                             ?>
                         </select>

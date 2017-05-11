@@ -7,7 +7,7 @@
  * @return PDO Connexion vers la base souhaitée.
  */
 function connexion($base) {
-    $pdo = new PDO('mysql:host=localhost; dbname='.$base.'; charset=utf8', 'root', '');
+    $pdo = new PDO('mysql:host=localhost; dbname=' . $base . '; charset=utf8', 'root', '');
 
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,7 +23,7 @@ function connexion($base) {
  * @return mixed Résultat du select.
  */
 function selectAll($base, $table) {
-    return $base->query('select * from '.$table);
+    return $base->query('SELECT * FROM ' . $table);
 }
 
 /**
@@ -38,11 +38,11 @@ function selectAll($base, $table) {
  */
 function selectAllFromWhere($base, $table, $colonneCondition, $ope, $condition) {
     if ($condition == "last_insert_id()")
-        $testCondition = $colonneCondition.' '.$ope.' '.$condition;
+        $testCondition = $colonneCondition . ' ' . $ope . ' ' . $condition;
     else
-        $testCondition = $colonneCondition.' '.$ope.' '.$base->quote($condition);
+        $testCondition = $colonneCondition . ' ' . $ope . ' ' . $base->quote($condition);
 
-    return $base->query('select * from '.$table.' where '.$testCondition);
+    return $base->query('SELECT * FROM ' . $table . ' WHERE ' . $testCondition);
 }
 
 /**
@@ -61,7 +61,7 @@ function insert($base, $table, $tabValeurs) {
             $valeurs .= $tabValeurs[$i] . ', ';
     }
 
-    $base->exec('insert into '.$table.' values ('.$valeurs.')') or die (print_r($base->errorInfo(), true));
+    $base->exec('INSERT INTO ' . $table . ' VALUES (' . $valeurs . ')') or die (print_r($base->errorInfo(), true));
 }
 
 /**
@@ -76,8 +76,8 @@ function insert($base, $table, $tabValeurs) {
  * @param String $condition Condition à respecter.
  */
 function update($base, $table, $colonneModif, $nouvelleValeur, $colonneCondition, $ope, $condition) {
-    $testCondition = $colonneCondition.' '.$ope.' '.$base->quote($condition);
-    $base->exec('update '.$table.' set '.$colonneModif.' = '.$base->quote($nouvelleValeur).' where '.$testCondition);
+    $testCondition = $colonneCondition . ' ' . $ope . ' ' . $base->quote($condition);
+    $base->exec('update ' . $table . ' set ' . $colonneModif . ' = ' . $base->quote($nouvelleValeur) . ' where ' . $testCondition);
 }
 
 /**
@@ -95,5 +95,5 @@ function infosBDD($rapport) {
     $odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
     $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $odp['id_client'])->fetch();
 
-    return array("affaire"=>$affaire, "societe"=>$societe, "client"=>$client);
+    return array("affaire" => $affaire, "societe" => $societe, "client" => $client);
 }

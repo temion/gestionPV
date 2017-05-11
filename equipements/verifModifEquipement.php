@@ -8,7 +8,7 @@ $attributs = array('societe', 'nom_equipement', 'diametre', 'hauteur', 'hauteur_
 for ($i = 0; $i < sizeof($attributs); $i++)
     modifAttribut($bdd, $attributs[$i]);
 
-header('Location: listeEquipements.php?modifs='.$modifs);
+header('Location: listeEquipements.php?modifs=' . $modifs);
 exit;
 ?>
 

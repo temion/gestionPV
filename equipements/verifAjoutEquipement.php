@@ -8,10 +8,10 @@ if ($_POST['societe'] == "" || $_POST['nom'] == "") {
     exit;
 }
 
-$valeurs = array("diametre"=>definirValeur('diametre'), "hauteur"=>definirValeur('hauteur'), "hauteur_produit"=>definirValeur('hauteur_produit'), "volume"=>definirValeur('volume'), "distance"=>definirValeur('distance'));
+$valeurs = array("diametre" => definirValeur('diametre'), "hauteur" => definirValeur('hauteur'), "hauteur_produit" => definirValeur('hauteur_produit'), "volume" => definirValeur('volume'), "distance" => definirValeur('distance'));
 
-$societe = $bdd->query('select * from societe where replace(nom_societe, \' \', \'\') like replace('.$bdd->quote($_POST['societe'].'%').' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
-$bdd->exec('insert into equipements values(null, '.$societe['id_societe'].', '.$bdd->quote($_POST['nom']).', '.definirValeur($_POST['diametre']).', '.definirValeur($_POST['hauteur']).', '.definirValeur($_POST['hauteur_produit']).', '.definirValeur($_POST['volume']).', '.definirValeur($_POST['distance']).')') or die (print_r($bdd->errorInfo(), true));
+$societe = $bdd->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bdd->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
+$bdd->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bdd->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bdd->errorInfo(), true));
 
 header("Location: ajoutEquipement.php?ajout=1");
 ?>
