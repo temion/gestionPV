@@ -2,6 +2,11 @@
     require_once '../bdd/bdd.inc.php';
     require_once 'PDFWriter.php';
 
+    if (!isset($_POST['idPV'])) {
+        header("Location: /gestionPV");
+        exit;
+    }
+
     $bdd = connexion('portail_gestion');
 
     $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_POST['idPV'])->fetch();
@@ -24,13 +29,14 @@
     $constatations = selectAllFromWhere($bdd, "constatations_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
     $conclusions = selectAllFromWhere($bdd, "conclusions_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
 
+    $titre = "SCO ".explode(" ", $affaire['num_affaire'])[1].' '.$discipline['code'].' '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']);
     $infosEnTete = array("SARL SCOPEO", "Route du Hoc", "76600 Le Havre", "Tél : 02.35.30.11.30", "Fax : 02.35.26.12.06");
 
     $pdf = new PDFWriter();
     $pdf->ecrireHTML(file_get_contents('stylePDF.css'), 1);
 
     $pdf->enTete($infosEnTete);
-    $pdf->ecrireTitre("SCO ".explode(" ", $affaire['num_affaire'])[1].' '.$discipline['code'].' '.$typeControle['code'].' '.sprintf("%03d", $pv['num_ordre']));
+    $pdf->ecrireTitre($titre);
     $pdf->detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv);
     $pdf->detailsDocuments($rapport);
     $pdf->situationControle($pv);
@@ -38,4 +44,7 @@
     $pdf->conclusions($conclusions);
     $pdf->signatures($pv);
 
-    $pdf->Output();
+    $fichier = str_replace(" ", "-",$titre).'.pdf';
+    $pdf->SetTitle($fichier);
+    $pdf->Output($fichier, 'I');
+?>
