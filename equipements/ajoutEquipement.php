@@ -1,5 +1,5 @@
 <?php
-    include_once "../menu.php";
+    require_once "../menu.php";
     verifSession("OP");
     enTete("Ajout d'un nouvel équipement",
         array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),

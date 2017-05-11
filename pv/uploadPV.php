@@ -1,5 +1,5 @@
 <?php
-include_once '../bdd/bdd.inc.php';
+require_once '../bdd/bdd.inc.php';
 
 print_r($_POST['nomFichier']);
 upload($_POST['nomFichier']);

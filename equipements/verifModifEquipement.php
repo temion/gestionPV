@@ -1,5 +1,5 @@
 <?php
-include_once "../util.inc.php";
+require_once "../util.inc.php";
 
 $bdd = connexion('portail_gestion');
 $modifs = 0;

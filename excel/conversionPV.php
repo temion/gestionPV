@@ -1,6 +1,6 @@
 <?php
-    include_once "../util.inc.php";
-    include_once "excelUtil.inc.php";
+    require_once "../util.inc.php";
+    require_once "excelUtil.inc.php";
 
     // Redéfinit le comportement en cas d'erreur, pour gérer la sauvegarde lorsque le fichier est ouvert
     set_error_handler(function() {

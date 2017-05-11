@@ -1,5 +1,5 @@
 <?php
-    include_once "../menu.php";
+    require_once "../menu.php";
     verifSession();
     enTete("Liste des PV",
             array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),

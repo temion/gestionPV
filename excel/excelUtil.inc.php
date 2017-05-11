@@ -1,7 +1,6 @@
 <?php
 
 require_once("../lib/PHPExcel/Classes/PHPExcel.php");
-
 require_once("../lib/PHPExcel/Classes/PHPExcel/IOFactory.php");
 
 $gris = 'c0c0c0';

@@ -1,6 +1,5 @@
 <?php
-
-include_once "bdd/bdd.inc.php";
+require_once "bdd/bdd.inc.php";
 
 /**
 * Affiche les messages d'erreur ou de succès selon l'action de l'utilisateur.

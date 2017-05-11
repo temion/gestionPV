@@ -1,6 +1,5 @@
 <?php
-
-    require_once 'C:\wamp64\www\gestionPV\lib\vendor\mpdf\mpdf\mpdf.php';
+    require_once '..\lib\vendor\mpdf\mpdf\mpdf.php';
 
     class PDFWriter extends mPDF {
 
