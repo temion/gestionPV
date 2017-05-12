@@ -57,8 +57,15 @@ creerModal("conclusion");
                             <tr>
                                 <td>
                                     <?php
-                                    echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                    echo '<button class="ui left floated red button" title="Restaure le fichier du serveur dans son état d\'origine" name="reset" value="1"> Regénérer le fichier</button>';
+                                    if ($pv['chemin_excel'] != null) {
+                                        $chemin = str_replace("'", "", $pv['chemin_excel']);
+                                        if (file_exists($chemin)) {
+                                            echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
+                                            echo '<button class="ui left floated red button" title="Restaure le fichier du serveur dans son état d\'origine" name="reset" value="1">Regénérer le fichier</button>';
+                                        }
+                                    } else {
+                                        echo '<button disabled style="pointer-events: auto" class="ui left floated red button" title="Aucun fichier n\'a été généré pour le moment " name="reset" value="1"> Regénérer le fichier</button>';
+                                    }
                                     ?>
                                 </td>
                                 <td></td>
@@ -267,11 +274,11 @@ creerModal("conclusion");
                                         <input name="pv_pdf" type="file" />
                                     </td>
                                     <td>
-                        <?php
-                        echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                        echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
-                        echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
-                        ?>
+                                        <?php
+                                        echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
+                                        echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
+                                        echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
+                                        ?>
                                         <button class="ui right floated blue button">Uploader au format PDF</button>
                                     </td>
                                 </tr>

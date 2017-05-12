@@ -185,10 +185,11 @@ function creerListeLivrables($listePV, $affaire) {
     remplirCellules($feuille, 'G' . $celluleAct, "", "Type de contrôle");
     remplirCellules($feuille, 'H' . $celluleAct, "", "Numéro d'ordre");
     remplirCellules($feuille, 'I' . $celluleAct, "", "Début prévu le");
-    remplirCellules($feuille, 'J' . $celluleAct, "", "Avancement");
+    remplirCellules($feuille, 'J' . $celluleAct, "", "Fin prévue le");
+    remplirCellules($feuille, 'K' . $celluleAct, 'L'.$celluleAct, "Avancement");
 
-    colorerCellule($classeur, 'D' . $celluleAct . ':J' . $celluleAct, $gris);
-    $feuille->getStyle('D' . $celluleAct . ':j' . $celluleAct)->applyFromArray($bordures);
+    colorerCellule($classeur, 'D' . $celluleAct . ':L' . $celluleAct, $gris);
+    $feuille->getStyle('D' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
     for ($i = 0; $i < sizeof($listePV); $i++) {
@@ -216,9 +217,10 @@ function creerInfosPV($pv, $affaire) {
     remplirCellules($feuille, 'G' . $celluleAct, "", $type['code']);
     remplirCellules($feuille, 'H' . $celluleAct, "", $pv['num_ordre']);
     remplirCellules($feuille, 'I' . $celluleAct, "", conversionDate($pv['date_debut']));
-    remplirCellules($feuille, 'J' . $celluleAct, "", $pv['avancement']);
+    remplirCellules($feuille, 'J' . $celluleAct, "", conversionDate($pv['date_fin']));
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, $pv['avancement']);
 
-    $feuille->getStyle('D' . $celluleAct . ':J' . $celluleAct)->applyFromArray($bordures);
+    $feuille->getStyle('D' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 
     $celluleAct++;
 }

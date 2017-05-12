@@ -16,7 +16,7 @@ $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_a
 $societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
 $odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
 $client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
-    $controleur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $pv['id_controleur'])->fetch();
+$controleur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $pv['id_controleur'])->fetch();
 
 $bddEquipement = connexion('theodolite');
 

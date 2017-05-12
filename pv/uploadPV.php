@@ -47,7 +47,7 @@ function upload($nomFichier) {
 
         mkdir("../documents/$rep/" . explode("-", $file_name)[0]);
         $chemin = "../documents/$rep/" . explode("-", $file_name)[0] . '/' . $file_name;
-        update($bdd, "pv_controle", "$colonne", $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
+        update($bdd, "pv_controle", $colonne, $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
         move_uploaded_file($file_tmp, $chemin);
 
         header('Location: /gestionPV/pv/' . $_POST['lienRetour'] . '.php?erreurUpload=0&idPV=' . $_POST['idPV']);

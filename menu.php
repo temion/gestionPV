@@ -86,8 +86,11 @@ function enTete($titre, $styles, $scripts) {
     <div class="item">
         <div class="header">Test</div>
         <div class="menu">
-            <a href="/gestionPV/testplanning.php" class="item lienMenu">
+            <a href="/gestionPV/testPlanning/testplanning.php" class="item lienMenu">
                 Test planning
+            </a>
+            <a href="/gestionPV/testPlanning/calendrier.php" class="item lienMenu">
+                Test calendrier
             </a>
         </div>
     </div>
