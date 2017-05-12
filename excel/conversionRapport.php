@@ -20,6 +20,7 @@ $analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rap
 $listePV = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
 $type_controle = $bdd->prepare('SELECT * FROM type_controle WHERE id_type = ?');
 $prep_discipline = $bdd->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
+$prep_avancement = $bdd->prepare('select * from avancement where id_avancement = ?');
 
 $classeur = new PHPExcel;
 
@@ -204,7 +205,7 @@ function creerListeLivrables($listePV, $affaire) {
  * @param array $affaire Tableau contenant les informations concernant l'affaire suivie.
  */
 function creerInfosPV($pv, $affaire) {
-    global $feuille, $celluleAct, $type_controle, $prep_discipline, $bordures;
+    global $feuille, $celluleAct, $type_controle, $prep_discipline, $prep_avancement, $bordures;
 
     $type_controle->execute(array($pv['id_type_controle']));
     $type = $type_controle->fetch();
@@ -212,13 +213,16 @@ function creerInfosPV($pv, $affaire) {
     $prep_discipline->execute(array($pv['id_discipline']));
     $discipline = $prep_discipline->fetch();
 
+    $prep_avancement->execute(array($pv['id_avancement']));
+    $avancement = $prep_avancement->fetch();
+
     remplirCellules($feuille, 'D' . $celluleAct, 'E' . $celluleAct, 'SCO ' . explode(" ", $affaire['num_affaire'])[1]);
     remplirCellules($feuille, 'F' . $celluleAct, "", $discipline['code']);
     remplirCellules($feuille, 'G' . $celluleAct, "", $type['code']);
     remplirCellules($feuille, 'H' . $celluleAct, "", $pv['num_ordre']);
     remplirCellules($feuille, 'I' . $celluleAct, "", conversionDate($pv['date_debut']));
     remplirCellules($feuille, 'J' . $celluleAct, "", conversionDate($pv['date_fin']));
-    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, $pv['avancement']);
+    remplirCellules($feuille, 'K' . $celluleAct, 'L' . $celluleAct, $avancement['stade']);
 
     $feuille->getStyle('D' . $celluleAct . ':L' . $celluleAct)->applyFromArray($bordures);
 

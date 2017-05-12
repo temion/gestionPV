@@ -8,8 +8,17 @@ enTete("Modification des PV",
 $bdd = connexion('portail_gestion');
 
 $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
+
+if (isset($_GET['avancement']) && $_GET['avancement'] != "") {
+    update($bdd, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
+    // Reselect afin de mettre à jour les informations
+    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
+}
+
+
 $type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
 $discipline = selectAllFromWhere($bdd, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
+$avancements = selectAll($bdd, "avancement")->fetchAll();
 
 $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
 $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
@@ -63,6 +72,33 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
             </td>
 
             <td class="partieTableau">
+                <table>
+                    <tr>
+                        <th colspan="2"><h4 class="ui dividing header">Modifier l'avancement du PV</h4></th>
+                    </tr>
+
+                    <form action="modifPVCA.php" method="get">
+                        <tr>
+                            <td>
+                                <select class="ui search dropdown listeAjout" name="avancement">
+                                    <?php
+                                        for ($i = 0; $i < sizeof($avancements); $i++) {
+                                            if ($avancements[$i]['id_avancement'] == $pv['id_avancement'])
+                                                echo '<option selected value="'.$avancements[$i]['id_avancement'].'">'.$avancements[$i]['stade'].'</option>';
+                                            else
+                                                echo '<option value="'.$avancements[$i]['id_avancement'].'">'.$avancements[$i]['stade'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" name="idPV" value="<?php echo $pv['id_pv']; ?>">
+                                <button class="ui right floated blue button">Valider</button>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+
                 <table>
                     <tr>
                         <th colspan="2"><h4 class="ui dividing header">Uploader les fichiers</h4></th>
