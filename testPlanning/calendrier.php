@@ -4,7 +4,7 @@ require_once "../menu.php";
 verifSession("OP");
 
 enTete("Liste des PV générés",
-array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
+array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css", "calendrier.css"),
 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 if (!isset($_GET['mois']) || $_GET['mois'] == "") {
@@ -36,6 +36,8 @@ $prepareDates = $bdd->prepare('SELECT * FROM pv_controle WHERE ? BETWEEN date_de
 $prepareRapport = $bdd->prepare('select * from rapports where id_rapport = ?');
 $prepareAffaire = $bdd->prepare('select * from affaire where id_affaire = ?');
 $prepareUtilisateur = $bdd->prepare('select * from utilisateurs where id_utilisateur = ?');
+$prepareControle = $bdd->prepare('select * from type_controle where id_type = ?');
+$prepareAvancement = $bdd->prepare('select * from avancement where id_avancement = ?');
 
 $bddEquipement = connexion('theodolite');
 $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
@@ -60,7 +62,7 @@ $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idE
                 $cellulesSup = 0;
                 echo '<tr>';
                 while ($joursEN[$cellulesSup] != $premierJour) {
-                    echo '<td style="background-color: lightgray"></td>';
+                    echo '<td class="casesVides"></td>';
                     $cellulesSup++;
                 }
 
@@ -72,28 +74,31 @@ $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idE
                     }
 
                     // Colore le jour actuel
-                    if (++$nbJours == date('j') && $_GET['mois'] == date('F') && $_GET['annee'] == date('Y'))
-                        echo '<td style="background-color: #91d1f7"><a href="calendrier.php?mois=' .$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
+                    $nbJours++;
+                    if ($nbJours == date('j') && $_GET['mois'] == date('F') && $_GET['annee'] == date('Y'))
+                        echo '<td id="jourActuel"><a class="jour" href="calendrier.php?mois=' .$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
+                    else if (isset($_GET['dateSelect']) && $nbJours == explode("-", $_GET['dateSelect'])[0])
+                        echo '<td id="jourSelect"><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
                     else
-                        echo '<td><a href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
+                        echo '<td><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
                 }
 
                 // Complète le calendrier avec des cases grisées
                 while (($nbJoursMax + $cellulesSup) % 7 != 0) {
-                    echo '<td style="background-color: lightgray"></td>';
+                    echo '<td class="casesVides"></td>';
                     $nbJoursMax++;
                 }
             ?>
         </tbody>
     </table>
-    <table>
+    <table id="tabBoutons">
         <tr>
             <td>
                 <?php
                 echo '<form method="get" action="calendrier.php">';
                 echo '<input type="hidden" name="mois" value="'.getDatePrecedente()[0].'">';
                 echo '<input type="hidden" name="annee" value="'.getDatePrecedente()[1].'">';
-                echo '<button style="width: 15vh;" class="ui left floated blue button"> Mois précédent </button>';
+                echo '<button class="ui left floated blue button changementDate"> Mois précédent </button>';
                 echo '</form>';
                 ?>
             </td>
@@ -102,7 +107,7 @@ $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idE
                 echo '<form method="get" action="calendrier.php">';
                 echo '<input type="hidden" name="mois" value="'.getDateSuivante()[0].'">';
                 echo '<input type="hidden" name="annee" value="'.getDateSuivante()[1].'">';
-                echo '<button style="width: 15vh;" class="ui right floated blue button"> Mois suivant </button>';
+                echo '<button class="ui right floated blue button changementDate"> Mois suivant </button>';
                 echo '</form>';
                 ?>
             </td>
@@ -113,6 +118,24 @@ $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idE
         creerTableInfos();
     ?>
 </div>
+
+<script>
+    $(function() {
+        $("body").on("keydown", function(event) {
+            if (event.keyCode == 37) {
+                var mois = "<?php echo getDatePrecedente()[0]; ?>";
+                var annee = "<?php echo getDatePrecedente()[1]; ?>";
+                window.location = "calendrier.php?mois=" + mois  + "&annee=" + annee;
+            }
+
+            if (event.keyCode == 39) {
+                var mois = "<?php echo getDateSuivante()[0]; ?>";
+                var annee = "<?php echo getDateSuivante()[1]; ?>";
+                window.location = "calendrier.php?mois=" + mois  + "&annee=" + annee;
+            }
+        })
+    })
+</script>
 
 <?php
 /**
@@ -167,7 +190,7 @@ function getDateSuivante() {
  * Crée un tableau référençant les différents PV actifs à la date sélectionnée.
  */
 function creerTableInfos() {
-    global $prepareDates;
+    global $prepareDates, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement;
 
     $date = conversionDate($_GET['dateSelect']);
     $prepareDates->execute(array($date));
@@ -175,54 +198,30 @@ function creerTableInfos() {
 
     if (sizeof($pvs) != 0) {
         ?>
-        <table class="ui celled table">
+        <table id="tabPV" class="ui celled table">
             <thead>
+                <tr>
+                    <th colspan="7" id="titreTabPV">Contrôles du <?php echo $date; ?></th>
+                </tr>
                 <tr>
                     <th>Identifiant PV</th>
                     <th>Numéro d'affaire</th>
                     <th>Equipement à inspecter</th>
                     <th>Contrôle</th>
                     <th>Responsable</th>
+                    <th>Avancement</th>
                     <th>Modification</th>
                 </tr>
             </thead>
             <tbody>
-        <?php
+            <?php
             for ($i = 0; $i < sizeof($pvs); $i++) {
-                creerLignePV($pvs[$i]);
+                creerLignePV($pvs[$i], $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement);
             }
             ?>
             </tbody>
         </table>
         <?php
     }
-}
-
-/**
- * Remplis une ligne de tableau avec les informations de base du pv passé en paramètre.
- *
- * @param array $pv PV à afficher.
- */
-function creerLignePV($pv) {
-    global $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareEquipement;
-
-    $prepareUtilisateur->execute(array($pv['id_controleur']));
-    $controleur = $prepareUtilisateur->fetch();
-
-    $prepareRapport->execute(array($pv['id_rapport']));
-    $prepareAffaire->execute(array($prepareRapport->fetch()['id_affaire']));
-    $affaire = $prepareAffaire->fetch();
-
-    $prepareEquipement->execute(array($pv['id_equipement']));
-    $equipement = $prepareEquipement->fetch();
-
-    echo '<tr>';
-    echo '<td>'.$pv['id_pv'].'</td>';
-    echo '<td>'.$affaire['num_affaire'].'</td>';
-    echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
-    echo '<td> Contrôle du '.conversionDate($pv['date_debut']).' au '.conversionDate($pv['date_fin']).'</td>';
-    echo '<td>'.$controleur['nom'].'</td>';
-    echo '<td><form method="get" action="../pv/modifPVCA.php"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
-    echo '</tr>';
 }
 ?>

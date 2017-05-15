@@ -212,4 +212,44 @@ function creerApercuDocuments($pv) {
     <?php
 }
 
+/**
+ * Remplis une ligne de tableau avec les informations de base du pv passé en paramètre.
+ *
+ * @param array $pv PV à afficher.
+ * @param PDOStatement $prepareUtilisateur PreparedStatement pour obtenir le nom du responsable du contrôle.
+ * @param PDOStatement $prepareRapport PreparedStatement pour obtenir le rapport.
+ * @param PDOStatement $prepareAffaire PreparedStatement pour obtenir l'affaire.
+ * @param PDOStatement $prepareControle PreparedStatement pour obtenir le type de contrôle.
+ * @param PDOStatement $prepareEquipement PreparedStatement pour obtenir les informations de l'équipement inspecté.
+ * @param PDOStatement $prepareAvancement PreparedStatement pour obtenir le stade d'avancement du contrôle.
+ */
+function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement) {
+    $prepareUtilisateur->execute(array($pv['id_controleur']));
+    $controleur = $prepareUtilisateur->fetch();
+
+    $prepareRapport->execute(array($pv['id_rapport']));
+    $prepareAffaire->execute(array($prepareRapport->fetch()['id_affaire']));
+    $affaire = $prepareAffaire->fetch();
+
+    $prepareControle->execute(array($pv['id_type_controle']));
+    $controle = $prepareControle->fetch();
+
+    $prepareEquipement->execute(array($pv['id_equipement']));
+    $equipement = $prepareEquipement->fetch();
+
+    $prepareAvancement->execute(array($pv['id_avancement']));
+    $avancement = $prepareAvancement->fetch();
+
+    echo '<tr>';
+    echo '<td>'.$pv['id_pv'].'</td>';
+    echo '<td>'.$affaire['num_affaire'].'</td>';
+    echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
+    echo '<td>'.$controle['libelle'].' '.$pv['num_ordre'].' ('.$controle['code'].') <br/>';
+    echo 'du '.conversionDate($pv['date_debut']).' au '.conversionDate($pv['date_fin']).'</td>';
+    echo '<td>'.$controleur['nom'].'</td>';
+    echo '<td>'.$avancement['stade'].'</td>';
+    echo '<td><form method="get" action="../pv/modifPVCA.php"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
+    echo '</tr>';
+}
+
 ?>

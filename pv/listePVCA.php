@@ -17,10 +17,18 @@ $numAffaires = $bddAffaire->query('SELECT * FROM affaire WHERE affaire.id_affair
 // Ensemble des PV disponibles pour l'affaire sélectionnée
 $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
 
+if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
+    $affaire = selectAllFromWhere($bddAffaire, "affaire", "num_affaire", "=", $_GET['numAffaire'])->fetch();
+    $rapport = selectAllFromWhere($bddAffaire, "rapports", "id_affaire", "=", $affaire['id_affaire'])->fetch();
+}
+
 // Infos concernant les PV dans la liste
 $selectTypeControle = $bddAffaire->prepare('SELECT * FROM type_controle WHERE id_type = ?');
+$selectDiscipline = $bddAffaire->prepare('select * from type_discipline where id_discipline = ?');
 $selectRapport = $bddAffaire->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
-$selectAffaire = $bddAffaire->prepare('SELECT * FROM affaire WHERE affaire.id_affaire IN (SELECT rapports.id_affaire FROM rapports WHERE id_rapport = ?)');
+$selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
+$selectUtilisateur = $bddAffaire->prepare('select * from utilisateurs where id_utilisateur = ?');
+$selectAvancement = $bddAffaire->prepare('select * from avancement where id_avancement = ?');
 $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
 ?>
 
@@ -54,7 +62,9 @@ $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEq
                 <th>Identifiant PV</th>
                 <th>Numéro d'affaire</th>
                 <th>Equipement à inspecter</th>
-                <th>Contrôle</th>
+                <th>Contrôle (Dates)</th>
+                <th>Responsable</th>
+                <th>Avancement</th>
                 <th>Informations</th>
             </tr>
             </thead>
@@ -64,47 +74,18 @@ $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEq
                 $listePV->execute(array($_GET['numAffaire']));
                 $PVs = $listePV->fetchAll();
                 for ($i = 0; $i < sizeof($PVs); $i++) {
-                    creerLignePV($PVs[$i]);
+                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectEquipement, $selectAvancement);
                 }
             }
             ?>
             </tbody>
         </table>
+
+        <?php if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") { ?>
+            <form method="get" action="modifRapportCA.php"><button name="idRapport" value="<?php echo $rapport['id_rapport']; ?>" class="ui right floated blue button">
+                    Détails du rapport <?php echo explode(" ", $affaire['num_affaire'])[1]; ?></button>
+            </form>
+        <?php } ?>
     </div>
     </body>
-    </html>
-
-<?php
-
-/**
- * Crée une ligne à ajouter dans le tableau comprenant les différentes informations du PV passé en paramètre.
- *
- * @param array $PV PV à afficher.
- */
-function creerLignePV($PV) {
-    global $selectAffaire;
-    global $selectRapport;
-    global $selectEquipement;
-    global $selectTypeControle;
-
-    $selectRapport->execute(array($PV['id_rapport']));
-    $affaireInspectionPV = $selectRapport->fetch();
-
-    $selectAffaire->execute(array($PV['id_rapport']));
-    $affaire = $selectAffaire->fetch();
-
-    $selectEquipement->execute(array($PV['id_equipement']));
-    $equipement = $selectEquipement->fetch();
-
-    $selectTypeControle->execute(array($PV['id_type_controle']));
-    $typeControle = $selectTypeControle->fetch();
-
-    echo '<tr><td>' . $PV['id_pv'] . '</td><td>';
-    echo $affaire['num_affaire'] . '</td><td>';
-    echo $equipement['Designation'] . ' ' . $equipement['Type'] . '</td><td>';
-    echo $typeControle['libelle'] . ' ' . $PV['num_ordre'] . ' - Début prévu le ' . conversionDate($PV['date_debut']) . '</td>';
-    echo '<td>';
-    echo '<form method="get" action="modifPVCA.php"><button name="idPV" value="' . $PV['id_pv'] . '" class="ui right floated blue button">Infos</button></form>';
-}
-
-?>
+</html>
