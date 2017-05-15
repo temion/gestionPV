@@ -1,0 +1,32 @@
+a.jour {
+    color: black;
+}
+
+a.jour:hover {
+    color: blue;
+}
+
+#jourSelect {
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+#jourActuel {
+    background-color: #91d1f7;
+}
+
+#tabPV, #tabBoutons {
+    margin-top: 5vh;
+}
+
+#titreTabPV {
+    text-align: center;
+}
+
+.casesVides {
+    background-color: lightgray;
+}
+
+.changementDate {
+    width: 15vh;
+}
