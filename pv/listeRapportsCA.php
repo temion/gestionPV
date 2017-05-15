@@ -32,6 +32,7 @@ $comptePV = $bddAffaire->prepare('SELECT count(*) FROM pv_controle WHERE id_rapp
                 <th>Identifiant rapport</th>
                 <th>Numéro d'affaire</th>
                 <th>Nombre de PV</th>
+                <th>Crée le</th>
                 <th>Modification</th>
             </tr>
             </thead>
@@ -69,6 +70,7 @@ function creerLigneRapport($rapport) {
     echo '<tr><td>' . $rapport['id_rapport'] . '</td>';
     echo '<td>' . $affaire['num_affaire'] . '</td>';
     echo '<td>' . $nbPV[0] . '</td>';
+    echo '<td>' . conversionDate(explode(" ", $rapport['date'])[0]) . '</td>';
     echo '<td><form method="get" action="modifRapportCA.php"><button name="idRapport" value="' . $rapport['id_rapport'] . '" class="ui right floated blue button">Modifier</button></form></td>';
 }
 
