@@ -9,7 +9,7 @@ set_error_handler(function () {
 
 $bddAffaire = connexion('portail_gestion');
 
-$pv = selectAllFromWhere($bddAffaire, "pv_controle", "id_pv", "=", $_POST['idPV'])->fetch();
+$pv = selectPVParId($bddAffaire, $_POST['idPV'])->fetch();
 
 if (isset($_POST['pdf']) && $_POST['pdf'] == 1) {
     $chemin = str_replace("'", "", $pv['chemin_pdf']);
@@ -34,25 +34,26 @@ if (isset($pv['chemin_excel']) && $pv['chemin_excel'] != null) {
     }
 }
 
-$rapport = selectAllFromWhere($bddAffaire, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
-$affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-$odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-$societeClient = selectAllFromWhere($bddAffaire, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-$client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $odp['id_client'])->fetch();
-$receveur = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $rapport['id_receveur'])->fetch();
-$analyste = selectAllFromWhere($bddAffaire, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
+$rapport = selectRapportParId($bddAffaire, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bddAffaire, $rapport['id_affaire'])->fetch();
+$odp = selectODPParId($bddAffaire, $affaire['id_odp'])->fetch();
+$societeClient = selectSocieteParId($bddAffaire, $affaire['id_societe'])->fetch();
+$client = selectClientParId($bddAffaire, $odp['id_client'])->fetch();
+$receveur = selectUtilisateurParId($bddAffaire, $rapport['id_receveur'])->fetch();
+$analyste = selectUtilisateurParId($bddAffaire, $rapport['id_analyste'])->fetch();
 
-$typeControle = selectAllFromWhere($bddAffaire, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
-$discipline = selectAllFromWhere($bddAffaire, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
+$typeControle = selectControleParId($bddAffaire, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bddAffaire, $pv['id_discipline'])->fetch();
 
-$constatations = selectAllFromWhere($bddAffaire, "constatations_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
-$conclusions = selectAllFromWhere($bddAffaire, "conclusions_pv", "id_pv", "=", $pv['id_pv'])->fetchAll();
+$constatations = selectConstatationsParPV($bddAffaire, $pv['id_pv'])->fetchAll();
+$conclusions = selectConclusionsParPV($bddAffaire, $pv['id_pv'])->fetchAll();
 
 $appareils = $bddAffaire->query('SELECT * FROM appareils WHERE id_appareil IN (SELECT id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 
 $bddEquipement = connexion('theodolite');
-$equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "ficheTechniqueEquipement", "idEquipement", "=", $equipement['idEquipement'])->fetch();
+
+$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
+$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $equipement['idEquipement'])->fetch();
 
 $classeur = new PHPExcel;
 

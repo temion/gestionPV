@@ -18,8 +18,8 @@ $numAffaires = $bddAffaire->query('SELECT * FROM affaire WHERE affaire.id_affair
 $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
 
 if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
-    $affaire = selectAllFromWhere($bddAffaire, "affaire", "num_affaire", "=", $_GET['numAffaire'])->fetch();
-    $rapport = selectAllFromWhere($bddAffaire, "rapports", "id_affaire", "=", $affaire['id_affaire'])->fetch();
+    $affaire = selectAffaireParNom($bddAffaire, $_GET['numAffaire'])->fetch();
+    $rapport = selectRapportParAffaire($bddAffaire, $affaire['id_affaire'])->fetch();
 }
 
 // Infos concernant les PV dans la liste

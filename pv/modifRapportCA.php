@@ -9,20 +9,20 @@ $bdd = connexion('portail_gestion');
 
 if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
     creerRapport($bdd);
-    $_GET['idRapport'] = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", "last_insert_id()")->fetch()['id_rapport'];
-    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
-    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+    $_GET['idRapport'] = selectDernierRapport($bdd)->fetch()['id_rapport'];
+    $rapport = selectRapportParId($bdd, $_GET['idRapport'])->fetch();
+    $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
     ajouterHistorique($bdd, "Création du rapport de l'affaire ".$affaire['num_affaire'],"pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
 }
 
-$rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
-$affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-$societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-$odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-$client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
+$rapport = selectRapportParId($bdd, $_GET['idRapport'])->fetch();
+$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bdd, $odp['id_client'])->fetch();
 
-$receveur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_receveur'])->fetch();
-$analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
+$receveur = selectUtilisateurParId($bdd, $rapport['id_receveur'])->fetch();
+$analyste = selectUtilisateurParId($bdd, $rapport['id_analyste'])->fetch();
 
 $controles = selectAll($bdd, "type_controle")->fetchAll();
 
@@ -281,12 +281,12 @@ function creerRapport($bdd) {
         exit;
     }
 
-    $affaire = selectAllFromWhere($bdd, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
+    $affaire = selectAffaireParNom($bdd, $_GET['num_affaire'])->fetch();
 
     // Id du récepteur de la demande
-    $idReceveur = selectAllFromWhere($bdd, "utilisateurs", "nom", "like", $_GET['demandeRecue'])->fetch();
+    $idReceveur = selectUtilisateurParNom($bdd, $_GET['demandeRecue'])->fetch();
     // Id de l'analyste de la demande
-    $idAnalyste = selectAllFromWhere($bdd, "utilisateurs", "nom", "like", $_GET['demandeAnalysee'])->fetch();
+    $idAnalyste = selectUtilisateurParNom($bdd, $_GET['demandeAnalysee'])->fetch();
 
     $appelOffre = 1;
     if (!isset($_GET['appelOffre'])) // Si la case n'a pas été cochée

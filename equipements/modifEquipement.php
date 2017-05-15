@@ -8,7 +8,7 @@ enTete("Modification d'un appareil existant",
 $bdd = connexion('portail_gestion');
 
 $equipement = selectAllFromWhere($bdd, "equipements", "id_equipement", "=", $_POST['idEquipement'])->fetch();
-$societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $equipement['id_societe'])->fetch();
+$societe = selectSocieteParId($bdd, $equipement['id_societe'])->fetch();;
 $societes = selectAll($bdd, "societe")->fetchAll();
 ?>
 

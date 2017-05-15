@@ -10,28 +10,14 @@ $affaires = selectAll($bddAffaires, "affaire")->fetchAll();
 $utilisateurs = selectAll($bddAffaires, "utilisateurs")->fetchAll();
 
 if (isset($_GET['num_affaire'])) {
-    $affaireSelectionnee = selectAllFromWhere($bddAffaires, "affaire", "num_affaire", "like", $_GET['num_affaire'])->fetch();
+    $affaireSelectionnee = selectAffaireParNom($bddAffaires, $_GET['num_affaire'])->fetch();
     if ($affaireSelectionnee['id_societe'] != "") {
-        $societe = selectAllFromWhere($bddAffaires, "societe", "id_societe", "=", $affaireSelectionnee['id_societe'])->fetch();
-        $odp = selectAllFromWhere($bddAffaires, "odp", "id_odp", "=", $affaireSelectionnee['id_odp'])->fetch();
-        $personneRencontree = selectAllFromWhere($bddAffaires, "client", "id_client", "=", $odp['id_client'])->fetch();
+        $societe = selectSocieteParId($bddAffaires, $affaireSelectionnee['id_societe'])->fetch();
+        $odp = selectODPParId($bddAffaires, $affaireSelectionnee['id_odp'])->fetch();
+        $personneRencontree = selectClientParId($bddAffaires, $odp['id_client'])->fetch();
         $numCommande = 0;
         $dateDebut = 0;
     }
-}
-
-$bddEquipement = connexion('theodolite');
-
-if (isset($_GET['num_affaire']) && $_GET['num_affaire'] != "")
-    $equipement = selectAllFromWhere($bddEquipement, "equipement", "idSociete", "=", $societe['id_societe'])->fetchAll();
-else
-    $equipement = selectAll($bddEquipement, "equipement")->fetchAll();
-
-
-if (isset($_GET['num_equipement'])) {
-    $equipementSelectionne = selectAllFromWhere($bddEquipement, "equipement", "concat(Designation, ' ', Type)", "like", $_GET['num_equipement'])->fetch();
-    if ($equipementSelectionne['idEquipement'] != "")
-        $ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $equipementSelectionne['idEquipement'])->fetch();
 }
 
 $typeControles = selectAll($bddAffaires, "type_controle")->fetchAll();

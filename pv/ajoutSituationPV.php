@@ -24,7 +24,7 @@ header('Location: /gestionPV/pv/modifPVOP.php?idPV=' . $_GET['idPV'] . '&ajout=1
  * @return int Entier représentant le booléen dans la base (1 = vrai, 0 = faux).
  */
 function etatCB($bdd, $var) {
-    $valRet = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch()[$var];
+    $valRet = selectPVParId($bdd, $_GET['idPV'])->fetch()[$var];
     if (isset($_GET[$var]))
         $valRet = 1;
     else

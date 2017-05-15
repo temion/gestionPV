@@ -9,15 +9,15 @@ set_error_handler(function () {
 
 $bdd = connexion('portail_gestion');
 
-$rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_POST['idRapport'])->fetch();
-$affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-$odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-$societeClient = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-$client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
-$receveur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_receveur'])->fetch();
-$analyste = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $rapport['id_analyste'])->fetch();
+$rapport = selectRapportParId($bdd, $_POST['idRapport'])->fetch();
+$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
+$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
+$societeClient = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
+$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$receveur = selectUtilisateurParId($bdd, $rapport['id_receveur'])->fetch();
+$analyste = selectUtilisateurParId($bdd, $rapport['id_analyste'])->fetch();
 
-$listePV = selectAllFromWhere($bdd, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
+$listePV = selectPVParRapport($bdd, $rapport['id_rapport'])->fetchAll();
 $type_controle = $bdd->prepare('SELECT * FROM type_controle WHERE id_type = ?');
 $prep_discipline = $bdd->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 $prep_avancement = $bdd->prepare('select * from avancement where id_avancement = ?');

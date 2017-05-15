@@ -87,13 +87,113 @@ function update($base, $table, $colonneModif, $nouvelleValeur, $colonneCondition
  * @return array Tableau comprenant toutes les informations concernant le rapport impliquant le PV.
  */
 function infosBDD($rapport) {
-    $bddAffaire = new PDO('mysql:host=localhost; dbname=portail_gestion; charset=utf8', 'root', '');
-    $bddEquipement = new PDO('mysql:host=localhost; dbname=theodolite; charset=utf8', 'root', '');
+    $bddAffaire = connexion('portail_gestion');
 
-    $affaire = selectAllFromWhere($bddAffaire, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-    $societe = selectAllFromWhere($bddAffaire, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-    $odp = selectAllFromWhere($bddAffaire, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-    $client = selectAllFromWhere($bddAffaire, "client", "id_client", "=", $odp['id_client'])->fetch();
+    $affaire = selectAffaireParId($bddAffaire, $rapport['id_affaire'])->fetch();
+    $societe = selectSocieteParId($bddAffaire, $affaire['id_societe'])->fetch();
+    $odp = selectODPParId($bddAffaire, $affaire['id_odp'])->fetch();
+    $client = selectClientParId($bddAffaire, $odp['id_client'])->fetch();
 
     return array("affaire" => $affaire, "societe" => $societe, "client" => $client);
+}
+
+/** REQUETES SQL */
+
+/** PV */
+function selectPVParId($base, $id) {
+    return selectAllFromWhere($base, "pv_controle", "id_pv", "=", $id);
+}
+
+function selectPVParRapport($base, $idRapport) {
+    return selectAllFromWhere($base, "pv_controle", "id_rapport", "=", $idRapport['id_rapport']);
+}
+
+function selectDernierPV($base) {
+    return selectAllFromWhere($base, "pv_controle", "id_pv", "=", "last_insert_id()");
+}
+
+/** Rapport */
+function selectDernierRapport($base) {
+    return selectAllFromWhere($base, "rapports", "id_rapport", "=", "last_insert_id()");
+}
+
+function selectRapportParId($base, $id) {
+    return selectAllFromWhere($base, "rapports", "id_rapport", "=", $id);
+}
+
+function selectRapportParAffaire($base, $idAffaire) {
+    return selectAllFromWhere($base, "rapports", "id_affaire", "=", $idAffaire);
+}
+
+/** Affaire */
+function selectAffaireParId($base, $id) {
+    return selectAllFromWhere($base, "affaire", "id_affaire", "=", $id);
+}
+
+function selectAffaireParNom($base, $nom) {
+    return selectAllFromWhere($base, "affaire", "num_affaire", "like", $nom);
+}
+
+/** Utilisateur */
+function selectUtilisateurParId($base, $id) {
+    return selectAllFromWhere($base, "utilisateurs", "id_utilisateur", "=", $id);
+}
+
+function selectUtilisateurParNom($base, $nom) {
+    return selectAllFromWhere($base, "utilisateurs", "nom", "like", $nom);
+}
+
+/** Contrôle */
+function selectControleParId($base, $id) {
+    return selectAllFromWhere($base, "type_controle", "id_type", "=", $id);
+}
+
+/** Discipline */
+function selectDisciplineParId($base, $id) {
+    return selectAllFromWhere($base, "type_discipline", "id_discipline", "=", $id);
+}
+
+/** Societe */
+function selectSocieteParId($base, $id) {
+    return selectAllFromWhere($base, "societe", "id_societe", "=", $id);
+}
+
+/** ODP */
+function selectODPParId($base, $id) {
+    return selectAllFromWhere($base, "odp", "id_odp", "=", $id);
+}
+
+/** Client */
+function selectClientParId($base, $id) {
+    return selectAllFromWhere($base, "client", "id_client", "=", $id);
+}
+
+/** Equipement */
+function selectEquipementParId($base, $id) {
+    return selectAllFromWhere($base, "equipement", "idEquipement", "=", $id);
+}
+
+/** Fiche Technique Equipement */
+function selectFicheTechniqueParEquipement($base, $idEquipement) {
+    return selectAllFromWhere($base, "fichetechniqueequipement", "idEquipement", "=", $idEquipement);
+}
+
+/** Appareil */
+function selectAppareilparId($base, $id) {
+    return selectAllFromWhere($base, "appareils", "id_appareil", "=", $id);
+}
+
+/** Appareils utilises */
+function selectAppareilsUtilisesParPV($base, $idPV) {
+    return selectAllFromWhere($base, "appareils_utilises", "id_pv_controle", "=", $idPV);
+}
+
+/** Constatations */
+function selectConstatationsParPV($base, $idPV) {
+    return selectAllFromWhere($base, "constatations_pv", "id_pv", "=", $idPV);
+}
+
+/** Conclusions */
+function selectConclusionsParPV($base, $idPV) {
+    return selectAllFromWhere($base, "conclusions_pv", "id_pv", "=", $idPV);
 }

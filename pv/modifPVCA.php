@@ -7,30 +7,29 @@ enTete("Modification des PV",
 
 $bdd = connexion('portail_gestion');
 
-$pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
+$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
 
 if (isset($_GET['avancement']) && $_GET['avancement'] != "") {
     update($bdd, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
     // Reselect afin de mettre à jour les informations
-    $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
+    $pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
 }
 
-
-$type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
-$discipline = selectAllFromWhere($bdd, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
+$type_controle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
 $avancements = selectAll($bdd, "avancement")->fetchAll();
 
-$rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
-$affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-$societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-$odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-$client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
-$controleur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $pv['id_controleur'])->fetch();
+$rapport = selectRapportParId($bdd, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$controleur = selectUtilisateurParId($bdd, $pv['id_controleur'])->fetch();
 
 $bddEquipement = connexion('theodolite');
 
-$equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
+$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
+$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $pv['id_equipement'])->fetch();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 ?>

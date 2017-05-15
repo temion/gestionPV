@@ -22,21 +22,22 @@ if (isset($_GET['conclusion']) && $_GET['conclusion'] != "") {
     $_GET['modif'] = 1;
 }
 
-$pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
-$type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pv['id_type_controle'])->fetch();
-$discipline = selectAllFromWhere($bdd, "type_discipline", "id_discipline", "=", $pv['id_discipline'])->fetch();
+$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
+$type_controle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
 
-$rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pv['id_rapport'])->fetch();
-$affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
-$societe = selectAllFromWhere($bdd, "societe", "id_societe", "=", $affaire['id_societe'])->fetch();
-$odp = selectAllFromWhere($bdd, "odp", "id_odp", "=", $affaire['id_odp'])->fetch();
-$client = selectAllFromWhere($bdd, "client", "id_client", "=", $odp['id_client'])->fetch();
-$equipement = selectAllFromWhere($bddEquipement, "equipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectAllFromWhere($bddEquipement, "fichetechniqueequipement", "idEquipement", "=", $pv['id_equipement'])->fetch();
-$controleur = selectAllFromWhere($bdd, "utilisateurs", "id_utilisateur", "=", $pv['id_controleur'])->fetch();
+$rapport = selectRapportParId($bdd, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$controleur = selectUtilisateurParId($bdd, $pv['id_controleur'])->fetch();
+
+$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
+$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $pv['id_equipement'])->fetch();
 
 $appareils = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil NOT IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
-$appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_controle", "=", $pv['id_pv'])->fetchAll();
+$appareilsUtilises = selectAppareilsUtilisesParPV($bdd, $pv['id_pv'])->fetchAll();
 $typeAppareilsUtilises = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
