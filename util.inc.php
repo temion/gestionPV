@@ -222,8 +222,10 @@ function creerApercuDocuments($pv) {
  * @param PDOStatement $prepareControle PreparedStatement pour obtenir le type de contrôle.
  * @param PDOStatement $prepareEquipement PreparedStatement pour obtenir les informations de l'équipement inspecté.
  * @param PDOStatement $prepareAvancement PreparedStatement pour obtenir le stade d'avancement du contrôle.
+ * @param PDOStatement $prepareDiscipline PreparedStatement pour obtenir la discipline du contrôle.
+ * @param string $lienRetour Lien de la page à atteindre en cliquant sur Modifier.
  */
-function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement) {
+function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline, $lienRetour) {
     $prepareUtilisateur->execute(array($pv['id_controleur']));
     $controleur = $prepareUtilisateur->fetch();
 
@@ -240,16 +242,32 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     $prepareAvancement->execute(array($pv['id_avancement']));
     $avancement = $prepareAvancement->fetch();
 
+    $prepareDiscipline->execute(array($pv['id_discipline']));
+    $discipline = $prepareDiscipline->fetch();
+
+    $titrePV = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
+
     echo '<tr>';
-    echo '<td>'.$pv['id_pv'].'</td>';
+    echo '<td><strong>'.$pv['id_pv'].'</strong> : '.$titrePV.'</td>';
     echo '<td>'.$affaire['num_affaire'].'</td>';
     echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
     echo '<td>'.$controle['libelle'].' '.$pv['num_ordre'].' ('.$controle['code'].') <br/>';
     echo 'du '.conversionDate($pv['date_debut']).' au '.conversionDate($pv['date_fin']).'</td>';
     echo '<td>'.$controleur['nom'].'</td>';
     echo '<td>'.$avancement['stade'].'</td>';
-    echo '<td><form method="get" action="../pv/modifPVCA.php"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
+    echo '<td><form method="get" action="'.$lienRetour.'"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
     echo '</tr>';
 }
 
+/**
+ * Ajoute dans la base l'action passée en paramètre.
+ *
+ * @param PDO $bdd Base de données.
+ * @param string $libelle Libellé de l'action.
+ */
+function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
+    $dernierAjout = $bdd->query('select * from historique_activite where date_activite in (select max(date_activite) from historique_activite)')->fetch();
+    if ($bdd->quote($libelle) != $bdd->quote($dernierAjout['libelle']))
+        insert($bdd, "historique_activite", array("null", $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
+}
 ?>

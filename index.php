@@ -1,11 +1,12 @@
 <?php
 require_once "menu.php";
 enTete("Accueil",
-    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "style/menu.css"),
+    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "style/menu.css", "style/index.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
+$bdd = connexion('portail_gestion');
+
 if (isset($_POST['reset']) && $_POST['reset'] == 1) {
-    $bdd = connexion('portail_gestion');
     $bdd->exec('truncate table rapports');
     $bdd->exec('truncate table appareils_utilises');
     $bdd->exec('truncate table pv_controle');
@@ -20,6 +21,8 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd->exec('ALTER TABLE constatations_pv AUTO_INCREMENT = 1');
     $bdd->exec('UPDATE type_controle SET num_controle = 0');
 }
+
+$historique = $bdd->query('select * from historique_activite order by date_activite desc')->fetchAll();
 ?>
 
 <div id="contenu">
@@ -54,6 +57,34 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     <form method="post" action="index.php">
         <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
     </form>
+
+    <?php if (sizeof($historique) > 0 && isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") { ?>
+    <table class="ui celled table" id="historique">
+        <thead>
+            <tr>
+                <th colspan="2" id="titreHistorique"> Activités récentes </th>
+            </tr>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Libellé
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $max = 5;
+            if (sizeof($historique) < $max)
+                $max = sizeof($historique);
+            for ($i = 0; $i < $max; $i++) {
+                echo '<tr><td>'.$historique[$i]['date_activite'].'</td><td><a href="'.$historique[$i]['page_action'].$historique[$i]['param'].'">'.$historique[$i]['libelle'].'</a></td>';
+            }
+        ?>
+        </tbody>
+    </table>
+    <?php } ?>
 </div>
 </body>
 

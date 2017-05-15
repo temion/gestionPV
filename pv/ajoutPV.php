@@ -12,6 +12,16 @@ update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $_GE
 $valeurs = array("null", $_GET['idRapport'], $_GET['equipement'], $_GET['discipline'], $_GET['controle'], $nouvelleVal, $_GET['controleur'], "false", "false", 0, "false", "false", "false", $bdd->quote(conversionDate($_GET['date_debut'])), $bdd->quote(conversionDate($_GET['date_fin'])), 1, "null", "null");
 insert($bdd, "pv_controle", $valeurs);
 
+$pvCree = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", "last_insert_id()")->fetch();
+$rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $pvCree['id_rapport'])->fetch();
+$affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+$type_controle = selectAllFromWhere($bdd, "type_controle", "id_type", "=", $pvCree['id_type_controle'])->fetch();
+$discipline = selectAllFromWhere($bdd, "type_discipline", "id_discipline", "=", $pvCree['id_discipline'])->fetch();
+
+$titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pvCree['num_ordre']);
+
+ajouterHistorique($bdd, "Création du PV ".$titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
+
 header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
 exit;
 

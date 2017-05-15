@@ -10,6 +10,9 @@ $bdd = connexion('portail_gestion');
 if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
     creerRapport($bdd);
     $_GET['idRapport'] = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", "last_insert_id()")->fetch()['id_rapport'];
+    $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();
+    $affaire = selectAllFromWhere($bdd, "affaire", "id_affaire", "=", $rapport['id_affaire'])->fetch();
+    ajouterHistorique($bdd, "Création du rapport de l'affaire ".$affaire['num_affaire'],"pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
 }
 
 $rapport = selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $_GET['idRapport'])->fetch();

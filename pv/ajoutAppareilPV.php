@@ -9,5 +9,5 @@ if (!isset($_GET['appareil']) || $_GET['appareil'] == "") {
 }
 
 insert($bdd, "appareils_utilises", array("null", $_GET['appareil'], $_GET['idPV']));
-header('Location: /gestionPV/pv/modifPVOP.php?idPV=' . $_GET['idPV'] . '&ajout=1');
+header('Location: /gestionPV/pv/modifPVOP.php?idPV=' . $_GET['idPV'] . '&ajout=1&modif=1');
 exit;

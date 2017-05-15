@@ -74,7 +74,7 @@ $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEq
                 $listePV->execute(array($_GET['numAffaire']));
                 $PVs = $listePV->fetchAll();
                 for ($i = 0; $i < sizeof($PVs); $i++) {
-                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectEquipement, $selectAvancement);
+                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectEquipement, $selectAvancement, $selectDiscipline, "modifPVCA.php");
                 }
             }
             ?>

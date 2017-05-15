@@ -225,7 +225,7 @@ function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEqu
     creerLigneInfos("Lieu : ", $affaire['lieu_intervention'], "Hauteur produit : ", "?");
 
     // Début contrôle + Volume
-    creerLigneInfos("Début du contrôle : ", $pv['date'], "Volume : ", "?");
+    creerLigneInfos("Début du contrôle : ", conversionDate($pv['date_debut']), "Volume : ", "?");
 
     // Nombre génératrices + Distance entre 2 points
     creerLigneInfos("Nbre génératrices : ", $ficheTechniqueEquipement['nbGeneratrice'], "Distance entre 2 points : ", "?");

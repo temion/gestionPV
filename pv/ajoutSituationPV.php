@@ -13,7 +13,7 @@ update($bdd, "pv_controle", "controle_peripherique", etatCB($bdd, 'controle_peri
 if (isset($_GET['nbAnnexes']) && is_numeric($_GET['nbAnnexes']))
     update($bdd, "pv_controle", "nb_annexes", $_GET['nbAnnexes'], "id_pv", "=", $_GET['idPV']);
 
-header('Location: /gestionPV/pv/modifPVOP.php?idPV=' . $_GET['idPV'] . '&ajout=1');
+header('Location: /gestionPV/pv/modifPVOP.php?idPV=' . $_GET['idPV'] . '&ajout=1&modif=1');
 
 
 /**

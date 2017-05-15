@@ -13,10 +13,13 @@ if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
         insert($bdd, "constatations_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['typeConstatation']), $bdd->quote($_GET['constatation'])));
     else
         insert($bdd, "constatations_pv", array("null", $_GET['idPV'], "null", $bdd->quote($_GET['constatation'])));
+
+    $_GET['modif'] = 1;
 }
 
 if (isset($_GET['conclusion']) && $_GET['conclusion'] != "") {
     insert($bdd, "conclusions_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['conclusion'])));
+    $_GET['modif'] = 1;
 }
 
 $pv = selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $_GET['idPV'])->fetch();
@@ -37,6 +40,9 @@ $appareilsUtilises = selectAllFromWhere($bdd, "appareils_utilises", "id_pv_contr
 $typeAppareilsUtilises = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
+
+if (isset($_GET['modif']) && $_GET['modif'] = 1)
+    ajouterHistorique($bdd, "Modification opérateur du PV ".$titre, "pv/modifPVCA.php?idPV=", $pv['id_pv']);
 ?>
 
 <?php

@@ -38,6 +38,7 @@ $prepareAffaire = $bdd->prepare('select * from affaire where id_affaire = ?');
 $prepareUtilisateur = $bdd->prepare('select * from utilisateurs where id_utilisateur = ?');
 $prepareControle = $bdd->prepare('select * from type_controle where id_type = ?');
 $prepareAvancement = $bdd->prepare('select * from avancement where id_avancement = ?');
+$prepareDiscipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
 
 $bddEquipement = connexion('theodolite');
 $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
@@ -121,13 +122,16 @@ $prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idE
 
 <script>
     $(function() {
+        // Navigation aux flèches directionnelles
         $("body").on("keydown", function(event) {
+            // Flèche gauche
             if (event.keyCode == 37) {
                 var mois = "<?php echo getDatePrecedente()[0]; ?>";
                 var annee = "<?php echo getDatePrecedente()[1]; ?>";
                 window.location = "calendrier.php?mois=" + mois  + "&annee=" + annee;
             }
 
+            // Flèche droite
             if (event.keyCode == 39) {
                 var mois = "<?php echo getDateSuivante()[0]; ?>";
                 var annee = "<?php echo getDateSuivante()[1]; ?>";
@@ -190,7 +194,7 @@ function getDateSuivante() {
  * Crée un tableau référençant les différents PV actifs à la date sélectionnée.
  */
 function creerTableInfos() {
-    global $prepareDates, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement;
+    global $prepareDates, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline;
 
     $date = conversionDate($_GET['dateSelect']);
     $prepareDates->execute(array($date));
@@ -216,7 +220,7 @@ function creerTableInfos() {
             <tbody>
             <?php
             for ($i = 0; $i < sizeof($pvs); $i++) {
-                creerLignePV($pvs[$i], $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement);
+                creerLignePV($pvs[$i], $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline, "../pv/modifPVCA.php");
             }
             ?>
             </tbody>
