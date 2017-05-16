@@ -6,7 +6,7 @@ enTete("Création de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 $bddAffaires = connexion('portail_gestion');
-$affaires = selectAll($bddAffaires, "affaire")->fetchAll();
+$affaires = $bddAffaires->query('select * from affaire where affaire.id_affaire not in (select rapports.id_affaire from rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
 $utilisateurs = selectAll($bddAffaires, "utilisateurs")->fetchAll();
 
 if (isset($_GET['num_affaire'])) {

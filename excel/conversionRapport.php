@@ -254,7 +254,7 @@ function sauvegarde($affaire) {
         $writer->save($cheminFichier);
         telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
-        header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=&');
+        header('Location: /gestionPV/pv/listeRapportsCA.php?erreur=1');
         exit;
     }
 

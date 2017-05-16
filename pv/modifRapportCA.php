@@ -35,8 +35,7 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
 ?>
 
     <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Modification du
-            rapport <?php echo $affaire['num_affaire']; ?></h1>
+        <h1 class="ui blue center aligned huge header">Modification du rapport <?php echo $affaire['num_affaire']; ?></h1>
         <?php
         afficherMessage('ajout', "Succès !", "Le PV a bien été crée.",
             "Erreur", "Veuillez remplir tous les champs précédés d'un astérisque par des valeurs valides.");
@@ -272,11 +271,15 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
     }
 }
 
+/**
+ * Si les paramètres sont corrects, crée un nouveau rapport avec ces paramètres dans la base.
+ *
+ * @param PDO $bdd Base de données.
+ */
 function creerRapport($bdd) {
     if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
         $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
-        $_GET['procedure'] == "" || $_GET['codeInter'] == ""
-    ) {
+        $_GET['procedure'] == "" || $_GET['codeInter'] == "") {
         header("Location: creationRapport.php?erreur=1");
         exit;
     }

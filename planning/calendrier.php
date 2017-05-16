@@ -32,7 +32,7 @@ $premierJour = strtotime("First day of ".$_GET['mois']." ".$_GET['annee']);
 $premierJour = date("l", $premierJour);
 
 $bdd = connexion('portail_gestion');
-$prepareDates = $bdd->prepare('SELECT * FROM pv_controle WHERE ? BETWEEN date_debut AND date_fin;');
+$prepareDates = $bdd->prepare('select * from pv_controle where ? between date_debut and date_fin;');
 $prepareRapport = $bdd->prepare('select * from rapports where id_rapport = ?');
 $prepareAffaire = $bdd->prepare('select * from affaire where id_affaire = ?');
 $prepareUtilisateur = $bdd->prepare('select * from utilisateurs where id_utilisateur = ?');
@@ -205,7 +205,7 @@ function creerTableInfos() {
         <table id="tabPV" class="ui celled table">
             <thead>
                 <tr>
-                    <th colspan="7" id="titreTabPV">Contrôles du <?php echo $date; ?></th>
+                    <th colspan="7" id="titreTabPV">Contrôles du <?php echo conversionDate($date); ?></th>
                 </tr>
                 <tr>
                     <th>Identifiant PV</th>

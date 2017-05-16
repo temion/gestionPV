@@ -120,7 +120,7 @@ function selectPVParId($base, $id) {
  * @return mixed Informations des PV du rapport.
  */
 function selectPVParRapport($base, $idRapport) {
-    return selectAllFromWhere($base, "pv_controle", "id_rapport", "=", $idRapport['id_rapport']);
+    return selectAllFromWhere($base, "pv_controle", "id_rapport", "=", $idRapport);
 }
 
 /**

@@ -25,6 +25,9 @@ ajouterHistorique($bdd, "Création du PV ".$titre, "pv/modifPVCA.php?idPV=", $pv
 header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
 exit;
 
+/**
+ * Vérifie les valeurs, et détermine la valeur du responsable du contrôle.
+ */
 function verifEntrees() {
     if (condition()) {
         header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=0');
@@ -35,6 +38,11 @@ function verifEntrees() {
         $_GET['controleur'] = "null";
 }
 
+/**
+ * Vérifie que les valeurs entrées sont correctes.
+ *
+ * @return bool Vrai si les valeurs sont erronées, faux si toutes les valeurs sont correctes.
+ */
 function condition() {
     return (!isset($_GET['equipement']) || $_GET['equipement'] == "" || !isset($_GET['controle']) ||
         $_GET['controle'] == "" || !isset($_GET['discipline']) || $_GET['discipline'] == "" ||

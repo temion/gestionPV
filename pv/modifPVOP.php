@@ -118,7 +118,7 @@ creerModal("conclusion");
                                 </td>
                                 <td>
                                     <label> Appareils déjà ajoutés : </label>
-                                    <select disabled size=4 class="ui search dropdown listeUtilises">
+                                    <select disabled size=2 class="ui search dropdown listeUtilises">
                                         <?php
                                         for ($i = 0; $i < sizeof($typeAppareilsUtilises); $i++) {
                                             echo '<option>' . $typeAppareilsUtilises[$i]['systeme'] . ' ' . $typeAppareilsUtilises[$i]['type'] . ' (' . $typeAppareilsUtilises[$i]['num_serie'] . ')</option>';

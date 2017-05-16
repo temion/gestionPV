@@ -6,6 +6,13 @@ if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
     $_SESSION['droit'] = $_POST['utilisateur'];
 }
 
+/**
+ * Définit le titre, les feuilles de style et les scripts de la page.
+ *
+ * @param string $titre Titre de la page.
+ * @param array $styles Chemin des feuilles de style.
+ * @param array $scripts Chemin des fichiers de script.
+ */
 function enTete($titre, $styles, $scripts) {
 ?>
 <!DOCTYPE html>
