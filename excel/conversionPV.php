@@ -9,6 +9,9 @@ set_error_handler(function () {
 
 $bddAffaire = connexion('portail_gestion');
 
+if (isset($_GET['idPV']) && $_GET['idPV'] != "")
+    $_POST['idPV'] = $_GET['idPV'];
+
 $pv = selectPVParId($bddAffaire, $_POST['idPV'])->fetch();
 
 if (isset($_POST['pdf']) && $_POST['pdf'] == 1) {
@@ -60,6 +63,7 @@ $classeur = new PHPExcel;
 $classeur->setActiveSheetIndex(0);
 
 $feuille = $classeur->getActiveSheet();
+$feuille->getProtection()->setSheet(true);
 
 $bordures = array(
     'borders' => array(
@@ -114,7 +118,7 @@ conclusions($conclusions);
 $celluleAct = $celluleAct + 2;
 signatures($pv);
 
-// Sauvegarde du fichier et redirection vers la liste des PV
+// Sauvegarde du fichier
 sauvegarde($affaire, $typeControle, $discipline, $pv, $bddAffaire);
 exit;
 ?>
@@ -433,7 +437,7 @@ function sauvegarde($affaire, $typeControle, $discipline, $pv, $bdd) {
         update($bdd, "pv_controle", "chemin_excel", $bdd->quote($cheminFichier), "id_pv", "=", $_POST['idPV']);
         telecharger($cheminFichier);
     } catch (PHPExcel_Writer_Exception $e) {
-        header('Location: /gestionPV/pv/listePVOP.php?erreur=1');
+        header('Location: /gestionPV/index.php?erreur=1');
         exit;
     }
 

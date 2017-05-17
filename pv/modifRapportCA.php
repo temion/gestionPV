@@ -230,23 +230,35 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                     <button class="ui right floated blue button">Générer le rapport au format Excel</button>
                 </form>
+
+
+                <!-- ToDo -->
+
+                <form method="post" action="../excel/ensembleRapport.php">
+                    <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
+                    <button class="ui right floated blue button">Générer tous les fichiers du rapport au format Excel</button>
+                </form>
+
+                <!-- ToDo -->
+
+
             </div>
         </div>
     </div>
     </body>
-    </html>
+</html>
 
-    <script>
-        $(function () {
-            $("#controleGenere").on("change", function () {
-                console.log($("#controleGenere").val())
-                if ($("#controleGenere").val().length > 0)
-                    $("#boutonGenere").prop('disabled', false);
-                else
-                    $("#boutonGenere").prop('disabled', true);
-            })
-        });
-    </script>
+<script>
+    $(function () {
+        $("#controleGenere").on("change", function () {
+            console.log($("#controleGenere").val())
+            if ($("#controleGenere").val().length > 0)
+                $("#boutonGenere").prop('disabled', false);
+            else
+                $("#boutonGenere").prop('disabled', true);
+        })
+    });
+</script>
 
 <?php
 

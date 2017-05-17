@@ -84,12 +84,35 @@ $historique = $bdd->query('select * from historique_activite order by date_activ
         ?>
         </tbody>
     </table>
+
+    <div style="width: 50%; height: 80%" id="test" class="ui large modal">
+        <div class="header">Aperçu du PV<i class="close icon"></i></div>
+    </div>
+
+    <p>
+        <button id="link" type="button">Test Ajax</button>
+    </p>
+
     <?php } ?>
 </div>
 </body>
 
 <script>
-    $("#testModal").on("click", function () {
-        $('.large.modal').modal('show');
+    $('#link').click(function(e) {
+        e.preventDefault();
+        jQuery.ajax({
+            type: "POST",
+            processData: false,
+            url: "index.php?name=pdf",
+            contentType: "application/xml; charset=utf-8",
+            success: function(data)
+            {
+                var iframe = $('<iframe>');
+                iframe.attr('src', '/gestionPV/documents/PV_PDF/SCO1230/SCO1230-PP-LST-002.pdf');
+                iframe.css({"width": "100%", "height": "100%"});
+                $('#test').append(iframe);
+                $('#test').modal('show');
+            }
+        });
     });
 </script>

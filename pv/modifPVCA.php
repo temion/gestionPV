@@ -11,9 +11,14 @@ $pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
 
 if (isset($_GET['avancement']) && $_GET['avancement'] != "") {
     update($bdd, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
-    // Reselect afin de mettre à jour les informations
-    $pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
 }
+
+if (isset($_GET['commentaires']) && $_GET['ajoutComm'] == 1) {
+    update($bdd, "pv_controle", "commentaires", $_GET['commentaires'], "id_pv", "=", $_GET['idPV']);
+}
+
+// Reselect afin de mettre à jour les informations
+$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
 
 $type_controle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
 $discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
@@ -45,14 +50,17 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                     <table>
                         <?php creerApercuDocuments($rapport); ?>
                         <tr>
-                            <td>
-
-                            </td>
+                            <tr>
+                                <th colspan="3"><h4 class="ui dividing header">Télécharger les fichiers</h4></th>
+                            </tr>
                             <td>
                                 <?php
                                 echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                echo '<button id="boutonGenere" name="pdf" value="1" class="ui left floated blue button">Télécharger le fichier PDF</button>';
+                                echo '<button name="pdf" value="1" title="Génère automatiquement un PV au format PDF" class="ui left floated blue button">Télécharger le fichier PDF</button>';
                                 ?>
+                            </td>
+                            <td>
+
                             </td>
                             <td>
                                 <?php
@@ -60,9 +68,9 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                                 if ($pv['chemin_excel'] != null) {
                                     $chemin = str_replace("'", "", $pv['chemin_excel']);
                                     if (file_exists($chemin))
-                                        echo '<button id="boutonGenere" class="ui left floated blue button">Télécharger le fichier Excel</button>';
+                                        echo '<button class="ui left floated blue button">Télécharger le fichier Excel</button>';
                                 } else
-                                    echo '<button disabled style="pointer-events: auto;" id="boutonGenere" title="Aucun fichier n\'a encore été uploadé" class="ui left floated blue button">Télécharger le fichier Excel</button>';
+                                    echo '<button disabled style="pointer-events: auto;" title="Aucun fichier n\'a encore été uploadé" class="ui left floated blue button">Télécharger le fichier Excel</button>';
                                 ?>
                             </td>
                         </tr>
@@ -136,6 +144,31 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                             </td>
                         </tr>
                     </form>
+
+                    <tr>
+                        <th colspan="2"><h4 class="ui dividing header">Ajouter un commentaire</h4></th>
+                    </tr>
+                    <form method="get" action="modifPVCA.php">
+                        <tr>
+                            <td colspan="2">
+                                <div class="ui form">
+                                    <div class="field">
+                                        <label>Commentaires</label>
+                                        <textarea name="commentaires"><?php echo $pv['commentaires']; ?></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <?php
+                                echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
+                                ?>
+                                <button class="ui right floated blue button" name="ajoutComm" value="1">Ajouter ces commentaires</button>
+                            </td>
+                        </tr>
+                    </form>
                     <tr>
                         <?php
                         afficherMessage('erreurUpload', "Erreur", "Erreur dans l'upload du fichier", "Succès !", "Le fichier a bien été uploadé !");
@@ -150,6 +183,21 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
         <button class="ui right floated blue button">Retour à la liste des PV</button>
     </form>
 </div>
+
+<div class="ui small modal" id="modalDetails">
+    wow
+</div>
+
 </body>
 </html>
+
+<script>
+    $(function () {
+        $("#detailsFichier").on("click", function () {
+            $('.small.modal')
+                .modal('show')
+            ;
+        });
+    });
+</script>
 
