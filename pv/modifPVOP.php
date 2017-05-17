@@ -6,7 +6,7 @@ enTete("Modification de PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 $bdd = connexion('portail_gestion');
-$bddEquipement = connexion('theodolite');
+$bddInspection = connexion('inspections');
 
 if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
     if (isset($_GET['typeConstatation']) && $_GET['typeConstatation'] != "")
@@ -33,8 +33,7 @@ $odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
 $client = selectClientParId($bdd, $odp['id_client'])->fetch();
 $controleur = selectUtilisateurParId($bdd, $pv['id_controleur'])->fetch();
 
-$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $pv['id_equipement'])->fetch();
+$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 
 $appareils = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil NOT IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 $appareilsUtilises = selectAppareilsUtilisesParPV($bdd, $pv['id_pv'])->fetchAll();
@@ -58,7 +57,7 @@ creerModal("conclusion");
             <tr>
                 <td class="partieTableau">
                     <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
-                        <?php creerApercuModif($affaire, $societe, $equipement, $client, $controleur, $ficheTechniqueEquipement, $pv); ?>
+                        <?php creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, $pv); ?>
                         <table>
                             <?php creerApercuDocuments($rapport); ?>
                             <tr>

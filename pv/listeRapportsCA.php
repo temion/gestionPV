@@ -6,13 +6,13 @@ enTete("Liste des rapports",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 $bddAffaire = connexion('portail_gestion');
-$bddEquipement = connexion('theodolite');
+$bddInspection = connexion('inspections');
 
 // Ensemble des affaires disponibles
 $numRapports = selectAll($bddAffaire, "rapports")->fetchAll();
 
 $selectAffaire = $bddAffaire->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
-$selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
+$selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 $comptePV = $bddAffaire->prepare('SELECT count(*) FROM pv_controle WHERE id_rapport = ?');
 ?>
 
@@ -57,12 +57,11 @@ $comptePV = $bddAffaire->prepare('SELECT count(*) FROM pv_controle WHERE id_rapp
  */
 function creerLigneRapport($rapport) {
     global $selectAffaire;
-    global $selectEquipement;
+    global $selectReservoir;
     global $comptePV;
 
     $selectAffaire->execute(array($rapport['id_affaire']));
     $affaire = $selectAffaire->fetch();
-
 
     $comptePV->execute(array($rapport['id_rapport']));
     $nbPV = $comptePV->fetch();

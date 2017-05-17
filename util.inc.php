@@ -58,13 +58,12 @@ function verifFormatDates($date) {
  *
  * @param array $affaire Informations de l'affaire.
  * @param array $societe Informations de la société.
- * @param array $equipement Informations de l'équipement inspecté.
+ * @param array $reservoir Informations du réservoir inspecté.
  * @param array $client Informations du client rencontré.
  * @param array $controleur Informations de la personne responsable du contrôle.
- * @param array $ficheTechniqueEquipement Informations techniques de l'équipement inspecté.
  * @param array $pv Informations du PV.
  */
-function creerApercuModif($affaire, $societe, $equipement, $client, $controleur, $ficheTechniqueEquipement, $pv) {
+function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, $pv) {
     ?>
     <table>
         <tr>
@@ -83,8 +82,8 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $controleur,
             </td>
             <td>
                 <div class="field">
-                    <label>N° Equipement : </label>
-                    <label> <?php echo $equipement['Designation'] . ' ' . $equipement['Type']; ?> </label>
+                    <label>Réservoir : </label>
+                    <label> <?php echo $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit']; ?> </label>
                 </div>
             </td>
         </tr>
@@ -99,7 +98,7 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $controleur,
             <td>
                 <div class="field">
                     <label>Diamètre : </label>
-                    <label> <?php echo ($ficheTechniqueEquipement['diametre'] / 1000) . ' m'; ?> </label>
+                    <label> <?php echo ($reservoir['diametre'] / 1000) . ' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -116,7 +115,7 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $controleur,
             <td>
                 <div class="field">
                     <label>Hauteur : </label>
-                    <label> <?php echo ($ficheTechniqueEquipement['hauteurEquipement'] / 1000) . ' m'; ?> </label>
+                    <label> ? </label>
                 </div>
             </td>
         </tr>
@@ -175,7 +174,7 @@ function creerApercuModif($affaire, $societe, $equipement, $client, $controleur,
             <td>
                 <div class="field">
                     <label>Nombre de génératrices : </label>
-                    <label> <?php echo $ficheTechniqueEquipement['nbGeneratrice']; ?> </label>
+                    <label> ? </label>
                 </div>
             </td>
         </tr>
@@ -220,12 +219,12 @@ function creerApercuDocuments($pv) {
  * @param PDOStatement $prepareRapport PreparedStatement pour obtenir le rapport.
  * @param PDOStatement $prepareAffaire PreparedStatement pour obtenir l'affaire.
  * @param PDOStatement $prepareControle PreparedStatement pour obtenir le type de contrôle.
- * @param PDOStatement $prepareEquipement PreparedStatement pour obtenir les informations de l'équipement inspecté.
+ * @param PDOStatement $prepareReservoir PreparedStatement pour obtenir les informations du réservoir inspecté.
  * @param PDOStatement $prepareAvancement PreparedStatement pour obtenir le stade d'avancement du contrôle.
  * @param PDOStatement $prepareDiscipline PreparedStatement pour obtenir la discipline du contrôle.
  * @param string $lienRetour Lien de la page à atteindre en cliquant sur Modifier.
  */
-function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline, $lienRetour) {
+function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareReservoir, $prepareAvancement, $prepareDiscipline, $lienRetour) {
     $prepareUtilisateur->execute(array($pv['id_controleur']));
     $controleur = $prepareUtilisateur->fetch();
 
@@ -236,8 +235,8 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     $prepareControle->execute(array($pv['id_type_controle']));
     $controle = $prepareControle->fetch();
 
-    $prepareEquipement->execute(array($pv['id_equipement']));
-    $equipement = $prepareEquipement->fetch();
+    $prepareReservoir->execute(array($pv['id_reservoir']));
+    $reservoir = $prepareReservoir->fetch();
 
     $prepareAvancement->execute(array($pv['id_avancement']));
     $avancement = $prepareAvancement->fetch();
@@ -250,7 +249,7 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '<tr>';
     echo '<td><strong>'.$pv['id_pv'].'</strong> : '.$titrePV.'</td>';
     echo '<td>'.$affaire['num_affaire'].'</td>';
-    echo '<td>'.$equipement['Designation'].' '.$equipement['Type'].'</td>';
+    echo '<td>'.$reservoir['nom_reservoir'].' '.$reservoir['type_toit'].'</td>';
     echo '<td>'.$controle['libelle'].' '.$pv['num_ordre'].' ('.$controle['code'].') <br/>';
     echo 'du '.conversionDate($pv['date_debut']).' au '.conversionDate($pv['date_fin']).'</td>';
     echo '<td>'.$controleur['nom'].'</td>';

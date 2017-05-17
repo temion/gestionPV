@@ -28,8 +28,8 @@ $controles = selectAll($bdd, "type_controle")->fetchAll();
 
 $disciplines = selectAll($bdd, "type_discipline")->fetchAll();
 
-$bddEquipement = connexion('theodolite');
-$listeEquipement = selectAll($bddEquipement, "equipement")->fetchAll();
+$bddInspection = connexion('inspections');
+$listeReservoirs = selectAll($bddInspection, "reservoirs")->fetchAll();
 
 $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
 ?>
@@ -142,11 +142,11 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
                     <tr>
                         <td>
                             <label class="desc" for="appareil"> * Équipement à contrôler : </label>
-                            <select class="ui search dropdown listeAjout" name="equipement">
+                            <select class="ui search dropdown listeAjout" name="reservoir">
                                 <option selected></option>
                                 <?php
-                                for ($i = 0; $i < sizeof($listeEquipement); $i++) {
-                                    echo '<option value="' . $listeEquipement[$i]['idEquipement'] . '">' . $listeEquipement[$i]['Type'] . ' ' . $listeEquipement[$i]['Designation'] . '</option>';
+                                for ($i = 0; $i < sizeof($listeReservoirs); $i++) {
+                                    echo '<option value="' . $listeReservoirs[$i]['id_reservoir'] . '">' . $listeReservoirs[$i]['type_toit'] . ' ' . $listeReservoirs[$i]['nom_reservoir'] . '</option>';
                                 }
                                 ?>
                             </select>

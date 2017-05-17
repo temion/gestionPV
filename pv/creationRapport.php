@@ -45,10 +45,7 @@ $typeControles = selectAll($bddAffaires, "type_controle")->fetchAll();
                         <div class="field">
                             <?php
                             $url = "creationRapport.php?num_affaire=";
-                            if (isset($_GET['num_equipement']))
-                                $url = "creationRapport.php?num_equipement=" . $_GET['num_equipement'] . "&num_affaire="; // Stockage de l'url pour l'aperçu du PV
                             ?>
-
                             <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
                                     class="ui search dropdown" name="num_affaire">
                                 <option selected label="defaut"></option>

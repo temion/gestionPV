@@ -5,7 +5,7 @@ enTete("Liste des PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 $bddAffaire = connexion('portail_gestion');
-$bddEquipement = connexion('theodolite');
+$bddInspection = connexion('inspections');
 
 if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
     $_GET['numAffaire'] = "SCOPEO " . explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
@@ -24,7 +24,7 @@ $selectRapport = $bddAffaire->prepare('SELECT * FROM rapports WHERE id_rapport =
 $selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
 $selectUtilisateur = $bddAffaire->prepare('select * from utilisateurs where id_utilisateur = ?');
 $selectAvancement = $bddAffaire->prepare('select * from avancement where id_avancement = ?');
-$selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
+$selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
     <div id="contenu">
@@ -56,7 +56,7 @@ $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEq
             <tr>
                 <th>Identifiant PV</th>
                 <th>Numéro d'affaire</th>
-                <th>Equipement à inspecter</th>
+                <th>Réservoir à inspecter</th>
                 <th>Contrôle (Dates)</th>
                 <th>Responsable</th>
                 <th>Avancement</th>
@@ -69,7 +69,7 @@ $selectEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEq
                 $listePV->execute(array($_GET['numAffaire']));
                 $PVs = $listePV->fetchAll();
                 for ($i = 0; $i < sizeof($PVs); $i++) {
-                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectEquipement, $selectAvancement, $selectDiscipline, "modifPVOP.php");
+                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVOP.php");
                 }
             }
             ?>

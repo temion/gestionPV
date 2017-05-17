@@ -53,10 +53,9 @@ $conclusions = selectConclusionsParPV($bddAffaire, $pv['id_pv'])->fetchAll();
 
 $appareils = $bddAffaire->query('SELECT * FROM appareils WHERE id_appareil IN (SELECT id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 
-$bddEquipement = connexion('theodolite');
+$bddInspection = connexion('inspections');
 
-$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $equipement['idEquipement'])->fetch();
+$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 
 $classeur = new PHPExcel;
 
@@ -89,7 +88,7 @@ presentationPV($affaire, $typeControle, $discipline, $pv);
 
 // Détails de l'affaire
 $celluleAct = $celluleAct + 2;
-detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv);
+detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv);
 
 $celluleAct = $celluleAct + 2;
 colorerCellule($classeur, 'A' . $celluleAct . ':H' . $celluleAct, $bleu); // Bleu
@@ -204,13 +203,12 @@ function presentationPV($affaire, $typeControle, $discipline, $pv) {
  * Ecrit les détails de l'affaire.
  *
  * @param array $societeClient Informations de la base de données sur la société cliente à laquelle est adressé le PV.
- * @param array $equipement Informations de la base de données sur l'équipement inspecté.
+ * @param array $reservoir Informations de la base de données sur le réservoir inspecté.
  * @param array $client Informations de la base de données sur la personne rencontrée.
- * @param array $ficheTechniqueEquipement Informations de la base de données sur les caractéristiques techniques de l'équipement inspecté.
  * @param array $affaire Informations de la base de données sur l'affaire concernée.
  * @param array $pv Informations de la base de données sur le PV généré.
  */
-function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv) {
+function detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv) {
     global $classeur, $feuille, $celluleAct, $gris;
 
     remplirCellules($feuille, 'A' . $celluleAct, 'H' . $celluleAct, "Détails de l'affaire");
@@ -218,13 +216,13 @@ function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEqu
     colorerCellule($classeur, 'A' . $celluleAct, $gris); // Gris
 
     // Clients + Numéro équipement
-    creerLigneInfos("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $equipement['Designation'] . ' ' . $equipement['Type']);
+    creerLigneInfos("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit']);
 
     // Personne rencontrée + Diamètre
-    creerLigneInfos("Personne rencontrée : ", $client['nom'], "Diamètre équipement : ", ($ficheTechniqueEquipement['diametre'] / 1000) . ' m');
+    creerLigneInfos("Personne rencontrée : ", $client['nom'], "Diamètre équipement : ", ($reservoir['diametre'] / 1000) . ' m');
 
     // Num commande + Hauteur
-    creerLigneInfos("Numéro commande client : ", $affaire['commande'], "Hauteur : ", ($ficheTechniqueEquipement['hauteurEquipement'] / 1000) . ' m');
+    creerLigneInfos("Numéro commande client : ", $affaire['commande'], "Hauteur : ", "?");
 
     // Lieu + Hauteur produit
     creerLigneInfos("Lieu : ", $affaire['lieu_intervention'], "Hauteur produit : ", "?");
@@ -233,7 +231,7 @@ function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEqu
     creerLigneInfos("Début du contrôle : ", conversionDate($pv['date_debut']), "Volume : ", "?");
 
     // Nombre génératrices + Distance entre 2 points
-    creerLigneInfos("Nbre génératrices : ", $ficheTechniqueEquipement['nbGeneratrice'], "Distance entre 2 points : ", "?");
+    creerLigneInfos("Nbre génératrices : ", "?", "Distance entre 2 points : ", "?");
 }
 
 /**

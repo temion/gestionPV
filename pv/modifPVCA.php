@@ -31,10 +31,9 @@ $odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
 $client = selectClientParId($bdd, $odp['id_client'])->fetch();
 $controleur = selectUtilisateurParId($bdd, $pv['id_controleur'])->fetch();
 
-$bddEquipement = connexion('theodolite');
+$bddInspection = connexion('inspections');
 
-$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $pv['id_equipement'])->fetch();
+$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 ?>
@@ -46,7 +45,7 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
         <tr>
             <td class="partieTableau">
                 <form class="ui form" method="post" <?php echo 'action="/gestionPV/excel/conversionPV.php"' ?>>
-                    <?php creerApercuModif($affaire, $societe, $equipement, $client, $controleur, $ficheTechniqueEquipement, $pv); ?>
+                    <?php creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, $pv); ?>
                     <table>
                         <?php creerApercuDocuments($rapport); ?>
                         <tr>
@@ -170,6 +169,7 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                         </tr>
                     </form>
                     <tr>
+                        <td></td>
                         <?php
                         afficherMessage('erreurUpload', "Erreur", "Erreur dans l'upload du fichier", "Succès !", "Le fichier a bien été uploadé !");
                         ?>

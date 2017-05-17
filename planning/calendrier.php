@@ -40,8 +40,8 @@ $prepareControle = $bdd->prepare('select * from type_controle where id_type = ?'
 $prepareAvancement = $bdd->prepare('select * from avancement where id_avancement = ?');
 $prepareDiscipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
 
-$bddEquipement = connexion('theodolite');
-$prepareEquipement = $bddEquipement->prepare('SELECT * FROM equipement WHERE idEquipement = ?');
+$bddInspection = connexion('inspections');
+$prepareReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
 <div id="contenu">
@@ -194,7 +194,7 @@ function getDateSuivante() {
  * Crée un tableau référençant les différents PV actifs à la date sélectionnée.
  */
 function creerTableInfos() {
-    global $prepareDates, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline;
+    global $prepareDates, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareReservoir, $prepareAvancement, $prepareDiscipline;
 
     $date = conversionDate($_GET['dateSelect']);
     $prepareDates->execute(array($date));
@@ -220,7 +220,7 @@ function creerTableInfos() {
             <tbody>
             <?php
             for ($i = 0; $i < sizeof($pvs); $i++) {
-                creerLignePV($pvs[$i], $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareEquipement, $prepareAvancement, $prepareDiscipline, "../pv/modifPVCA.php");
+                creerLignePV($pvs[$i], $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareReservoir, $prepareAvancement, $prepareDiscipline, "../pv/modifPVCA.php");
             }
             ?>
             </tbody>
