@@ -1,0 +1,16 @@
+table {
+    margin: auto;
+}
+
+td {
+    padding: 1vh 0 0 1vh;
+}
+
+.message .header {
+    color: red;
+}
+.message {
+    text-align: center;
+    display: block;
+    width: 30vh;
+}

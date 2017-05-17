@@ -205,6 +205,17 @@ function selectUtilisateurParId($base, $id) {
 }
 
 /**
+ * Retourne les informations de l'utilisateur possédant le login passé en paramètre dans la base.
+ *
+ * @param PDO $base Base de données.
+ * @param int $login Login de l'utilisateur.
+ * @return mixed Informations de l'utilisateur stockées dans la base.
+ */
+function selectUtilisateurParLogin($base, $login) {
+    return selectAllFromWhere($base, "utilisateurs", "trim(login)", "like", $login);
+}
+
+/**
  * Retourne les informations de l'utilisateur possédant le nom passé en paramètre.
  *
  * @param PDO $base Base de données.

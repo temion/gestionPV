@@ -222,26 +222,27 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
                 <form method="get" action="listeRapportsCA.php">
                     <button class="ui right floated blue button">Retour à la liste des rapports</button>
                 </form>
+
                 <form method="get" action="listePVCA.php">
                     <input type="hidden" name="numAffaire" value="<?php echo $affaire['num_affaire']; ?>">
                     <button class="ui right floated blue button">Détails des PV du rapport</button>
                 </form>
+
                 <form method="post" action="../excel/conversionRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                     <button class="ui right floated blue button">Générer le rapport au format Excel</button>
                 </form>
 
-
                 <!-- ToDo -->
-
+            </div>
+            <br/>
+            <div class="boutons">
                 <form method="post" action="../excel/ensembleRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
-                    <button class="ui right floated blue button">Générer tous les fichiers du rapport au format Excel</button>
+                    <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel</button>
                 </form>
 
                 <!-- ToDo -->
-
-
             </div>
         </div>
     </div>
