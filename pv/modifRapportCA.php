@@ -237,7 +237,7 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
             </div>
             <br/>
             <div class="boutons">
-                <form method="post" action="../excel/ensembleRapport.php">
+                <form method="get" action="../excel/ensembleRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                     <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel</button>
                 </form>
