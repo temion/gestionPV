@@ -32,7 +32,7 @@ function conversionPDF($convertisseur) {
 /**
  * Permet la regénération du fichier Excel, ou le téléchargement du fichier déjà existant.
  *
- * @param ConvertisseurPV $convertisseur ConvertisseurPV et système de sauvegarde des fichiers.
+ * @param ConvertisseurPV $convertisseur Convertisseur et système de sauvegarde des fichiers.
  */
 function regenerationExcel($convertisseur) {
     if (isset($convertisseur->getPV()['chemin_excel']) && $convertisseur->getPV()['chemin_excel'] != null) {

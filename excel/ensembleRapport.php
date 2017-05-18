@@ -1,6 +1,7 @@
 <?php
 require_once '../util.inc.php';
 require_once 'ConvertisseurPV.php';
+require_once 'ConvertisseurRapport.php';
 
 $bdd = connexion('portail_gestion');
 
@@ -9,6 +10,9 @@ $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
 
 
 $pvsRapport = selectPVParRapport($bdd, $rapport['id_rapport'])->fetchAll();
+
+$c = new ConvertisseurRapport($rapport);
+$c->sauvegarde();
 
 // Génère l'ensemble des PV sous Excel
 foreach ($pvsRapport as $pv) {
