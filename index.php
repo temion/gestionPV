@@ -87,7 +87,7 @@ $historique = $bdd->query('select * from historique_activite order by date_activ
     </table>
 
     <div style="width: 50%; height: 80%" id="test" class="ui large modal">
-        <div class="header">Aperçu du PV<i class="close icon"></i></div>
+        <div class="header"><table style="width: 100%"><tr><td style="text-align: left;">Aperçu du PV</td><td style="text-align: right;"><i class="close icon"></i></td></tr></table></div>
     </div>
 
     <p>
@@ -109,7 +109,7 @@ $historique = $bdd->query('select * from historique_activite order by date_activ
             success: function(data)
             {
                 var iframe = $('<iframe>');
-                iframe.attr('src', '/gestionPV/documents/PV_PDF/SCO1230/SCO1230-PP-LST-002.pdf');
+                iframe.attr('src', 'http://localhost/gestionPV/pv/modifPVOP.php?idPV=8');
                 iframe.css({"width": "100%", "height": "100%"});
                 $('#test').append(iframe);
                 $('#test').modal('show');

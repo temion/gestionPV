@@ -68,6 +68,8 @@ creerModal("conclusion");
                                         if (file_exists($chemin)) {
                                             echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
                                             echo '<button class="ui left floated red button" title="Restaure le fichier du serveur dans son état d\'origine" name="reset" value="1">Regénérer le fichier</button>';
+                                        } else {
+                                            echo '<button disabled style="pointer-events: auto" class="ui left floated red button" title="Aucun fichier n\'a été généré pour le moment " name="reset" value="1"> Regénérer le fichier</button>';
                                         }
                                     } else {
                                         echo '<button disabled style="pointer-events: auto" class="ui left floated red button" title="Aucun fichier n\'a été généré pour le moment " name="reset" value="1"> Regénérer le fichier</button>';
@@ -81,17 +83,6 @@ creerModal("conclusion");
                                     echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
                                     ?>
                                 </td>
-<!--                                <td>-->
-<!--                                    --><?php
-//                                    echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-//                                    if ($pv['chemin_pdf'] != null) {
-//                                        $chemin = str_replace("'", "", $pv['chemin_pdf']);
-//                                        if (file_exists($chemin))
-//                                            echo '<button class="ui left floated blue button" name="pdf" value="1">Télécharger le fichier PDF</button>';
-//                                    } else
-//                                        echo '<button disabled style="pointer-events: auto;" title="Aucun fichier n\'a encore été uploadé" class="ui left floated blue button" name="reset" value="1">Télécharger le fichier PDF</button>';
-//                                    ?>
-<!--                                </td>-->
                             </tr>
                         </table>
                     </form>

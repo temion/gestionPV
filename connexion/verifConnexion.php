@@ -9,8 +9,6 @@
 
     if (!isset($_POST['login']) || !isset($_POST['mdp']) || $_POST['login'] == "" || $_POST['mdp'] == "") {
         erreur(1);
-//        header('Location: /gestionPV/');
-//        exit;
     }
 
     $bdd = connexion('planning');
@@ -20,7 +18,7 @@
         erreur(2);
     }
     else {
-        if ($_POST['mdp'] == $utilisateur['mdp']) {
+        if (sha1($_POST['mdp']) == $utilisateur['mdp']) {
             if ($utilisateur['droit'] == 0)
                 $_SESSION['droit'] = "CA";
             else

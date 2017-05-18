@@ -64,12 +64,7 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                             <td>
                                 <?php
                                 echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                if ($pv['chemin_excel'] != null) {
-                                    $chemin = str_replace("'", "", $pv['chemin_excel']);
-                                    if (file_exists($chemin))
-                                        echo '<button class="ui left floated blue button">Télécharger le fichier Excel</button>';
-                                } else
-                                    echo '<button disabled style="pointer-events: auto;" title="Aucun fichier n\'a encore été uploadé" class="ui left floated blue button">Télécharger le fichier Excel</button>';
+                                echo '<button class="ui left floated blue button">Télécharger le fichier Excel</button>';
                                 ?>
                             </td>
                         </tr>

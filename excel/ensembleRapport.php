@@ -11,13 +11,16 @@ $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
 
 $pvsRapport = selectPVParRapport($bdd, $rapport['id_rapport'])->fetchAll();
 
+// Génère le rapport Excel
 $c = new ConvertisseurRapport($rapport);
 $c->sauvegarde();
 
 // Génère l'ensemble des PV sous Excel
 foreach ($pvsRapport as $pv) {
-    $c = new ConvertisseurPV($pv);
-    $c->sauvegarde();
+    if (!file_exists(str_replace("'", "", $pv['chemin_excel']))) {
+        $c = new ConvertisseurPV($pv);
+        $c->sauvegarde();
+    }
 }
 
 $cheminRep = "../documents/PV_Excel/SCO".explode(" ", $affaire['num_affaire'])[1]."/";
@@ -30,8 +33,8 @@ $zip = new ZipArchive;
 $zip->open($nomZip, ZipArchive::CREATE);
 
 archiver($zip, "Rapports_Excel", cheminRepertoire("Rapports_Excel"));
-archiver($zip, "PV_PDF", cheminRepertoire("PV_PDF"));
 archiver($zip, "PV_Excel", cheminRepertoire("PV_Excel"));
+//archiver($zip, "PV_PDF", cheminRepertoire("PV_PDF"));
 
 $zip->close();
 

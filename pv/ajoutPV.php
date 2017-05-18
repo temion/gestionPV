@@ -9,7 +9,9 @@ $controle = selectControleParId($bdd, $_GET['controle'])->fetch();
 $nouvelleVal = $controle['num_controle'] + 1;
 update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $_GET['controle']);
 
-$valeurs = array("null", $_GET['idRapport'], $_GET['reservoir'], $_GET['discipline'], $_GET['controle'], $nouvelleVal,
+$numOrdreActuel = $bdd->query('select max(num_ordre) from pv_controle where id_rapport = '.$_GET['idRapport'].' and id_type_controle = '.$_GET['controle'])->fetch();
+
+$valeurs = array("null", $_GET['idRapport'], $_GET['reservoir'], $_GET['discipline'], $_GET['controle'], $numOrdreActuel[0] + 1,
                  $_GET['controleur'], "false", "false", 0, "false", "false", "false",
                  $bdd->quote(conversionDate($_GET['date_debut'])), $bdd->quote(conversionDate($_GET['date_fin'])), 1,
                  "null", "null", "null");

@@ -1,5 +1,7 @@
 <?php
 require_once '../menu.php';
+session_destroy();
+
 enTete("Connexion au portail de gestion de PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/menu.css", "../style/index.css", "../style/connexion.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
@@ -63,4 +65,7 @@ enTete("Connexion au portail de gestion de PV",
             <?php } ?>
         </table>
     </form>
+    <div>
+        Identifiants test : op (droit opérateur)/ca (droit chargé d'affaires) -- mdp
+    </div>
 </div>

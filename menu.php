@@ -101,6 +101,15 @@ function enTete($titre, $styles, $scripts) {
         </div>
     </div>
     <?php } ?>
+    <div class="item">
+        <div class="header">Test connexion</div>
+
+        <div class="menu">
+            <a href="/gestionPV/connexion/testConnexion.php" class="item lienMenu">
+                Déconnexion
+            </a>
+        </div>
+    </div>
 </div>
 <?php
 fonctionMenu();
