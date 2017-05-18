@@ -21,9 +21,8 @@ $analyste = selectUtilisateurParId($bdd, $rapport['id_analyste'])->fetch();
 $typeControle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
 $discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
 
-$bddEquipement = connexion('theodolite');
-$equipement = selectEquipementParId($bddEquipement, $pv['id_equipement'])->fetch();
-$ficheTechniqueEquipement = selectFicheTechniqueParEquipement($bddEquipement, $equipement['idEquipement'])->fetch();
+$bddInspection = connexion('inspections');
+$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 
 $constatations = selectConstatationsParPV($bdd, $pv['id_pv'])->fetchAll();
 $conclusions = selectConclusionsParPV($bdd, $pv['id_pv'])->fetchAll();
@@ -37,7 +36,7 @@ $pdf->ecrireHTML(file_get_contents('stylePDF.css'), 1);
 
 $pdf->enTete($infosEnTete);
 $pdf->ecrireTitre($titre);
-$pdf->detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv);
+$pdf->detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv);
 $pdf->detailsDocuments($rapport);
 $pdf->situationControle($pv);
 $pdf->constatations($constatations);

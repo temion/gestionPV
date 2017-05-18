@@ -1,19 +1,20 @@
 <?php
 require_once '../util.inc.php';
+require_once 'ConvertisseurPV.php';
 
 $bdd = connexion('portail_gestion');
 
 $rapport = selectRapportParId($bdd, $_POST['idRapport'])->fetch();
 $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
 
-/* ToDo */
+
 $pvsRapport = selectPVParRapport($bdd, $rapport['id_rapport'])->fetchAll();
 
-
-//foreach ($pvsRapport as $pv)
-
-
-/* ToDo */
+// Génère l'ensemble des PV sous Excel
+foreach ($pvsRapport as $pv) {
+    $c = new ConvertisseurPV($pv);
+    $c->sauvegarde();
+}
 
 $cheminRep = "../documents/PV_Excel/SCO".explode(" ", $affaire['num_affaire'])[1]."/";
 

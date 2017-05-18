@@ -26,21 +26,21 @@ class PDFWriter extends mPDF {
      * Écrit sous forme de tableau les détails de l'affaire.
      *
      * @param array $societeClient Société cliente du contrôle.
-     * @param array $equipement Équipement inspecté.
+     * @param array $reservoir Réservoir inspecté.
      * @param array $client Client rencontré.
      * @param array $ficheTechniqueEquipement Détails techniques de l'équipement inspecté.
      * @param array $affaire Affaire concernée.
      * @param array $pv PV concerné.
      */
-    function detailsAffaire($societeClient, $equipement, $client, $ficheTechniqueEquipement, $affaire, $pv) {
+    function detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv) {
         $this->ecrireHTML("<table class='details'><tr class='titre'><td colspan='4'>Détails de l'affaire</td></tr>");
 
-        $this->ligneDetails(array("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $equipement['Designation'] . ' ' . $equipement['Type']));
-        $this->ligneDetails(array("Personne rencontrée : ", $client['nom'], "Diamètre équipement : ", ($ficheTechniqueEquipement['diametre'] / 1000) . ' m'));
-        $this->ligneDetails(array("Numéro commande client : ", $affaire['commande'], "Hauteur : ", ($ficheTechniqueEquipement['hauteurEquipement'] / 1000) . ' m'));
+        $this->ligneDetails(array("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit']));
+        $this->ligneDetails(array("Personne rencontrée : ", $client['nom'], "Diamètre équipement : ", ($reservoir['diametre'] / 1000) . ' m'));
+        $this->ligneDetails(array("Numéro commande client : ", $affaire['commande'], "Hauteur : ", '?'));
         $this->ligneDetails(array("Lieu : ", $affaire['lieu_intervention'], "Hauteur produit : ", "?"));
         $this->ligneDetails(array("Début du contrôle : ", $pv['date_debut'], "Volume : ", "?"));
-        $this->ligneDetails(array("Nbre génératrices : ", $ficheTechniqueEquipement['nbGeneratrice'], "Distance entre 2 points : ", "?"));
+        $this->ligneDetails(array("Nbre génératrices : ", '?', "Distance entre 2 points : ", "?"));
 
         $this->ecrireHTML("</table>");
 
