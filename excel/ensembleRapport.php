@@ -3,13 +3,11 @@ require_once '../util.inc.php';
 require_once 'ConvertisseurPV.php';
 require_once 'ConvertisseurRapport.php';
 
-$bdd = connexion('portail_gestion');
-
-$rapport = selectRapportParId($bdd, $_POST['idRapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $_POST['idRapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
 
 
-$pvsRapport = selectPVParRapport($bdd, $rapport['id_rapport'])->fetchAll();
+$pvsRapport = selectPVParRapport($bddPortailGestion, $rapport['id_rapport'])->fetchAll();
 
 // Génère le rapport Excel
 $c = new ConvertisseurRapport($rapport);

@@ -5,31 +5,28 @@ enTete("Modification des PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-
-$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
+$pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
 
 if (isset($_GET['avancement']) && $_GET['avancement'] != "") {
-    update($bdd, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
+    update($bddPortailGestion, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
 }
 
 if (isset($_GET['commentaires']) && $_GET['ajoutComm'] == 1) {
-    update($bdd, "pv_controle", "commentaires", $_GET['commentaires'], "id_pv", "=", $_GET['idPV']);
+    update($bddPortailGestion, "pv_controle", "commentaires", $_GET['commentaires'], "id_pv", "=", $_GET['idPV']);
 }
 
 // Reselect afin de mettre à jour les informations
-$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
+$pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
 
-$type_controle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
-$discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
-$avancements = selectAll($bdd, "avancement")->fetchAll();
+$type_controle = selectControleParId($bddPortailGestion, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bddPortailGestion, $pv['id_discipline'])->fetch();
+$avancements = selectAll($bddPortailGestion, "avancement")->fetchAll();
 
-$rapport = selectRapportParId($bdd, $pv['id_rapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
-$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
-$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bddPortailGestion, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bddPortailGestion, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
 $controleur = selectUtilisateurParId($bddPlanning, $pv['id_controleur'])->fetch();
 
 $bddInspection = connexion('inspections');

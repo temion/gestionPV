@@ -1,32 +1,30 @@
 <?php
 require_once '../util.inc.php';
 
-$bdd = connexion('portail_gestion');
-
 verifEntrees();
 
-$controle = selectControleParId($bdd, $_GET['controle'])->fetch();
+$controle = selectControleParId($bddPortailGestion, $_GET['controle'])->fetch();
 $nouvelleVal = $controle['num_controle'] + 1;
-update($bdd, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $_GET['controle']);
+update($bddPortailGestion, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $_GET['controle']);
 
-$numOrdreActuel = $bdd->query('select max(num_ordre) from pv_controle where id_rapport = '.$_GET['idRapport'].' and id_type_controle = '.$_GET['controle'])->fetch();
+$numOrdreActuel = $bddPortailGestion->query('select max(num_ordre) from pv_controle where id_rapport = '.$_GET['idRapport'].' and id_type_controle = '.$_GET['controle'])->fetch();
 
 $valeurs = array("null", $_GET['idRapport'], $_GET['reservoir'], $_GET['discipline'], $_GET['controle'], $numOrdreActuel[0] + 1,
                  $_GET['controleur'], "false", "false", 0, "false", "false", "false",
-                 $bdd->quote(conversionDate($_GET['date_debut'])), $bdd->quote(conversionDate($_GET['date_fin'])), 1,
+                 $bddPortailGestion->quote(conversionDate($_GET['date_debut'])), $bddPortailGestion->quote(conversionDate($_GET['date_fin'])), 1,
                  "null", "null", "null");
 
-insert($bdd, "pv_controle", $valeurs);
+insert($bddPortailGestion, "pv_controle", $valeurs);
 
-$pvCree = selectDernierPV($bdd)->fetch();
-$rapport = selectRapportParId($bdd, $pvCree['id_rapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-$type_controle = selectControleParId($bdd, $pvCree['id_type_controle'])->fetch();
-$discipline = selectDisciplineParId($bdd, $pvCree['id_discipline'])->fetch();
+$pvCree = selectDernierPV($bddPortailGestion)->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $pvCree['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+$type_controle = selectControleParId($bddPortailGestion, $pvCree['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bddPortailGestion, $pvCree['id_discipline'])->fetch();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pvCree['num_ordre']);
 
-ajouterHistorique($bdd, "Création du PV ".$titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
+ajouterHistorique($bddPortailGestion, "Création du PV ".$titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
 
 header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
 exit;

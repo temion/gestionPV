@@ -1,8 +1,6 @@
 <?php
 require_once "../util.inc.php";
 
-$bdd = connexion('portail_gestion');
-
 if ($_POST['societe'] == "" || $_POST['nom'] == "") {
     header("Location: ajoutEquipement.php?erreur=1");
     exit;
@@ -10,8 +8,8 @@ if ($_POST['societe'] == "" || $_POST['nom'] == "") {
 
 $valeurs = array("diametre" => definirValeur('diametre'), "hauteur" => definirValeur('hauteur'), "hauteur_produit" => definirValeur('hauteur_produit'), "volume" => definirValeur('volume'), "distance" => definirValeur('distance'));
 
-$societe = $bdd->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bdd->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
-$bdd->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bdd->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bdd->errorInfo(), true));
+$societe = $bddPortailGestion->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bddPortailGestion->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
+$bddPortailGestion->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bddPortailGestion->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bddPortailGestion->errorInfo(), true));
 
 header("Location: ajoutEquipement.php?ajout=1");
 ?>

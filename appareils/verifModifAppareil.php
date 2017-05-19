@@ -1,15 +1,14 @@
 <?php
 require_once "../util.inc.php";
 
-$bdd = connexion('portail_gestion');
 $modifs = 0;
 
 $attributs = array('systeme', 'type', 'marque', 'serie');
 for ($i = 0; $i < sizeof($attributs); $i++)
-    modifAttribut($bdd, $attributs[$i]);
+    modifAttribut($bddPortailGestion, $attributs[$i]);
 
-modifDates($bdd, 'date_valid');
-modifDates($bdd, 'date_calib');
+modifDates($bddPortailGestion, 'date_valid');
+modifDates($bddPortailGestion, 'date_calib');
 
 header('Location: listeAppareils.php?modifs=' . $modifs);
 exit;

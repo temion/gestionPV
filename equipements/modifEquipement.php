@@ -5,11 +5,9 @@ enTete("Modification d'un appareil existant",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-
-$equipement = selectAllFromWhere($bdd, "equipements", "id_equipement", "=", $_POST['idEquipement'])->fetch();
-$societe = selectSocieteParId($bdd, $equipement['id_societe'])->fetch();;
-$societes = selectAll($bdd, "societe")->fetchAll();
+$equipement = selectAllFromWhere($bddPortailGestion, "equipements", "id_equipement", "=", $_POST['idEquipement'])->fetch();
+$societe = selectSocieteParId($bddPortailGestion, $equipement['id_societe'])->fetch();;
+$societes = selectAll($bddPortailGestion, "societe")->fetchAll();
 ?>
 
 <div id="contenu">

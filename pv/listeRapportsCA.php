@@ -5,15 +5,12 @@ enTete("Liste des rapports",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bddAffaire = connexion('portail_gestion');
-$bddInspection = connexion('inspections');
-
 // Ensemble des affaires disponibles
-$numRapports = selectAll($bddAffaire, "rapports")->fetchAll();
+$numRapports = selectAll($bddPortailGestion, "rapports")->fetchAll();
 
-$selectAffaire = $bddAffaire->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
-$selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
-$comptePV = $bddAffaire->prepare('SELECT count(*) FROM pv_controle WHERE id_rapport = ?');
+$selectAffaire = $bddPortailGestion->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
+$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$comptePV = $bddPortailGestion->prepare('SELECT count(*) FROM pv_controle WHERE id_rapport = ?');
 ?>
 
     <div id="contenu">

@@ -5,30 +5,28 @@ enTete("Accueil",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "style/menu.css", "style/index.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-
 if (!isset($_SESSION['connexion']) || $_SESSION['connexion'] != 1) {
     header('Location: /gestionPV/connexion/connexion.php');
     exit;
 }
 
 if (isset($_POST['reset']) && $_POST['reset'] == 1) {
-    $bdd->exec('truncate table rapports');
-    $bdd->exec('truncate table appareils_utilises');
-    $bdd->exec('truncate table pv_controle');
-    $bdd->exec('truncate table conclusions_pv');
-    $bdd->exec('truncate table constatations_pv');
-    $bdd->exec('DELETE FROM appareils WHERE id_appareil > 15');
-    $bdd->exec('ALTER TABLE rapports AUTO_INCREMENT = 1');
-    $bdd->exec('ALTER TABLE appareils_utilises AUTO_INCREMENT = 1');
-    $bdd->exec('ALTER TABLE pv_controle AUTO_INCREMENT = 1');
-    $bdd->exec('ALTER TABLE appareils AUTO_INCREMENT = 1');
-    $bdd->exec('ALTER TABLE conclusions_pv AUTO_INCREMENT = 1');
-    $bdd->exec('ALTER TABLE constatations_pv AUTO_INCREMENT = 1');
-    $bdd->exec('UPDATE type_controle SET num_controle = 0');
+    $bddPortailGestion->exec('truncate table rapports');
+    $bddPortailGestion->exec('truncate table appareils_utilises');
+    $bddPortailGestion->exec('truncate table pv_controle');
+    $bddPortailGestion->exec('truncate table conclusions_pv');
+    $bddPortailGestion->exec('truncate table constatations_pv');
+    $bddPortailGestion->exec('DELETE FROM appareils WHERE id_appareil > 15');
+    $bddPortailGestion->exec('ALTER TABLE rapports AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE appareils_utilises AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE pv_controle AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE appareils AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE conclusions_pv AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE constatations_pv AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('UPDATE type_controle SET num_controle = 0');
 }
 
-$historique = $bdd->query('select * from historique_activite order by date_activite desc')->fetchAll();
+$historique = $bddPortailGestion->query('select * from historique_activite order by date_activite desc')->fetchAll();
 ?>
 
 <div id="contenu">

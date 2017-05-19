@@ -5,45 +5,41 @@ enTete("Modification de PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-$bddInspection = connexion('inspections');
-
 if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
     if (isset($_GET['typeConstatation']) && $_GET['typeConstatation'] != "")
-        insert($bdd, "constatations_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['typeConstatation']), $bdd->quote($_GET['constatation'])));
+        insert($bddPortailGestion, "constatations_pv", array("null", $_GET['idPV'], $bddPortailGestion->quote($_GET['typeConstatation']), $bddPortailGestion->quote($_GET['constatation'])));
     else
-        insert($bdd, "constatations_pv", array("null", $_GET['idPV'], "null", $bdd->quote($_GET['constatation'])));
+        insert($bddPortailGestion, "constatations_pv", array("null", $_GET['idPV'], "null", $bddPortailGestion->quote($_GET['constatation'])));
 
     $_GET['modif'] = 1;
 }
 
 if (isset($_GET['conclusion']) && $_GET['conclusion'] != "") {
-    insert($bdd, "conclusions_pv", array("null", $_GET['idPV'], $bdd->quote($_GET['conclusion'])));
+    insert($bddPortailGestion, "conclusions_pv", array("null", $_GET['idPV'], $bddPortailGestion->quote($_GET['conclusion'])));
     $_GET['modif'] = 1;
 }
 
-$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
-$type_controle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
-$discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
+$pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
+$type_controle = selectControleParId($bddPortailGestion, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bddPortailGestion, $pv['id_discipline'])->fetch();
 
-$rapport = selectRapportParId($bdd, $pv['id_rapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
-$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
-$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bddPortailGestion, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bddPortailGestion, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
 $controleur = selectUtilisateurParId($bddPlanning, $pv['id_controleur'])->fetch();
 
-$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
+$reservoir = selectReservoirParId($bddInspections, $pv['id_reservoir'])->fetch();
 
-$appareils = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil NOT IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
-$appareilsUtilises = selectAppareilsUtilisesParPV($bdd, $pv['id_pv'])->fetchAll();
-$typeAppareilsUtilises = $bdd->query('SELECT * FROM appareils WHERE appareils.id_appareil IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
+$appareils = $bddPortailGestion->query('SELECT * FROM appareils WHERE appareils.id_appareil NOT IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
+$appareilsUtilises = selectAppareilsUtilisesParPV($bddPortailGestion, $pv['id_pv'])->fetchAll();
+$typeAppareilsUtilises = $bddPortailGestion->query('SELECT * FROM appareils WHERE appareils.id_appareil IN (SELECT appareils_utilises.id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 
 if (isset($_GET['modif']) && $_GET['modif'] = 1)
-    ajouterHistorique($bdd, "Modification opérateur du PV ".$titre, "pv/modifPVCA.php?idPV=", $pv['id_pv']);
+    ajouterHistorique($bddPortailGestion, "Modification opérateur du PV ".$titre, "pv/modifPVCA.php?idPV=", $pv['id_pv']);
 ?>
 
 <?php

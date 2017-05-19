@@ -5,32 +5,29 @@ enTete("Modification de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/modifRapport.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bdd = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
 
 if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
-    creerRapport($bdd, $bddPlanning);
-    $_GET['idRapport'] = selectDernierRapport($bdd)->fetch()['id_rapport'];
-    $rapport = selectRapportParId($bdd, $_GET['idRapport'])->fetch();
-    $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-    ajouterHistorique($bdd, "Création du rapport de l'affaire ".$affaire['num_affaire'],"pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
+    creerRapport($bddPortailGestion, $bddPlanning);
+    $_GET['idRapport'] = selectDernierRapport($bddPortailGestion)->fetch()['id_rapport'];
+    $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
+    $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+    ajouterHistorique($bddPortailGestion, "Création du rapport de l'affaire ".$affaire['num_affaire'],"pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
 }
 
-$rapport = selectRapportParId($bdd, $_GET['idRapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-$societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
-$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
-$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+$societe = selectSocieteParId($bddPortailGestion, $affaire['id_societe'])->fetch();
+$odp = selectODPParId($bddPortailGestion, $affaire['id_odp'])->fetch();
+$client = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
 
 $receveur = selectUtilisateurParId($bddPlanning, $rapport['id_receveur'])->fetch();
 $analyste = selectUtilisateurParId($bddPlanning, $rapport['id_analyste'])->fetch();
 
-$controles = selectAll($bdd, "type_controle")->fetchAll();
+$controles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 
-$disciplines = selectAll($bdd, "type_discipline")->fetchAll();
+$disciplines = selectAll($bddPortailGestion, "type_discipline")->fetchAll();
 
-$bddInspection = connexion('inspections');
-$listeReservoirs = selectAll($bddInspection, "reservoirs")->fetchAll();
+$listeReservoirs = selectAll($bddInspections, "reservoirs")->fetchAll();
 
 $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 ?>

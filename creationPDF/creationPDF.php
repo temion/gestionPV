@@ -7,26 +7,22 @@ if (!isset($_GET['idPV'])) {
     exit;
 }
 
-$bdd = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-
-$pv = selectPVParId($bdd, $_GET['idPV'])->fetch();
-$rapport = selectRapportParId($bdd, $pv['id_rapport'])->fetch();
-$affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
-$odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
-$societeClient = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
-$client = selectClientParId($bdd, $odp['id_client'])->fetch();
+$pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
+$rapport = selectRapportParId($bddPortailGestion, $pv['id_rapport'])->fetch();
+$affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
+$odp = selectODPParId($bddPortailGestion, $affaire['id_odp'])->fetch();
+$societeClient = selectSocieteParId($bddPortailGestion, $affaire['id_societe'])->fetch();
+$client = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
 $receveur = selectUtilisateurParId($bddPlanning, $rapport['id_receveur'])->fetch();
 $analyste = selectUtilisateurParId($bddPlanning, $rapport['id_analyste'])->fetch();
 
-$typeControle = selectControleParId($bdd, $pv['id_type_controle'])->fetch();
-$discipline = selectDisciplineParId($bdd, $pv['id_discipline'])->fetch();
+$typeControle = selectControleParId($bddPortailGestion, $pv['id_type_controle'])->fetch();
+$discipline = selectDisciplineParId($bddPortailGestion, $pv['id_discipline'])->fetch();
 
-$bddInspection = connexion('inspections');
-$reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
+$reservoir = selectReservoirParId($bddInspections, $pv['id_reservoir'])->fetch();
 
-$constatations = selectConstatationsParPV($bdd, $pv['id_pv'])->fetchAll();
-$conclusions = selectConclusionsParPV($bdd, $pv['id_pv'])->fetchAll();
+$constatations = selectConstatationsParPV($bddPortailGestion, $pv['id_pv'])->fetchAll();
+$conclusions = selectConclusionsParPV($bddPortailGestion, $pv['id_pv'])->fetchAll();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $typeControle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 
@@ -52,7 +48,7 @@ if (!is_dir($rep))
     mkdir($rep);
 $chemin = $rep.$fichier;
 
-update($bdd, "pv_controle", "chemin_pdf", $chemin, "id_pv", "=", $pv['id_pv']);
+update($bddPortailGestion, "pv_controle", "chemin_pdf", $chemin, "id_pv", "=", $pv['id_pv']);
 
 $pdf->Output($fichier, 'D'); // Permet le téléchargement du fichier par l'utilisateur
 $pdf->Output($chemin, 'F'); // Stocke le fichier sur le serveur

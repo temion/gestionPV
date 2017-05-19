@@ -11,8 +11,7 @@
         erreur(1);
     }
 
-    $bdd = connexion('planning');
-    $utilisateur = selectUtilisateurParLogin($bdd, $_POST['login'])->fetch();
+    $utilisateur = selectUtilisateurParLogin($bddPlanning, $_POST['login'])->fetch();
 
     if (empty($utilisateur)) {
         erreur(2);

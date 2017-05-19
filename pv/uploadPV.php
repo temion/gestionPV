@@ -1,16 +1,15 @@
 <?php
 require_once '../bdd/bdd.inc.php';
 
-upload($_POST['nomFichier']);
+upload($_POST['nomFichier'], $bddPortailGestion);
 
 /**
  * Upload le fichier correspondant à la variable $_FILES[$nomFichier].
  *
  * @param string $nomFichier Nom du fichier dans la superglobale $_FILES.
+ * @param PDO $bddPortailGestion Connexion à la base 'portail_gestion'.
  */
-function upload($nomFichier) {
-    $bdd = connexion('portail_gestion');
-
+function upload($nomFichier, $bddPortailGestion) {
     echo '<h1> ' . $nomFichier . ' </h1>';
     if (isset($_FILES[$nomFichier])) {
         echo '<h1> Oui </h1>';
@@ -46,7 +45,7 @@ function upload($nomFichier) {
 
         mkdir("../documents/$rep/" . explode("-", $file_name)[0]);
         $chemin = "../documents/$rep/" . explode("-", $file_name)[0] . '/' . $file_name;
-        update($bdd, "pv_controle", $colonne, $bdd->quote($chemin), "id_pv", "=", $_POST['idPV']);
+        update($bddPortailGestion, "pv_controle", $colonne, $bddPortailGestion->quote($chemin), "id_pv", "=", $_POST['idPV']);
         move_uploaded_file($file_tmp, $chemin);
 
         header('Location: /gestionPV/pv/' . $_POST['lienRetour'] . '.php?erreurUpload=0&idPV=' . $_POST['idPV']);

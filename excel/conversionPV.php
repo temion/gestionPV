@@ -2,9 +2,7 @@
 require_once "../util.inc.php";
 require_once "ConvertisseurPV.php";
 
-$bddAffaire = connexion('portail_gestion');
-
-$pv = selectPVParId($bddAffaire, $_POST['idPV'])->fetch();
+$pv = selectPVParId($bddPortailGestion, $_POST['idPV'])->fetch();
 $convertisseur = new ConvertisseurPV($pv);
 
 conversionPDF($convertisseur);

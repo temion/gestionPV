@@ -1,8 +1,6 @@
 <?php
 require_once "../util.inc.php";
 
-$bdd = connexion('portail_gestion');
-
 if ($_POST['systeme'] == "" || $_POST['type'] == "" || $_POST['marque'] == "" || $_POST['serie'] == "") {
     header("Location: ajoutAppareil.php?erreur=1");
     exit;
@@ -14,15 +12,15 @@ $date_calib_correcte = verifEntreeDates('date_calib');
 if ($date_valid_correcte && $date_calib_correcte) {
     $date_valid = conversionDate($_POST['date_valid']);
     $date_calib = conversionDate($_POST['date_calib']);
-    $bdd->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bdd->quote($_POST['systeme']) . '), upper(' . $bdd->quote($_POST['type']) . '), upper(' . $bdd->quote($_POST['marque']) . '), upper(' . $bdd->quote($_POST['serie']) . '), ' . $bdd->quote($date_valid) . ', ' . $bdd->quote($date_calib) . ')');
+    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), ' . $bddPortailGestion->quote($date_valid) . ', ' . $bddPortailGestion->quote($date_calib) . ')');
 } else if ($date_valid_correcte) {
     $date_valid = conversionDate($_POST['date_valid']);
-    $bdd->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bdd->quote($_POST['systeme']) . '), upper(' . $bdd->quote($_POST['type']) . '), upper(' . $bdd->quote($_POST['marque']) . '), upper(' . $bdd->quote($_POST['serie']) . '), ' . $bdd->quote($date_valid) . ', NULL)');
+    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), ' . $bddPortailGestion->quote($date_valid) . ', NULL)');
 } else if ($date_calib_correcte) {
     $date_calib = conversionDate($_POST['date_calib']);
-    $bdd->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bdd->quote($_POST['systeme']) . '), upper(' . $bdd->quote($_POST['type']) . '), upper(' . $bdd->quote($_POST['marque']) . '), upper(' . $bdd->quote($_POST['serie']) . '), NULL, ' . $bdd->quote($date_calib) . ')');
+    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), NULL, ' . $bddPortailGestion->quote($date_calib) . ')');
 } else
-    $bdd->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bdd->quote($_POST['systeme']) . '), upper(' . $bdd->quote($_POST['type']) . '), upper(' . $bdd->quote($_POST['marque']) . '), upper(' . $bdd->quote($_POST['serie']) . '), NULL, NULL)') or die(print_r($bdd->errorInfo(), true));;
+    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), NULL, NULL)') or die(print_r($bddPortailGestion->errorInfo(), true));;
 
 header("Location: ajoutAppareil.php?ajout=1");
 ?>

@@ -1,5 +1,9 @@
 <?php
 
+$bddPortailGestion = connexion('portail_gestion');
+$bddInspections = connexion('inspections');
+$bddPlanning = connexion('planning');
+
 /**
  * Retourne un objet connexion vers la base dont le nom est indiqué en paramètre.
  *

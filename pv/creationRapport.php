@@ -5,23 +5,21 @@ enTete("Création de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$bddAffaires = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-$affaires = $bddAffaires->query('select * from affaire where affaire.id_affaire not in (select rapports.id_affaire from rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
+$affaires = $bddPortailGestion->query('select * from affaire where affaire.id_affaire not in (select rapports.id_affaire from rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
 $utilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
 if (isset($_GET['num_affaire'])) {
-    $affaireSelectionnee = selectAffaireParNom($bddAffaires, $_GET['num_affaire'])->fetch();
+    $affaireSelectionnee = selectAffaireParNom($bddPortailGestion, $_GET['num_affaire'])->fetch();
     if ($affaireSelectionnee['id_societe'] != "") {
-        $societe = selectSocieteParId($bddAffaires, $affaireSelectionnee['id_societe'])->fetch();
-        $odp = selectODPParId($bddAffaires, $affaireSelectionnee['id_odp'])->fetch();
-        $personneRencontree = selectClientParId($bddAffaires, $odp['id_client'])->fetch();
+        $societe = selectSocieteParId($bddPortailGestion, $affaireSelectionnee['id_societe'])->fetch();
+        $odp = selectODPParId($bddPortailGestion, $affaireSelectionnee['id_odp'])->fetch();
+        $personneRencontree = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
         $numCommande = 0;
         $dateDebut = 0;
     }
 }
 
-$typeControles = selectAll($bddAffaires, "type_controle")->fetchAll();
+$typeControles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 ?>
 
 <div id="contenu">

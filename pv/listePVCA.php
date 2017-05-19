@@ -4,33 +4,30 @@ verifSession();
 enTete("Liste des PV générés",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
-$bddAffaire = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-$bddInspection = connexion('inspections');
 
 if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
     $_GET['numAffaire'] = "SCOPEO " . explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
 }
 
 // Ensemble des affaires disponibles
-$numAffaires = $bddAffaire->query('SELECT * FROM affaire WHERE affaire.id_affaire IN (SELECT rapports.id_affaire FROM rapports)')->fetchAll();
+$numAffaires = $bddPortailGestion->query('SELECT * FROM affaire WHERE affaire.id_affaire IN (SELECT rapports.id_affaire FROM rapports)')->fetchAll();
 
 // Ensemble des PV disponibles pour l'affaire sélectionnée
-$listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
+$listePV = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_rapport IN (SELECT id_rapport FROM rapports WHERE rapports.id_affaire IN (SELECT id_affaire FROM affaire WHERE num_affaire LIKE ?));');
 
 if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
-    $affaire = selectAffaireParNom($bddAffaire, $_GET['numAffaire'])->fetch();
-    $rapport = selectRapportParAffaire($bddAffaire, $affaire['id_affaire'])->fetch();
+    $affaire = selectAffaireParNom($bddPortailGestion, $_GET['numAffaire'])->fetch();
+    $rapport = selectRapportParAffaire($bddPortailGestion, $affaire['id_affaire'])->fetch();
 }
 
 // Infos concernant les PV dans la liste
-$selectTypeControle = $bddAffaire->prepare('SELECT * FROM type_controle WHERE id_type = ?');
-$selectDiscipline = $bddAffaire->prepare('select * from type_discipline where id_discipline = ?');
-$selectRapport = $bddAffaire->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
-$selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
+$selectTypeControle = $bddPortailGestion->prepare('SELECT * FROM type_controle WHERE id_type = ?');
+$selectDiscipline = $bddPortailGestion->prepare('select * from type_discipline where id_discipline = ?');
+$selectRapport = $bddPortailGestion->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
+$selectAffaire = $bddPortailGestion->prepare('select * from affaire where id_affaire = ?');
 $selectUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
-$selectAvancement = $bddAffaire->prepare('select * from avancement where id_avancement = ?');
-$selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$selectAvancement = $bddPortailGestion->prepare('select * from avancement where id_avancement = ?');
+$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
     <div id="contenu">

@@ -31,22 +31,18 @@ $nbJours = 0;
 $premierJour = strtotime("First day of ".$_GET['mois']." ".$_GET['annee']);
 $premierJour = date("l", $premierJour);
 
-$bdd = connexion('portail_gestion');
-$bddPlanning = connexion('planning');
-$bddInspection = connexion('inspections');
-
-$prepareDates = $bdd->prepare('select * from pv_controle where ? between date_debut and date_fin;');
-$prepareRapport = $bdd->prepare('select * from rapports where id_rapport = ?');
-$prepareAffaire = $bdd->prepare('select * from affaire where id_affaire = ?');
+$prepareDates = $bddPortailGestion->prepare('select * from pv_controle where ? between date_debut and date_fin;');
+$prepareRapport = $bddPortailGestion->prepare('select * from rapports where id_rapport = ?');
+$prepareAffaire = $bddPortailGestion->prepare('select * from affaire where id_affaire = ?');
 $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
-$prepareControle = $bdd->prepare('select * from type_controle where id_type = ?');
-$prepareAvancement = $bdd->prepare('select * from avancement where id_avancement = ?');
-$prepareDiscipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
+$prepareControle = $bddPortailGestion->prepare('select * from type_controle where id_type = ?');
+$prepareAvancement = $bddPortailGestion->prepare('select * from avancement where id_avancement = ?');
+$prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline where id_discipline = ?');
 
 
-$prepareReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$prepareReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 
-$jourControle = $bdd->prepare('select * from pv_controle where ? BETWEEN date_debut and date_fin');
+$jourControle = $bddPortailGestion->prepare('select * from pv_controle where ? BETWEEN date_debut and date_fin');
 ?>
 
 <div id="contenu">

@@ -1,12 +1,11 @@
 <?php
 require_once "../util.inc.php";
 
-$bdd = connexion('portail_gestion');
 $modifs = 0;
 
 $attributs = array('societe', 'nom_equipement', 'diametre', 'hauteur', 'hauteur_produit', 'volume', 'distance_points');
 for ($i = 0; $i < sizeof($attributs); $i++)
-    modifAttribut($bdd, $attributs[$i]);
+    modifAttribut($bddPortailGestion, $attributs[$i]);
 
 header('Location: listeEquipements.php?modifs=' . $modifs);
 exit;

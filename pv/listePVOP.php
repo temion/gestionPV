@@ -6,7 +6,7 @@ enTete("Liste des PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 $bddAffaire = connexion('portail_gestion');
 $bddPlanning = connexion('planning');
-$bddInspection = connexion('inspections');
+$bddInspections = connexion('inspections');
 
 if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
     $_GET['numAffaire'] = "SCOPEO " . explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
@@ -25,7 +25,7 @@ $selectRapport = $bddAffaire->prepare('SELECT * FROM rapports WHERE id_rapport =
 $selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
 $selectUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
 $selectAvancement = $bddAffaire->prepare('select * from avancement where id_avancement = ?');
-$selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
     <div id="contenu">
