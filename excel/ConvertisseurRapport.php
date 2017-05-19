@@ -74,7 +74,7 @@ class ConvertisseurRapport extends PHPExcel {
 
         $this->prep_controle = $this->bdd->prepare('SELECT * FROM type_controle WHERE id_type = ?');
         $this->prep_discipline = $this->bdd->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
-        $this->prep_avancement = $this->bdd->prepare('select * from avancement where id_avancement = ?');
+        $this->prep_avancement = $this->bdd->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
     }
 
     function remplirFeuille() {
@@ -170,7 +170,7 @@ class ConvertisseurRapport extends PHPExcel {
         remplirCellules($this->feuille, 'H' . $this->celluleAct, "", "Numéro d'ordre");
         remplirCellules($this->feuille, 'I' . $this->celluleAct, "", "Début prévu le");
         remplirCellules($this->feuille, 'J' . $this->celluleAct, "", "Fin prévue le");
-        remplirCellules($this->feuille, 'K' . $this->celluleAct, 'L'.$this->celluleAct, "Avancement");
+        remplirCellules($this->feuille, 'K' . $this->celluleAct, 'L' . $this->celluleAct, "Avancement");
 
         colorerCellule($this, 'D' . $this->celluleAct . ':L' . $this->celluleAct, $this->couleurs['gris']);
         $this->feuille->getStyle('D' . $this->celluleAct . ':L' . $this->celluleAct)->applyFromArray($this->bordures);
@@ -243,7 +243,6 @@ class ConvertisseurRapport extends PHPExcel {
 
     /**
      * Sauvegarde le fichier Excel et retourne le nom du fichier crée.
-
      * @return string Chemin du fichier généré.
      */
     function sauvegarde() {

@@ -22,83 +22,87 @@ if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
 
 // Infos concernant les PV dans la liste
 $selectTypeControle = $bddPortailGestion->prepare('SELECT * FROM type_controle WHERE id_type = ?');
-$selectDiscipline = $bddPortailGestion->prepare('select * from type_discipline where id_discipline = ?');
+$selectDiscipline = $bddPortailGestion->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 $selectRapport = $bddPortailGestion->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
-$selectAffaire = $bddPortailGestion->prepare('select * from affaire where id_affaire = ?');
-$selectUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
-$selectAvancement = $bddPortailGestion->prepare('select * from avancement where id_avancement = ?');
+$selectAffaire = $bddPortailGestion->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
+$selectUtilisateur = $bddPlanning->prepare('SELECT * FROM utilisateurs WHERE id_utilisateur = ?');
+$selectAvancement = $bddPortailGestion->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
 $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
-    <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Liste des PV</h1>
-        <?php
-        if (isset($_GET['nomPV']))
-            afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
-        if (isset($_GET['erreur']))
-            afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
-        ?>
-        <form method="get" action="listePVCA.php" id="choixAffaire">
-            <label for="numAffaire"> Choix de l'affaire : </label>
-            <?php $url = "listePVCA.php?numAffaire=" ?>
-            <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
-                    class="ui search dropdown" name="numAffaire">
-                <option selected></option>
-                <?php
-                for ($i = 0; $i < sizeof($numAffaires); $i++) {
-                    if (isset($_GET['numAffaire']) && $numAffaires[$i]['num_affaire'] == $_GET['numAffaire'])
-                        echo '<option selected>' . $numAffaires[$i]['num_affaire'] . '</option>';
-                    else
-                        echo '<option>' . $numAffaires[$i]['num_affaire'] . '</option>';
-                }
-                ?>
-            </select>
-        </form>
-        <table class="ui celled table">
-            <thead>
-            <tr>
-                <th>Identifiant PV</th>
-                <th>Numéro d'affaire</th>
-                <th>Réservoir à inspecter</th>
-                <th>Contrôle (Dates)</th>
-                <th>Responsable</th>
-                <th>Avancement</th>
-                <th>Informations</th>
-            </tr>
-            </thead>
-            <tbody>
+<div id="contenu">
+    <h1 class="ui blue center aligned huge header">Liste des PV</h1>
+    <?php
+    if (isset($_GET['nomPV']))
+        afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
+    if (isset($_GET['erreur']))
+        afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
+    ?>
+    <form method="get" action="listePVCA.php" id="choixAffaire">
+        <label for="numAffaire"> Choix de l'affaire : </label>
+        <?php $url = "listePVCA.php?numAffaire=" ?>
+        <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
+                class="ui search dropdown" name="numAffaire">
+            <option selected></option>
             <?php
-            if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
-                $listePV->execute(array($_GET['numAffaire']));
-                $PVs = $listePV->fetchAll();
-                for ($i = 0; $i < sizeof($PVs); $i++) {
-                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVCA.php");
-                }
+            for ($i = 0; $i < sizeof($numAffaires); $i++) {
+                if (isset($_GET['numAffaire']) && $numAffaires[$i]['num_affaire'] == $_GET['numAffaire'])
+                    echo '<option selected>' . $numAffaires[$i]['num_affaire'] . '</option>';
+                else
+                    echo '<option>' . $numAffaires[$i]['num_affaire'] . '</option>';
             }
             ?>
-            </tbody>
-        </table>
+        </select>
+    </form>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>Identifiant PV</th>
+            <th>Numéro d'affaire</th>
+            <th>Réservoir à inspecter</th>
+            <th>Contrôle (Dates)</th>
+            <th>Responsable</th>
+            <th>Avancement</th>
+            <th>Informations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
+            $listePV->execute(array($_GET['numAffaire']));
+            $PVs = $listePV->fetchAll();
+            for ($i = 0; $i < sizeof($PVs); $i++) {
+                creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVCA.php");
+            }
+        }
+        ?>
+        </tbody>
+    </table>
 
-        <?php if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") { ?>
-            <form method="get" action="modifRapportCA.php"><button name="idRapport" value="<?php echo $rapport['id_rapport']; ?>" class="ui right floated blue button">
-                    Détails du rapport <?php echo explode(" ", $affaire['num_affaire'])[1]; ?></button>
-            </form>
-        <?php } ?>
-    </div>
+    <?php if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") { ?>
+        <form method="get" action="modifRapportCA.php">
+            <button name="idRapport" value="<?php echo $rapport['id_rapport']; ?>" class="ui right floated blue button">
+                Détails du rapport <?php echo explode(" ", $affaire['num_affaire'])[1]; ?></button>
+        </form>
+    <?php } ?>
+</div>
 
-    <div class="ui large modal" id="modalAide">
-        <div class="header">Aide</div>
-        <div>
-            <p>
-                Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
-                affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant sur
-                "Modifier", vous serez redirigé vers la page du PV correspondant.
-            </p>
-            <p>
-                De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisie en cliquant sur "Détails du rapport XXX".
-            </p>
-            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
-        </div>
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
+            affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant
+            sur
+            "Modifier", vous serez redirigé vers la page du PV correspondant.
+        </p>
+        <p>
+            De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisie en cliquant sur "Détails
+            du rapport XXX".
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+        </button>
     </div>
-    </body>
+</div>
+</body>
 </html>

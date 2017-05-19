@@ -46,7 +46,7 @@ $pdf->SetTitle($fichier);
 $rep = '../documents/PV_PDF/' . explode("-", $fichier)[0] . '/';
 if (!is_dir($rep))
     mkdir($rep);
-$chemin = $rep.$fichier;
+$chemin = $rep . $fichier;
 
 update($bddPortailGestion, "pv_controle", "chemin_pdf", $chemin, "id_pv", "=", $pv['id_pv']);
 

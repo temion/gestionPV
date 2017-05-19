@@ -247,14 +247,14 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     $titrePV = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 
     echo '<tr>';
-    echo '<td><strong>'.$pv['id_pv'].'</strong> : '.$titrePV.'</td>';
-    echo '<td>'.$affaire['num_affaire'].'</td>';
-    echo '<td>'.$reservoir['nom_reservoir'].' '.$reservoir['type_toit'].'</td>';
-    echo '<td>'.$controle['libelle'].' '.$pv['num_ordre'].' ('.$controle['code'].') <br/>';
-    echo 'du '.conversionDate($pv['date_debut']).' au '.conversionDate($pv['date_fin']).'</td>';
-    echo '<td>'.$controleur['nom'].'</td>';
-    echo '<td>'.$avancement['stade'].'</td>';
-    echo '<td><form method="get" action="'.$lienRetour.'"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
+    echo '<td><strong>' . $pv['id_pv'] . '</strong> : ' . $titrePV . '</td>';
+    echo '<td>' . $affaire['num_affaire'] . '</td>';
+    echo '<td>' . $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit'] . '</td>';
+    echo '<td>' . $controle['libelle'] . ' ' . $pv['num_ordre'] . ' (' . $controle['code'] . ') <br/>';
+    echo 'du ' . conversionDate($pv['date_debut']) . ' au ' . conversionDate($pv['date_fin']) . '</td>';
+    echo '<td>' . $controleur['nom'] . '</td>';
+    echo '<td>' . $avancement['stade'] . '</td>';
+    echo '<td><form method="get" action="' . $lienRetour . '"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
     echo '</tr>';
 }
 
@@ -265,8 +265,9 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
  * @param string $libelle Libellé de l'action.
  */
 function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
-    $dernierAjout = $bdd->query('select * from historique_activite where date_activite in (select max(date_activite) from historique_activite)')->fetch();
+    $dernierAjout = $bdd->query('SELECT * FROM historique_activite WHERE date_activite IN (SELECT max(date_activite) FROM historique_activite)')->fetch();
     if ($bdd->quote($libelle) != $bdd->quote($dernierAjout['libelle']))
         insert($bdd, "historique_activite", array("null", $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
 }
+
 ?>

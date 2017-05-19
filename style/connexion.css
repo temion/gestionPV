@@ -19,6 +19,7 @@ td {
 .message .header {
     color: red;
 }
+
 .message {
     text-align: center;
     display: block;
@@ -28,7 +29,6 @@ td {
 #contenu {
     padding: 2vh 0 2vh 0;
 }
-
 
 #titre {
     text-align: center;

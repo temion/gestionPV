@@ -5,7 +5,7 @@ enTete("Création de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creaPV.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$affaires = $bddPortailGestion->query('select * from affaire where affaire.id_affaire not in (select rapports.id_affaire from rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
+$affaires = $bddPortailGestion->query('SELECT * FROM affaire WHERE affaire.id_affaire NOT IN (SELECT rapports.id_affaire FROM rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
 $utilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
 if (isset($_GET['num_affaire'])) {
@@ -222,12 +222,16 @@ $typeControles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
     <div class="header">Aide</div>
     <div>
         <p>
-            Ici, vous pouvez créer de nouveaux rapports, qui seront ajoutés dans la base de données. Pour ce faire, vous devez
-            remplir les informations requises. En entrant un numéro d'affaire, vous obtiendrez en bas de la page un bref aperçu
-            comportant les détails de l'affaire choisie. Une fois que les informations sélectionnées vous conviennent, cliquez sur "Valider"
+            Ici, vous pouvez créer de nouveaux rapports, qui seront ajoutés dans la base de données. Pour ce faire, vous
+            devez
+            remplir les informations requises. En entrant un numéro d'affaire, vous obtiendrez en bas de la page un bref
+            aperçu
+            comportant les détails de l'affaire choisie. Une fois que les informations sélectionnées vous conviennent,
+            cliquez sur "Valider"
             et votre PV sera ajouté à la base, et accessible sur ce portail.
         </p>
-        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+        </button>
     </div>
 </div>
 </body>

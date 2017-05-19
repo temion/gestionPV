@@ -20,75 +20,77 @@ $listePV = $bddAffaire->prepare('SELECT * FROM pv_controle WHERE pv_controle.id_
 
 // Infos concernant les PV dans la liste
 $selectTypeControle = $bddAffaire->prepare('SELECT * FROM type_controle WHERE id_type = ?');
-$selectDiscipline = $bddAffaire->prepare('select * from type_discipline where id_discipline = ?');
+$selectDiscipline = $bddAffaire->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 $selectRapport = $bddAffaire->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
-$selectAffaire = $bddAffaire->prepare('select * from affaire where id_affaire = ?');
-$selectUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
-$selectAvancement = $bddAffaire->prepare('select * from avancement where id_avancement = ?');
+$selectAffaire = $bddAffaire->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
+$selectUtilisateur = $bddPlanning->prepare('SELECT * FROM utilisateurs WHERE id_utilisateur = ?');
+$selectAvancement = $bddAffaire->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
 $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 ?>
 
-    <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Liste des PV</h1>
-        <?php
-        if (isset($_GET['nomPV']))
-            afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
-        if (isset($_GET['erreur']))
-            afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
-        ?>
-        <form method="get" action="listePVOP.php" id="choixAffaire">
-            <label for="numAffaire"> Choix de l'affaire : </label>
-            <?php $url = "listePVOP.php?numAffaire=" ?>
-            <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
-                    class="ui search dropdown" name="numAffaire">
-                <option selected></option>
-                <?php
-                for ($i = 0; $i < sizeof($numRapports); $i++) {
-                    if (isset($_GET['numAffaire']) && $numRapports[$i]['num_affaire'] == $_GET['numAffaire'])
-                        echo '<option selected>' . $numRapports[$i]['num_affaire'] . '</option>';
-                    else
-                        echo '<option>' . $numRapports[$i]['num_affaire'] . '</option>';
-                }
-                ?>
-            </select>
-        </form>
-        <table class="ui celled table">
-            <thead>
-            <tr>
-                <th>Identifiant PV</th>
-                <th>Numéro d'affaire</th>
-                <th>Réservoir à inspecter</th>
-                <th>Contrôle (Dates)</th>
-                <th>Responsable</th>
-                <th>Avancement</th>
-                <th>Modification</th>
-            </tr>
-            </thead>
-            <tbody>
+<div id="contenu">
+    <h1 class="ui blue center aligned huge header">Liste des PV</h1>
+    <?php
+    if (isset($_GET['nomPV']))
+        afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
+    if (isset($_GET['erreur']))
+        afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
+    ?>
+    <form method="get" action="listePVOP.php" id="choixAffaire">
+        <label for="numAffaire"> Choix de l'affaire : </label>
+        <?php $url = "listePVOP.php?numAffaire=" ?>
+        <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
+                class="ui search dropdown" name="numAffaire">
+            <option selected></option>
             <?php
-            if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
-                $listePV->execute(array($_GET['numAffaire']));
-                $PVs = $listePV->fetchAll();
-                for ($i = 0; $i < sizeof($PVs); $i++) {
-                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVOP.php");
-                }
+            for ($i = 0; $i < sizeof($numRapports); $i++) {
+                if (isset($_GET['numAffaire']) && $numRapports[$i]['num_affaire'] == $_GET['numAffaire'])
+                    echo '<option selected>' . $numRapports[$i]['num_affaire'] . '</option>';
+                else
+                    echo '<option>' . $numRapports[$i]['num_affaire'] . '</option>';
             }
             ?>
-            </tbody>
-        </table>
-    </div>
+        </select>
+    </form>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>Identifiant PV</th>
+            <th>Numéro d'affaire</th>
+            <th>Réservoir à inspecter</th>
+            <th>Contrôle (Dates)</th>
+            <th>Responsable</th>
+            <th>Avancement</th>
+            <th>Modification</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
+            $listePV->execute(array($_GET['numAffaire']));
+            $PVs = $listePV->fetchAll();
+            for ($i = 0; $i < sizeof($PVs); $i++) {
+                creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVOP.php");
+            }
+        }
+        ?>
+        </tbody>
+    </table>
+</div>
 
-    <div class="ui large modal" id="modalAide">
-        <div class="header">Aide</div>
-        <div>
-            <p>
-                Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
-                affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant sur
-                "Modifier", vous serez redirigé vers la page du PV correspondant.
-            </p>
-            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
-        </div>
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
+            affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant
+            sur
+            "Modifier", vous serez redirigé vers la page du PV correspondant.
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+        </button>
     </div>
+</div>
 
-    </body>
+</body>
 </html>

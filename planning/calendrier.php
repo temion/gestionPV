@@ -4,8 +4,8 @@ require_once "../menu.php";
 verifSession("OP");
 
 enTete("Liste des PV générés",
-array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css", "../style/calendrier.css"),
-array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
+    array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css", "../style/calendrier.css"),
+    array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 if (!isset($_GET['mois']) || $_GET['mois'] == "") {
     $_GET['mois'] = date('F');
@@ -19,153 +19,158 @@ $joursFR = array("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "D
 $joursEN = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
 
 $mois = array("January" => array("Janvier", 31), "February" => array("Février", estBissextile(intval($_GET['annee'])) ? 29 : 28), "March" => array("Mars", 31),
-              "April" => array("Avril", 30), "May" => array("Mai", 31), "June" => array("Juin", 30),
-              "July" => array("Juillet", 31), "August" => array("Août", 30), "September" => array("Septembre", 31),
-              "October" => array("Octobre", 30), "November" => array("Novembre", 30), "December" => array("Décembre", 31));
+    "April" => array("Avril", 30), "May" => array("Mai", 31), "June" => array("Juin", 30),
+    "July" => array("Juillet", 31), "August" => array("Août", 30), "September" => array("Septembre", 31),
+    "October" => array("Octobre", 30), "November" => array("Novembre", 30), "December" => array("Décembre", 31));
 
 $moisFR = $mois[$_GET['mois']][0];
 
 $nbJoursMax = $mois[$_GET['mois']][1];
 $nbJours = 0;
 
-$premierJour = strtotime("First day of ".$_GET['mois']." ".$_GET['annee']);
+$premierJour = strtotime("First day of " . $_GET['mois'] . " " . $_GET['annee']);
 $premierJour = date("l", $premierJour);
 
-$prepareDates = $bddPortailGestion->prepare('select * from pv_controle where ? between date_debut and date_fin;');
-$prepareRapport = $bddPortailGestion->prepare('select * from rapports where id_rapport = ?');
-$prepareAffaire = $bddPortailGestion->prepare('select * from affaire where id_affaire = ?');
-$prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
-$prepareControle = $bddPortailGestion->prepare('select * from type_controle where id_type = ?');
-$prepareAvancement = $bddPortailGestion->prepare('select * from avancement where id_avancement = ?');
-$prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline where id_discipline = ?');
+$prepareDates = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? BETWEEN date_debut AND date_fin;');
+$prepareRapport = $bddPortailGestion->prepare('SELECT * FROM rapports WHERE id_rapport = ?');
+$prepareAffaire = $bddPortailGestion->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
+$prepareUtilisateur = $bddPlanning->prepare('SELECT * FROM utilisateurs WHERE id_utilisateur = ?');
+$prepareControle = $bddPortailGestion->prepare('SELECT * FROM type_controle WHERE id_type = ?');
+$prepareAvancement = $bddPortailGestion->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
+$prepareDiscipline = $bddPortailGestion->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 
 
 $prepareReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 
-$jourControle = $bddPortailGestion->prepare('select * from pv_controle where ? BETWEEN date_debut and date_fin');
+$jourControle = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? BETWEEN date_debut AND date_fin');
 ?>
 
-<div id="contenu">
-    <h1 class="ui blue center aligned huge header">Planning</h1>
-    <h3 class="ui dividing header"><?php echo $moisFR.' '.$_GET['annee']; ?></h3>
-    <table class="ui celled table">
-        <thead>
+    <div id="contenu">
+        <h1 class="ui blue center aligned huge header">Planning</h1>
+        <h3 class="ui dividing header"><?php echo $moisFR . ' ' . $_GET['annee']; ?></h3>
+        <table class="ui celled table">
+            <thead>
             <tr>
                 <?php
-                    for ($i = 0; $i < sizeof($joursFR); $i++) {
-                        echo '<th>'.$joursFR[$i].'</th>';
-                    }
+                for ($i = 0; $i < sizeof($joursFR); $i++) {
+                    echo '<th>' . $joursFR[$i] . '</th>';
+                }
                 ?>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <?php
-                // Permet le décalage des cellules au début du mois
-                $cellulesSup = 0;
-                echo '<tr>';
-                while ($joursEN[$cellulesSup] != $premierJour) {
-                    echo '<td class="casesVides"></td>';
-                    $cellulesSup++;
+            // Permet le décalage des cellules au début du mois
+            $cellulesSup = 0;
+            echo '<tr>';
+            while ($joursEN[$cellulesSup] != $premierJour) {
+                echo '<td class="casesVides"></td>';
+                $cellulesSup++;
+            }
+
+            while ($nbJours < $nbJoursMax) {
+                $dateJour = sprintf("%02d", $nbJours + 1) . '-' . sprintf("%02d", array_search($_GET['mois'], array_keys($mois)) + 1) . '-' . $_GET['annee'];
+                // Passe à la ligne à la fin de la semaine
+                if (($nbJours + $cellulesSup) % 7 == 0) {
+                    echo '</tr><tr>';
                 }
 
-                while ($nbJours < $nbJoursMax) {
-                    $dateJour = sprintf("%02d", $nbJours + 1).'-'.sprintf("%02d", array_search($_GET['mois'], array_keys($mois)) + 1).'-'.$_GET['annee'];
-                    // Passe à la ligne à la fin de la semaine
-                    if (($nbJours + $cellulesSup) % 7 == 0) {
-                        echo '</tr><tr>';
-                    }
+                $nbJours++;
 
-                    $nbJours++;
+                $id = 'id="';
+                $listeClass = 'class="';
 
-                    $id = 'id="';
-                    $listeClass = 'class="';
+                if ($nbJours == date('j') && $_GET['mois'] == date('F') && $_GET['annee'] == date('Y'))
+                    $id .= "jourActuel";    // Colore le jour actuel
+                if (isset($_GET['dateSelect']) && $nbJours == explode("-", $_GET['dateSelect'])[0])
+                    $listeClass .= "jourSelect "; // Met en valeur le jour sélectionné
+                if (jourDeControle($dateJour))
+                    $listeClass .= "jourControle "; // Colore les jours où un contrôle a lieu
 
-                    if ($nbJours == date('j') && $_GET['mois'] == date('F') && $_GET['annee'] == date('Y'))
-                        $id .= "jourActuel";    // Colore le jour actuel
-                    if (isset($_GET['dateSelect']) && $nbJours == explode("-", $_GET['dateSelect'])[0])
-                        $listeClass .= "jourSelect "; // Met en valeur le jour sélectionné
-                    if (jourDeControle($dateJour))
-                        $listeClass .= "jourControle "; // Colore les jours où un contrôle a lieu
+                $id .= '"';
+                $listeClass .= '"';
 
-                    $id .= '"';
-                    $listeClass .= '"';
+                echo '<td ' . $id . ' ' . $listeClass . '><a class="jour" href="calendrier.php?mois=' . $_GET['mois'] . '&annee=' . $_GET['annee'] . '&dateSelect=' . $dateJour . '">' . $nbJours . '</a></td>';
+            }
 
-                    echo '<td '.$id.' '.$listeClass.'><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
-                }
-
-                // Complète le calendrier avec des cases grisées
-                while (($nbJoursMax + $cellulesSup) % 7 != 0) {
-                    echo '<td class="casesVides"></td>';
-                    $nbJoursMax++;
-                }
+            // Complète le calendrier avec des cases grisées
+            while (($nbJoursMax + $cellulesSup) % 7 != 0) {
+                echo '<td class="casesVides"></td>';
+                $nbJoursMax++;
+            }
             ?>
-        </tbody>
-    </table>
-    <table id="tabBoutons">
-        <tr>
-            <td>
-                <?php
-                echo '<form method="get" action="calendrier.php">';
-                echo '<input type="hidden" name="mois" value="'.getDatePrecedente()[0].'">';
-                echo '<input type="hidden" name="annee" value="'.getDatePrecedente()[1].'">';
-                echo '<button class="ui left floated blue button changementDate"> Mois précédent </button>';
-                echo '</form>';
-                ?>
-            </td>
-            <td>
-                <?php
-                echo '<form method="get" action="calendrier.php">';
-                echo '<input type="hidden" name="mois" value="'.getDateSuivante()[0].'">';
-                echo '<input type="hidden" name="annee" value="'.getDateSuivante()[1].'">';
-                echo '<button class="ui right floated blue button changementDate"> Mois suivant </button>';
-                echo '</form>';
-                ?>
-            </td>
-        </tr>
-    </table>
-    <?php
-    if (isset($_GET['dateSelect']) && $_GET['dateSelect'] != "")
-        creerTableInfos();
-    ?>
-</div>
-
-<div class="ui large modal" id="modalAide">
-    <div class="header">Aide</div>
-    <div>
-        <p>
-            Ce planning indique par un fond jaune les jours où des contrôles doivent être effectués. Le jour au fond bleu
-            indique le jour d'aujourd'hui. Vous pouvez naviguer à travers le planning à l'aide des 2 boutons en dessous,
-            ou à l'aide des flèches directionnelles gauche et droite.
-        </p>
-        <p>
-            En cliquant sur un jour de contrôle, les informations
-            des différents contrôles à effectuer s'affichent en dessous du planning, avec la possibilité, pour chaque contrôle,
-            d'être redirigé sur la page qui lui correspond, en cliquant sur le bouton "Modifier" apparaissant sur sa ligne.
-        </p>
-        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+            </tbody>
+        </table>
+        <table id="tabBoutons">
+            <tr>
+                <td>
+                    <?php
+                    echo '<form method="get" action="calendrier.php">';
+                    echo '<input type="hidden" name="mois" value="' . getDatePrecedente()[0] . '">';
+                    echo '<input type="hidden" name="annee" value="' . getDatePrecedente()[1] . '">';
+                    echo '<button class="ui left floated blue button changementDate"> Mois précédent </button>';
+                    echo '</form>';
+                    ?>
+                </td>
+                <td>
+                    <?php
+                    echo '<form method="get" action="calendrier.php">';
+                    echo '<input type="hidden" name="mois" value="' . getDateSuivante()[0] . '">';
+                    echo '<input type="hidden" name="annee" value="' . getDateSuivante()[1] . '">';
+                    echo '<button class="ui right floated blue button changementDate"> Mois suivant </button>';
+                    echo '</form>';
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <?php
+        if (isset($_GET['dateSelect']) && $_GET['dateSelect'] != "")
+            creerTableInfos();
+        ?>
     </div>
-</div>
 
-<script>
-    $(function() {
-        // Navigation aux flèches directionnelles
-        $("body").on("keydown", function(event) {
-            // Flèche gauche
-            if (event.keyCode == 37) {
-                var mois = "<?php echo getDatePrecedente()[0]; ?>";
-                var annee = "<?php echo getDatePrecedente()[1]; ?>";
-                window.location = "calendrier.php?mois=" + mois  + "&annee=" + annee;
-            }
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Ce planning indique par un fond jaune les jours où des contrôles doivent être effectués. Le jour au fond
+                bleu
+                indique le jour d'aujourd'hui. Vous pouvez naviguer à travers le planning à l'aide des 2 boutons en
+                dessous,
+                ou à l'aide des flèches directionnelles gauche et droite.
+            </p>
+            <p>
+                En cliquant sur un jour de contrôle, les informations
+                des différents contrôles à effectuer s'affichent en dessous du planning, avec la possibilité, pour
+                chaque contrôle,
+                d'être redirigé sur la page qui lui correspond, en cliquant sur le bouton "Modifier" apparaissant sur sa
+                ligne.
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+            </button>
+        </div>
+    </div>
 
-            // Flèche droite
-            if (event.keyCode == 39) {
-                var mois = "<?php echo getDateSuivante()[0]; ?>";
-                var annee = "<?php echo getDateSuivante()[1]; ?>";
-                window.location = "calendrier.php?mois=" + mois  + "&annee=" + annee;
-            }
+    <script>
+        $(function () {
+            // Navigation aux flèches directionnelles
+            $("body").on("keydown", function (event) {
+                // Flèche gauche
+                if (event.keyCode == 37) {
+                    var mois = "<?php echo getDatePrecedente()[0]; ?>";
+                    var annee = "<?php echo getDatePrecedente()[1]; ?>";
+                    window.location = "calendrier.php?mois=" + mois + "&annee=" + annee;
+                }
+
+                // Flèche droite
+                if (event.keyCode == 39) {
+                    var mois = "<?php echo getDateSuivante()[0]; ?>";
+                    var annee = "<?php echo getDateSuivante()[1]; ?>";
+                    window.location = "calendrier.php?mois=" + mois + "&annee=" + annee;
+                }
+            })
         })
-    })
-</script>
+    </script>
 
 <?php
 /**
@@ -230,18 +235,18 @@ function creerTableInfos() {
         ?>
         <table id="tabPV" class="ui celled table">
             <thead>
-                <tr>
-                    <th colspan="7" id="titreTabPV">Contrôles du <?php echo conversionDate($date); ?></th>
-                </tr>
-                <tr>
-                    <th>Identifiant PV</th>
-                    <th>Numéro d'affaire</th>
-                    <th>Equipement à inspecter</th>
-                    <th>Contrôle</th>
-                    <th>Responsable</th>
-                    <th>Avancement</th>
-                    <th>Modification</th>
-                </tr>
+            <tr>
+                <th colspan="7" id="titreTabPV">Contrôles du <?php echo conversionDate($date); ?></th>
+            </tr>
+            <tr>
+                <th>Identifiant PV</th>
+                <th>Numéro d'affaire</th>
+                <th>Equipement à inspecter</th>
+                <th>Contrôle</th>
+                <th>Responsable</th>
+                <th>Avancement</th>
+                <th>Modification</th>
+            </tr>
             </thead>
             <tbody>
             <?php
@@ -257,8 +262,9 @@ function creerTableInfos() {
 
 function jourDeControle($dateJour) {
     global $jourControle;
-    $jourControle->execute(array(explode("-", $dateJour)[2].'-'.explode("-", $dateJour)[1].'-'.explode("-", $dateJour)[0]));
+    $jourControle->execute(array(explode("-", $dateJour)[2] . '-' . explode("-", $dateJour)[1] . '-' . explode("-", $dateJour)[0]));
 
     return sizeof($jourControle->fetchAll()) != 0;
 }
+
 ?>

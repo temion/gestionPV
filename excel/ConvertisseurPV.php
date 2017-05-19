@@ -203,7 +203,7 @@ class ConvertisseurPV extends PHPExcel {
     function situationControle() {
         remplirCellules($this->feuille, 'A' . $this->celluleAct, 'H' . $this->celluleAct, "Situation de contrôle : ");
         $this->feuille->getCell('A' . $this->celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        colorerCellule($this, 'A' .$this->celluleAct, $this->couleurs['gris']); // Gris
+        colorerCellule($this, 'A' . $this->celluleAct, $this->couleurs['gris']); // Gris
 
         $this->celluleAct++;
 

@@ -21,11 +21,11 @@ foreach ($pvsRapport as $pv) {
     }
 }
 
-$cheminRep = "../documents/PV_Excel/SCO".explode(" ", $affaire['num_affaire'])[1]."/";
+$cheminRep = "../documents/PV_Excel/SCO" . explode(" ", $affaire['num_affaire'])[1] . "/";
 
 $fichiers = scandir($cheminRep);
 
-$nomZip = 'SCO'.explode(" ", $affaire['num_affaire'])[1].'.zip';
+$nomZip = 'SCO' . explode(" ", $affaire['num_affaire'])[1] . '.zip';
 
 $zip = new ZipArchive;
 $zip->open($nomZip, ZipArchive::CREATE);
@@ -55,7 +55,7 @@ function archiver($zip, $repertoireZip, $repertoire) {
         foreach ($fichiers as $fichier) {
             if ($fichier != "." && $fichier != "..") {
                 $cheminFichier = $repertoire . $fichier;
-                $zip->addFile($cheminFichier, 'SCO'.explode(" ", $affaire['num_affaire'])[1].'/'.$repertoireZip.'/'.basename($cheminFichier));
+                $zip->addFile($cheminFichier, 'SCO' . explode(" ", $affaire['num_affaire'])[1] . '/' . $repertoireZip . '/' . basename($cheminFichier));
             }
         }
     }
@@ -64,5 +64,5 @@ function archiver($zip, $repertoireZip, $repertoire) {
 function cheminRepertoire($documents) {
     global $affaire;
 
-    return "../documents/".$documents."/SCO".explode(" ", $affaire['num_affaire'])[1]."/";
+    return "../documents/" . $documents . "/SCO" . explode(" ", $affaire['num_affaire'])[1] . "/";
 }

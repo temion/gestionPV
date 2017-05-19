@@ -11,7 +11,7 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
     $_GET['idRapport'] = selectDernierRapport($bddPortailGestion)->fetch()['id_rapport'];
     $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
     $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
-    ajouterHistorique($bddPortailGestion, "Création du rapport de l'affaire ".$affaire['num_affaire'],"pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
+    ajouterHistorique($bddPortailGestion, "Création du rapport de l'affaire " . $affaire['num_affaire'], "pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
 }
 
 $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
@@ -33,7 +33,8 @@ $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 ?>
 
     <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Modification du rapport <?php echo $affaire['num_affaire']; ?></h1>
+        <h1 class="ui blue center aligned huge header">Modification du
+            rapport <?php echo $affaire['num_affaire']; ?></h1>
         <?php
         afficherMessage('ajout', "Succès !", "Le PV a bien été crée.",
             "Erreur", "Veuillez remplir tous les champs précédés d'un astérisque par des valeurs valides.");
@@ -237,7 +238,8 @@ $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
             <div class="boutons">
                 <form method="post" action="../excel/ensembleRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
-                    <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel</button>
+                    <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel
+                    </button>
                 </form>
             </div>
         </div>
@@ -259,24 +261,25 @@ $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
                 <strong>Attention :</strong> Cette dernière action peut prendre un certain temps si les fichiers Excel
                 du rapport ne sont pas déjà présents sur le serveur.
             </p>
-            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+            </button>
         </div>
     </div>
 
     </body>
-</html>
+    </html>
 
-<script>
-    $(function () {
-        $("#controleGenere").on("change", function () {
-            console.log($("#controleGenere").val())
-            if ($("#controleGenere").val().length > 0)
-                $("#boutonGenere").prop('disabled', false);
-            else
-                $("#boutonGenere").prop('disabled', true);
-        })
-    });
-</script>
+    <script>
+        $(function () {
+            $("#controleGenere").on("change", function () {
+                console.log($("#controleGenere").val())
+                if ($("#controleGenere").val().length > 0)
+                    $("#boutonGenere").prop('disabled', false);
+                else
+                    $("#boutonGenere").prop('disabled', true);
+            })
+        });
+    </script>
 
 <?php
 
@@ -310,7 +313,8 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
 function creerRapport($bdd, $bddPlanning) {
     if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
         $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
-        $_GET['procedure'] == "" || $_GET['codeInter'] == "") {
+        $_GET['procedure'] == "" || $_GET['codeInter'] == ""
+    ) {
         header("Location: creationRapport.php?erreur=1");
         exit;
     }
