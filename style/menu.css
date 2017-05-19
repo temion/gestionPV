@@ -6,6 +6,13 @@
     text-align: center;
 }
 
+#help {
+    width: inherit;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 #menu {
     position: fixed;
     left: 0;
@@ -32,4 +39,22 @@
 
 #contenu {
     padding: 1em 5em 2em 20em;
+}
+
+#modalAide button {
+    margin-bottom: 1.5vh;
+    margin-right: 3vh;
+    width: 10vh;
+}
+
+#modalAide p:first-of-type {
+    padding-top: 3vh;
+}
+
+#modalAide p {
+    padding: 1vh 3vh 1vh 3vh;
+}
+
+#modalAide p:first-letter {
+    padding-left: 3vh;
 }

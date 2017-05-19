@@ -45,6 +45,18 @@ $comptePV = $bddAffaire->prepare('SELECT count(*) FROM pv_controle WHERE id_rapp
             </tbody>
         </table>
     </div>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Cette liste contient l'ensemble des rapports présents dans la base. En cliquant sur "Modifier" pour l'un des rapports,
+                vous serez redirigé vers la page contenant les informations de celui-ci, ainsi que différentes actions le concernant.
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+        </div>
+    </div>
+
     </body>
     </html>
 

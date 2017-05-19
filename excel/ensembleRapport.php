@@ -34,7 +34,6 @@ $zip->open($nomZip, ZipArchive::CREATE);
 
 archiver($zip, "Rapports_Excel", cheminRepertoire("Rapports_Excel"));
 archiver($zip, "PV_Excel", cheminRepertoire("PV_Excel"));
-//archiver($zip, "PV_PDF", cheminRepertoire("PV_PDF"));
 
 $zip->close();
 

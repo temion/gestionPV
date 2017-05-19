@@ -232,20 +232,39 @@ $listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                     <button class="ui right floated blue button">Générer le rapport au format Excel</button>
                 </form>
-
-                <!-- ToDo -->
             </div>
+
             <br/>
+
             <div class="boutons">
                 <form method="post" action="../excel/ensembleRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
                     <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel</button>
                 </form>
-
-                <!-- ToDo -->
             </div>
         </div>
     </div>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Cette page vous indique les différentes informations sur le rapport sélectionné. Vous pouvez également y
+                ajouter un nouveau PV, accéder aux PV déjà existants à l'aide du bouton "Détails des PV du rapport", ou
+                encore obtenir un fichier Excel regroupant les informations du rapport. Enfin, en cliquant sur
+                "Générer tous les fichiers du rapport au format Excel", vous générerez sur le serveur les fichiers Excel
+                correspondant à tous les PV du rapport ainsi que le fichier Excel du rapport, et obtiendrez une archive
+                disponible en téléchargement, contenant l'ensemble de ces fichiers.
+            </p>
+
+            <p>
+                <strong>Attention :</strong> Cette dernière action peut prendre un certain temps si les fichiers Excel
+                du rapport ne sont pas déjà présents sur le serveur.
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+        </div>
+    </div>
+
     </body>
 </html>
 

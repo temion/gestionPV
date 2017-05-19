@@ -6,7 +6,7 @@ a.jour:hover {
     color: blue;
 }
 
-#jourSelect {
+.jourSelect {
     font-weight: bolder;
     text-decoration: underline;
 }
@@ -29,4 +29,8 @@ a.jour:hover {
 
 .changementDate {
     width: 15vh;
+}
+
+.jourControle {
+    background-color: #fbffb8;
 }

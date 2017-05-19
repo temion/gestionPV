@@ -218,5 +218,18 @@ $typeControles = selectAll($bddAffaires, "type_controle")->fetchAll();
         <button class="ui right floated blue button">Valider</button>
     </form>
 </div>
+
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Ici, vous pouvez créer de nouveaux rapports, qui seront ajoutés dans la base de données. Pour ce faire, vous devez
+            remplir les informations requises. En entrant un numéro d'affaire, vous obtiendrez en bas de la page un bref aperçu
+            comportant les détails de l'affaire choisie. Une fois que les informations sélectionnées vous conviennent, cliquez sur "Valider"
+            et votre PV sera ajouté à la base, et accessible sur ce portail.
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+    </div>
+</div>
 </body>
 </html>

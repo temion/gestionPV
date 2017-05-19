@@ -87,5 +87,20 @@ $selectReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_re
             </form>
         <?php } ?>
     </div>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
+                affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant sur
+                "Modifier", vous serez redirigé vers la page du PV correspondant.
+            </p>
+            <p>
+                De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisie en cliquant sur "Détails du rapport XXX".
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+        </div>
+    </div>
     </body>
 </html>

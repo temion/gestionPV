@@ -101,43 +101,43 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                 </table>
 
                 <table>
-                    <tr>
-                        <th colspan="2"><h4 class="ui dividing header">Uploader les fichiers</h4></th>
-                    </tr>
-
-                    <form enctype="multipart/form-data" action="uploadPV.php" method="post">
-                        <tr>
-                            <td>
-                                <input type="hidden" name="taille_max" value="30000"/>
-                                <input name="pv_excel" type="file"/>
-                            </td>
-                            <td>
-                                <?php
-                                echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                echo '<input type="hidden" name="nomFichier" value="pv_excel">';
-                                echo '<input type="hidden" name="lienRetour" value="modifPVCA">';
-                                ?>
-                                <button class="ui right floated blue button">Uploader au format Excel</button>
-                            </td>
-                        </tr>
-                    </form>
-
-                    <form enctype="multipart/form-data" action="uploadPV.php" method="post">
-                        <tr>
-                            <td>
-                                <input type="hidden" name="taille_max" value="30000"/>
-                                <input name="pv_pdf" type="file"/>
-                            </td>
-                            <td>
-                                <?php
-                                echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
-                                echo '<input type="hidden" name="lienRetour" value="modifPVCA">';
-                                ?>
-                                <button class="ui right floated blue button">Uploader au format PDF</button>
-                            </td>
-                        </tr>
-                    </form>
+<!--                    <tr>-->
+<!--                        <th colspan="2"><h4 class="ui dividing header">Uploader les fichiers</h4></th>-->
+<!--                    </tr>-->
+<!---->
+<!--                    <form enctype="multipart/form-data" action="uploadPV.php" method="post">-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <input type="hidden" name="taille_max" value="30000"/>-->
+<!--                                <input name="pv_excel" type="file"/>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                --><?php
+//                                echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
+//                                echo '<input type="hidden" name="nomFichier" value="pv_excel">';
+//                                echo '<input type="hidden" name="lienRetour" value="modifPVCA">';
+//                                ?>
+<!--                                <button class="ui right floated blue button">Uploader au format Excel</button>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </form>-->
+<!---->
+<!--                    <form enctype="multipart/form-data" action="uploadPV.php" method="post">-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <input type="hidden" name="taille_max" value="30000"/>-->
+<!--                                <input name="pv_pdf" type="file"/>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                --><?php
+//                                echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
+//                                echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
+//                                echo '<input type="hidden" name="lienRetour" value="modifPVCA">';
+//                                ?>
+<!--                                <button class="ui right floated blue button">Uploader au format PDF</button>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </form>-->
 
                     <tr>
                         <th colspan="2"><h4 class="ui dividing header">Ajouter un commentaire</h4></th>
@@ -179,8 +179,21 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
     </form>
 </div>
 
-<div class="ui small modal" id="modalDetails">
-    wow
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Cette page vous indique les différentes informations sur le PV sélectionné. Vous pouvez également y modifier l'avancement,
+            laisser un commentaire à propos du PV qui sera disponible pour tous les chargés d'affaire, ou encore télécharger les fichiers
+            Excel et PDF correspondants. De plus, vous pouvez réuploader des fichiers Excel/PDF si besoin, qui remplaceront ceux déjà
+            présents sur le serveur et seront donc accessibles à tous.
+
+            <p>
+                <strong> Attention : </strong> réuploader des fichiers Excel ne modifie pas les informations stockées dans la base.
+            </p>
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+    </div>
 </div>
 
 </body>

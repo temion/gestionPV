@@ -110,7 +110,11 @@ function enTete($titre, $styles, $scripts) {
             </a>
         </div>
     </div>
+    <div id="help" class="item">
+        <i id="iconeAide" class="help big circle icon"></i>
+    </div>
 </div>
+
 <?php
 fonctionMenu();
 }
@@ -139,6 +143,20 @@ function fonctionMenu() {
                     liens[i].classList.add("active", "blue");
             }
         })
+
+        $(".circle.help.icon").on('click', function() {
+            $('#modalAide').modal('show');
+        });
+
+        $("#iconeAide").on('mouseover', function () {
+            console.log('mouseover');
+            $("#iconeAide").addClass("blue");
+        });
+
+        $("#iconeAide").on('mouseleave', function () {
+            console.log('mouseleave');
+            $("#iconeAide").removeClass("blue");
+        });
     </script>
     <?php
 }

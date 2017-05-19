@@ -35,7 +35,8 @@ $historique = $bdd->query('select * from historique_activite order by date_activ
         </div>
         <p>
             Bienvenue sur le système de gestion des PV. Utilisez le menu latéral pour accéder aux différentes
-            fonctionnalités disponibles.
+            fonctionnalités disponibles. Si vous n'avez jamais utilisé cet outil auparavant, vous trouverez pour chaque
+            page une aide, accessible via l'icône présente en bas du menu latéral.
         </p>
     </div>
     <div id="boutonsUtilisateur">
@@ -96,6 +97,45 @@ $historique = $bdd->query('select * from historique_activite order by date_activ
 
     <?php } ?>
 </div>
+
+<div class="ui large modal" id="modalAide">
+    <div id="headerModal" class="header">Aide</div>
+    <div>
+        <?php
+            if (isset($_SESSION['droit']) && $_SESSION['droit'] == 'CA') { ?>
+                <p>
+                    Vous pouvez créer de nouveaux rapports dans la section "PV > Création de rapport".
+                    La section "PV > Liste des rapports d'inspection" regroupe l'ensemble des rapports déjà crées, et vous
+                    permet d'obtenir des informations sur chacun.
+                    Enfin, "PV > Liste des PV" vous donne accès à l'ensemble des PV présents dans la base, regroupés par affaire.
+                </p>
+                <p>
+                    Dans les sections "Appareils" et "Equipements", vous pouvez ajouter des appareils d'inspection ainsi que des équipements
+                    à inspecter dans la base de données.
+                </p>
+                <p>
+                    Vous avez également accès à un planning, qui indique les dates à laquelle des contrôles sont effectués.
+                </p>
+                <p>
+                    Enfin, le tableau "Activités récentes" vous indique les derniers ajouts et modifications effectués. En cliquant sur le libellé
+                    d'une activité, vous serez redirigé vers la page correspondant au rapport ou au PV concerné.
+                </p>
+            <?php } else { ?>
+                <p>
+                    Dans la section "PV > Liste des PV existants", vous avez accès à tous les PV crées par les chargés d'affaire,
+                    regroupés par affaire. Cette liste indique les informations des PV, et vous permet d'en sélectionner un afin de le modifier.
+                </p>
+                <p>
+                    La "Liste des appareils existants" et la "Liste des équipements existants" regroupent les appareils d'inspection
+                    et les équipements à inspecter présents dans la base.
+                </p>
+            <?php }
+        ?>
+
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+    </div>
+</div>
+
 </body>
 
 <script>

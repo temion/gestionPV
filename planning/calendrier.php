@@ -42,6 +42,8 @@ $prepareDiscipline = $bdd->prepare('select * from type_discipline where id_disci
 
 $bddInspection = connexion('inspections');
 $prepareReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+
+$jourControle = $bdd->prepare('select * from pv_controle where ? BETWEEN date_debut and date_fin');
 ?>
 
 <div id="contenu">
@@ -74,14 +76,22 @@ $prepareReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_r
                         echo '</tr><tr>';
                     }
 
-                    // Colore le jour actuel
                     $nbJours++;
+
+                    $id = 'id="';
+                    $listeClass = 'class="';
+
                     if ($nbJours == date('j') && $_GET['mois'] == date('F') && $_GET['annee'] == date('Y'))
-                        echo '<td id="jourActuel"><a class="jour" href="calendrier.php?mois=' .$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
-                    else if (isset($_GET['dateSelect']) && $nbJours == explode("-", $_GET['dateSelect'])[0])
-                        echo '<td id="jourSelect"><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
-                    else
-                        echo '<td><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
+                        $id .= "jourActuel";    // Colore le jour actuel
+                    if (isset($_GET['dateSelect']) && $nbJours == explode("-", $_GET['dateSelect'])[0])
+                        $listeClass .= "jourSelect "; // Met en valeur le jour sélectionné
+                    if (jourDeControle($dateJour))
+                        $listeClass .= "jourControle "; // Colore les jours où un contrôle a lieu
+
+                    $id .= '"';
+                    $listeClass .= '"';
+
+                    echo '<td '.$id.' '.$listeClass.'><a class="jour" href="calendrier.php?mois='.$_GET['mois'].'&annee='.$_GET['annee'].'&dateSelect='.$dateJour.'">'.$nbJours.'</a></td>';
                 }
 
                 // Complète le calendrier avec des cases grisées
@@ -227,5 +237,12 @@ function creerTableInfos() {
         </table>
         <?php
     }
+}
+
+function jourDeControle($dateJour) {
+    global $jourControle;
+    $jourControle->execute(array(explode("-", $dateJour)[2].'-'.explode("-", $dateJour)[1].'-'.explode("-", $dateJour)[0]));
+
+    return sizeof($jourControle->fetchAll()) != 0;
 }
 ?>
