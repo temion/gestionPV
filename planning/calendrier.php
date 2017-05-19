@@ -133,6 +133,23 @@ $jourControle = $bdd->prepare('select * from pv_controle where ? BETWEEN date_de
     ?>
 </div>
 
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Ce planning indique par un fond jaune les jours où des contrôles doivent être effectués. Le jour au fond bleu
+            indique le jour d'aujourd'hui. Vous pouvez naviguer à travers le planning à l'aide des 2 boutons en dessous,
+            ou à l'aide des flèches directionnelles gauche et droite.
+        </p>
+        <p>
+            En cliquant sur un jour de contrôle, les informations
+            des différents contrôles à effectuer s'affichent en dessous du planning, avec la possibilité, pour chaque contrôle,
+            d'être redirigé sur la page qui lui correspond, en cliquant sur le bouton "Modifier" apparaissant sur sa ligne.
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+    </div>
+</div>
+
 <script>
     $(function() {
         // Navigation aux flèches directionnelles
