@@ -24,6 +24,7 @@
             else
                 $_SESSION['droit'] = "OP";
 
+            $_SESSION['connexion'] = 1;
             header('Location: /gestionPV/');
             exit;
         } else {
@@ -32,6 +33,6 @@
     }
 
 function erreur($codeErreur) {
-    header('Location: testConnexion.php?erreur='.$codeErreur);
+    header('Location: connexion.php?erreur='.$codeErreur);
     exit;
 }

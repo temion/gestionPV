@@ -13,6 +13,7 @@ class ConvertisseurPV extends PHPExcel {
     private $bordures;
 
     private $bddAffaire;
+    private $bddPlanning;
     private $bddInspection;
 
     private $rapport;
@@ -67,6 +68,8 @@ class ConvertisseurPV extends PHPExcel {
 
     function recupBDD() {
         $this->bddAffaire = connexion('portail_gestion');
+        $this->bddPlanning = connexion('planning');
+        $this->bddInspection = connexion('inspections');
 
         $this->rapport = selectRapportParId($this->bddAffaire, $this->pv['id_rapport'])->fetch();
         $this->affaire = selectAffaireParId($this->bddAffaire, $this->rapport['id_affaire'])->fetch();
@@ -74,8 +77,8 @@ class ConvertisseurPV extends PHPExcel {
         $this->societeClient = selectSocieteParId($this->bddAffaire, $this->affaire['id_societe'])->fetch();
         $this->client = selectClientParId($this->bddAffaire, $this->odp['id_client'])->fetch();
 
-        $this->receveur = selectUtilisateurParId($this->bddAffaire, $this->rapport['id_receveur'])->fetch();
-        $this->analyste = selectUtilisateurParId($this->bddAffaire, $this->rapport['id_analyste'])->fetch();
+        $this->receveur = selectUtilisateurParId($this->bddPlanning, $this->rapport['id_receveur'])->fetch();
+        $this->analyste = selectUtilisateurParId($this->bddPlanning, $this->rapport['id_analyste'])->fetch();
 
         $this->typeControle = selectControleParId($this->bddAffaire, $this->pv['id_type_controle'])->fetch();
         $this->discipline = selectDisciplineParId($this->bddAffaire, $this->pv['id_discipline'])->fetch();
@@ -84,8 +87,6 @@ class ConvertisseurPV extends PHPExcel {
         $this->conclusions = selectConclusionsParPV($this->bddAffaire, $this->pv['id_pv'])->fetchAll();
 
         $this->appareils = $this->bddAffaire->query('SELECT * FROM appareils WHERE id_appareil IN (SELECT id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $this->pv['id_pv'] . ')')->fetchAll();
-
-        $this->bddInspection = connexion('inspections');
 
         $this->reservoir = selectReservoirParId($this->bddInspection, $this->pv['id_reservoir'])->fetch();
     }

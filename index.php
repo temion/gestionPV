@@ -7,6 +7,11 @@ enTete("Accueil",
 
 $bdd = connexion('portail_gestion');
 
+if (!isset($_SESSION['connexion']) || $_SESSION['connexion'] != 1) {
+    header('Location: /gestionPV/connexion/connexion.php');
+    exit;
+}
+
 if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bdd->exec('truncate table rapports');
     $bdd->exec('truncate table appareils_utilises');

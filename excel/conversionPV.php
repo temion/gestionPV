@@ -20,11 +20,11 @@ $convertisseur->telecharger($convertisseur->sauvegarde());
 function conversionPDF($convertisseur) {
     if (isset($_POST['pdf']) && $_POST['pdf'] == 1) {
         $chemin = str_replace("'", "", $convertisseur->getPV()['chemin_pdf']);
-        if (!file_exists($chemin))
-            header('Location: ../creationPDF/creationPDF.php?idPV=' . $convertisseur->getPV()['id_pv']);
-        else
-            $convertisseur->telecharger($chemin);
+        if (file_exists($chemin))
+            unlink($chemin);
 
+        header('Location: ../creationPDF/creationPDF.php?idPV=' . $convertisseur->getPV()['id_pv']);
+        $convertisseur->telecharger($chemin);
         exit;
     }
 }
@@ -44,7 +44,7 @@ function regenerationExcel($convertisseur) {
                 unlink($chemin);
             } else {
                 // Si le PV a déjà été généré, on récupère le fichier déjà présent
-                $convertisseur->telecharger(str_replace("'", "", $convertisseur->getPV()['chemin_excel']));
+                $convertisseur->telecharger($chemin);
                 exit;
             }
         }

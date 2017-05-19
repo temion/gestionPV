@@ -6,9 +6,10 @@ enTete("Modification de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 $bdd = connexion('portail_gestion');
+$bddPlanning = connexion('planning');
 
 if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
-    creerRapport($bdd);
+    creerRapport($bdd, $bddPlanning);
     $_GET['idRapport'] = selectDernierRapport($bdd)->fetch()['id_rapport'];
     $rapport = selectRapportParId($bdd, $_GET['idRapport'])->fetch();
     $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
@@ -21,8 +22,8 @@ $societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
 $odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
 $client = selectClientParId($bdd, $odp['id_client'])->fetch();
 
-$receveur = selectUtilisateurParId($bdd, $rapport['id_receveur'])->fetch();
-$analyste = selectUtilisateurParId($bdd, $rapport['id_analyste'])->fetch();
+$receveur = selectUtilisateurParId($bddPlanning, $rapport['id_receveur'])->fetch();
+$analyste = selectUtilisateurParId($bddPlanning, $rapport['id_analyste'])->fetch();
 
 $controles = selectAll($bdd, "type_controle")->fetchAll();
 
@@ -31,7 +32,7 @@ $disciplines = selectAll($bdd, "type_discipline")->fetchAll();
 $bddInspection = connexion('inspections');
 $listeReservoirs = selectAll($bddInspection, "reservoirs")->fetchAll();
 
-$listeUtilisateurs = selectAll($bdd, "utilisateurs")->fetchAll();
+$listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 ?>
 
     <div id="contenu">
@@ -307,8 +308,9 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
  * Si les paramètres sont corrects, crée un nouveau rapport avec ces paramètres dans la base.
  *
  * @param PDO $bdd Base de données.
+ * @param PDO $bddPlanning Base de données comportant les informations utilisateurs.
  */
-function creerRapport($bdd) {
+function creerRapport($bdd, $bddPlanning) {
     if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
         $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
         $_GET['procedure'] == "" || $_GET['codeInter'] == "") {
@@ -319,9 +321,9 @@ function creerRapport($bdd) {
     $affaire = selectAffaireParNom($bdd, $_GET['num_affaire'])->fetch();
 
     // Id du récepteur de la demande
-    $idReceveur = selectUtilisateurParNom($bdd, $_GET['demandeRecue'])->fetch();
+    $idReceveur = selectUtilisateurParNom($bddPlanning, $_GET['demandeRecue'])->fetch();
     // Id de l'analyste de la demande
-    $idAnalyste = selectUtilisateurParNom($bdd, $_GET['demandeAnalysee'])->fetch();
+    $idAnalyste = selectUtilisateurParNom($bddPlanning, $_GET['demandeAnalysee'])->fetch();
 
     $appelOffre = 1;
     if (!isset($_GET['appelOffre'])) // Si la case n'a pas été cochée

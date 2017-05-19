@@ -11,6 +11,7 @@ class ConvertisseurRapport extends PHPExcel {
     private $celluleAct;
 
     private $bdd;
+    private $bddPlanning;
 
     private $affaire;
     private $odp;
@@ -60,13 +61,14 @@ class ConvertisseurRapport extends PHPExcel {
 
     function recupBDD() {
         $this->bdd = connexion('portail_gestion');
+        $this->bddPlanning = connexion('planning');
 
         $this->affaire = selectAffaireParId($this->bdd, $this->rapport['id_affaire'])->fetch();
         $this->odp = selectODPParId($this->bdd, $this->affaire['id_odp'])->fetch();
         $this->societeClient = selectSocieteParId($this->bdd, $this->affaire['id_societe'])->fetch();
         $this->client = selectClientParId($this->bdd, $this->odp['id_client'])->fetch();
-        $this->receveur = selectUtilisateurParId($this->bdd, $this->rapport['id_receveur'])->fetch();
-        $this->analyste = selectUtilisateurParId($this->bdd, $this->rapport['id_analyste'])->fetch();
+        $this->receveur = selectUtilisateurParId($this->bddPlanning, $this->rapport['id_receveur'])->fetch();
+        $this->analyste = selectUtilisateurParId($this->bddPlanning, $this->rapport['id_analyste'])->fetch();
 
         $this->listePV = selectPVParRapport($this->bdd, $this->rapport['id_rapport'])->fetchAll();
 

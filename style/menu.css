@@ -58,3 +58,13 @@
 #modalAide p:first-letter {
     padding-left: 3vh;
 }
+
+#deconnexion {
+    text-align: center;
+}
+
+#deconnexion a {
+    color: red;
+    font-weight: bold;
+    font-size: 1em;
+}

@@ -1,9 +1,19 @@
 table {
     margin: auto;
+    padding: 20vh;
+}
+
+#bordures {
+    background-color: aliceblue;
+    padding-top: 3vh;
+    margin: auto;
+    width: 40vh;
+    border: 0.5px solid black;
+    border-radius: 5px;
 }
 
 td {
-    padding: 1vh 0 0 1vh;
+    padding: 1vh 2vh 2vh 1vh;
 }
 
 .message .header {
@@ -12,5 +22,18 @@ td {
 .message {
     text-align: center;
     display: block;
-    width: 30vh;
+    width: inherit;
+}
+
+#contenu {
+    padding: 2vh 0 2vh 0;
+}
+
+
+#titre {
+    text-align: center;
+}
+
+#header {
+    background-color: #3b83c0;
 }

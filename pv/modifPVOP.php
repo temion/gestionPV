@@ -6,6 +6,7 @@ enTete("Modification de PV",
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 $bdd = connexion('portail_gestion');
+$bddPlanning = connexion('planning');
 $bddInspection = connexion('inspections');
 
 if (isset($_GET['constatation']) && $_GET['constatation'] != "") {
@@ -31,7 +32,7 @@ $affaire = selectAffaireParId($bdd, $rapport['id_affaire'])->fetch();
 $societe = selectSocieteParId($bdd, $affaire['id_societe'])->fetch();
 $odp = selectODPParId($bdd, $affaire['id_odp'])->fetch();
 $client = selectClientParId($bdd, $odp['id_client'])->fetch();
-$controleur = selectUtilisateurParId($bdd, $pv['id_controleur'])->fetch();
+$controleur = selectUtilisateurParId($bddPlanning, $pv['id_controleur'])->fetch();
 
 $reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 

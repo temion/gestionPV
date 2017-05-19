@@ -4,7 +4,7 @@ require_once "../menu.php";
 verifSession("OP");
 
 enTete("Liste des PV générés",
-array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css", "calendrier.css"),
+array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/listes.css", "../style/menu.css", "../style/calendrier.css"),
 array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
 if (!isset($_GET['mois']) || $_GET['mois'] == "") {
@@ -32,15 +32,18 @@ $premierJour = strtotime("First day of ".$_GET['mois']." ".$_GET['annee']);
 $premierJour = date("l", $premierJour);
 
 $bdd = connexion('portail_gestion');
+$bddPlanning = connexion('planning');
+$bddInspection = connexion('inspections');
+
 $prepareDates = $bdd->prepare('select * from pv_controle where ? between date_debut and date_fin;');
 $prepareRapport = $bdd->prepare('select * from rapports where id_rapport = ?');
 $prepareAffaire = $bdd->prepare('select * from affaire where id_affaire = ?');
-$prepareUtilisateur = $bdd->prepare('select * from utilisateurs where id_utilisateur = ?');
+$prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
 $prepareControle = $bdd->prepare('select * from type_controle where id_type = ?');
 $prepareAvancement = $bdd->prepare('select * from avancement where id_avancement = ?');
 $prepareDiscipline = $bdd->prepare('select * from type_discipline where id_discipline = ?');
 
-$bddInspection = connexion('inspections');
+
 $prepareReservoir = $bddInspection->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
 
 $jourControle = $bdd->prepare('select * from pv_controle where ? BETWEEN date_debut and date_fin');
