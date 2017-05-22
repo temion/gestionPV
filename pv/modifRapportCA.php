@@ -27,7 +27,7 @@ $controles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 
 $disciplines = selectAll($bddPortailGestion, "type_discipline")->fetchAll();
 
-$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp", "id_societe")->fetchAll();
+$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp")->fetchAll();
 
 $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
@@ -149,13 +149,7 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
                                 for ($i = 0; $i < sizeof($listeReservoirs); $i++) {
                                     $prepareSociete->execute(array($listeReservoirs[$i]['id_societe']));
                                     $nomSociete = trim($prepareSociete->fetch()['nom_societe']);
-                                    // Indique devant le nom du bac le nom de la société, si elle existe
-                                    if ($nomSociete != "")
-                                        $nomSociete .= ' : ';
-                                    else
-                                        $nomSociete = "";
-
-                                    echo '<option value="' . $listeReservoirs[$i]['id_reservoir'] . '">'.$nomSociete . $listeReservoirs[$i]['designation'] . ' ' . $listeReservoirs[$i]['type'] . '</option>';
+                                    echo '<option value="' . $listeReservoirs[$i]['id_reservoir'] . '">' . $listeReservoirs[$i]['designation'] . ' ' . $listeReservoirs[$i]['type'] . ' ('.$nomSociete.')</option>';
                                 }
                                 ?>
                             </select>
@@ -234,12 +228,12 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
 
                 <form method="get" action="listePVCA.php">
                     <input type="hidden" name="numAffaire" value="<?php echo $affaire['num_affaire']; ?>">
-                    <button title="Affiche la liste des PV du rapport" class="ui right floated blue button">Détails des PV du rapport</button>
+                    <button class="ui right floated blue button">Détails des PV du rapport</button>
                 </form>
 
                 <form method="post" action="../excel/conversionRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
-                    <button title="Génère un résumé du rapport au format Excel" class="ui right floated blue button">Générer le rapport au format Excel</button>
+                    <button class="ui right floated blue button">Générer le rapport au format Excel</button>
                 </form>
             </div>
 
@@ -248,7 +242,8 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
             <div class="boutons">
                 <form method="post" action="../excel/ensembleRapport.php">
                     <input type="hidden" name="idRapport" value="<?php echo $rapport['id_rapport']; ?>">
-                    <button title="Télécharge une archive contenant tous les fichiers Excel du rapport" class="ui right floated green button">Générer tous les fichiers du rapport au format Excel</button>
+                    <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel
+                    </button>
                 </form>
             </div>
         </div>

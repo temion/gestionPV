@@ -26,10 +26,7 @@ function connexion($base) {
  * @param String $table Table à consulter.
  * @return mixed Résultat du select.
  */
-function selectAll($base, $table, $ordre = "") {
-    if ($ordre != "")
-        return $base->query('select * from ' . $table . ' order by ' . $ordre);
-
+function selectAll($base, $table) {
     return $base->query('SELECT * FROM ' . $table);
 }
 

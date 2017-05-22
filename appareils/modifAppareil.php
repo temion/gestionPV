@@ -100,9 +100,6 @@ $appareil = selectAppareilParId($bddPortailGestion, $_POST['idAppareil'])->fetch
             </tbody>
         </table>
     </form>
-    <form action="listeAppareils.php">
-        <button style="margin-top: 2vh;" class="ui right floated blue button"> Retour à la liste des appareils </button>
-    </form>
 </div>
 
 <div class="ui large modal" id="modalAide">

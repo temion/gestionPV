@@ -77,7 +77,7 @@ creerModal("conclusion");
                                 <td>
                                     <?php
                                     echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                    echo '<button title="Télécharge le fichier présent sur le serveur, ou en crée un si aucun n\'a été généré" id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
+                                    echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
                                     ?>
                                 </td>
                             </tr>
@@ -226,10 +226,14 @@ creerModal("conclusion");
 
                         <tr>
                             <td>
-                                <button title="Ouvre une boîte de dialogues permettant d'indiquer des constatations" id="boutonConstatation" class="ui left floated blue button">Ajouter une constatation</button>
+                                <button id="boutonConstatation" class="ui left floated blue button">Ajouter une
+                                    constatation
+                                </button>
                             </td>
                             <td>
-                                <button title="Ouvre une boîte de dialogues permettant d'indiquer des conclusions" id="boutonConclusion" class="ui right floated blue button">Ajouter une conclusion</button>
+                                <button id="boutonConclusion" class="ui right floated blue button">Ajouter une
+                                    conclusion
+                                </button>
                             </td>
                         </tr>
                     </table>
