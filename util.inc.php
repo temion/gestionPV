@@ -246,7 +246,10 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
 
     $titrePV = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 
-    echo '<tr>';
+    if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP" && $controleur['id_utilisateur'] == $_SESSION['id_connecte'])
+        echo '<tr class="pvAControler">';
+    else
+        echo '<tr>';
     echo '<td><strong>' . $pv['id_pv'] . '</strong> : ' . $titrePV . '</td>';
     echo '<td>' . $affaire['num_affaire'] . '</td>';
     echo '<td>' . $reservoir['designation'] . ' ' . $reservoir['type'] . '</td>';
@@ -267,7 +270,7 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
 function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
     $dernierAjout = $bdd->query('SELECT * FROM historique_activite WHERE date_activite IN (SELECT max(date_activite) FROM historique_activite)')->fetch();
     if ($bdd->quote($libelle) != $bdd->quote($dernierAjout['libelle']))
-        insert($bdd, "historique_activite", array("null", $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
+        insert($bdd, "historique_activite", array("null", $_SESSION['id_connecte'], $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
 }
 
 ?>

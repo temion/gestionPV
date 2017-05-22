@@ -12,15 +12,17 @@ $date_calib_correcte = verifEntreeDates('date_calib');
 if ($date_valid_correcte && $date_calib_correcte) {
     $date_valid = conversionDate($_POST['date_valid']);
     $date_calib = conversionDate($_POST['date_calib']);
-    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), ' . $bddPortailGestion->quote($date_valid) . ', ' . $bddPortailGestion->quote($date_calib) . ')');
+    $valeurs = array("null", strtoupper($bddPortailGestion->quote($_POST['systeme'])), strtoupper($bddPortailGestion->quote($_POST['type'])), strtoupper($bddPortailGestion->quote($_POST['marque'])), strtoupper($bddPortailGestion->quote($_POST['serie'])), $bddPortailGestion->quote($date_valid), $bddPortailGestion->quote($date_calib));
 } else if ($date_valid_correcte) {
     $date_valid = conversionDate($_POST['date_valid']);
-    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), ' . $bddPortailGestion->quote($date_valid) . ', NULL)');
+    $valeurs = array("null", strtoupper($bddPortailGestion->quote($_POST['systeme'])), strtoupper($bddPortailGestion->quote($_POST['type'])), strtoupper($bddPortailGestion->quote($_POST['marque'])), strtoupper($bddPortailGestion->quote($_POST['serie'])), $bddPortailGestion->quote($date_valid), "null");
 } else if ($date_calib_correcte) {
     $date_calib = conversionDate($_POST['date_calib']);
-    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), NULL, ' . $bddPortailGestion->quote($date_calib) . ')');
+    $valeurs = array("null", strtoupper($bddPortailGestion->quote($_POST['systeme'])), strtoupper($bddPortailGestion->quote($_POST['type'])), strtoupper($bddPortailGestion->quote($_POST['marque'])), strtoupper($bddPortailGestion->quote($_POST['serie'])), "null", $bddPortailGestion->quote($date_calib));
 } else
-    $bddPortailGestion->exec('INSERT INTO appareils VALUES (NULL, upper(' . $bddPortailGestion->quote($_POST['systeme']) . '), upper(' . $bddPortailGestion->quote($_POST['type']) . '), upper(' . $bddPortailGestion->quote($_POST['marque']) . '), upper(' . $bddPortailGestion->quote($_POST['serie']) . '), NULL, NULL)') or die(print_r($bddPortailGestion->errorInfo(), true));;
+    $valeurs = array("null", strtoupper($bddPortailGestion->quote($_POST['systeme'])), strtoupper($bddPortailGestion->quote($_POST['type'])), strtoupper($bddPortailGestion->quote($_POST['marque'])), strtoupper($bddPortailGestion->quote($_POST['serie'])), "null", "null");
+
+insert($bddPortailGestion, "appareils", $valeurs);
 
 header("Location: ajoutAppareil.php?ajout=1");
 ?>
