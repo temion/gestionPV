@@ -169,6 +169,9 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
         </table>
         <?php echo '<button name="idEquipement" value="' . $_POST['idEquipement'] . '" class="ui right floated blue button"> Valider </button>'; ?>
     </form>
+    <form action="listeEquipements.php">
+        <button class="ui right floated blue button"> Retour à la liste des équipements </button>
+    </form>
 </div>
 
 <div class="ui large modal" id="modalAide">

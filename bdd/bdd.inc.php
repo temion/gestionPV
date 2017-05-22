@@ -24,10 +24,15 @@ function connexion($base) {
  *
  * @param PDO $base Base de données.
  * @param String $table Table à consulter.
+ * @param String $ordre Si défini, trie le résultat en suivant la colonne indiquée.
+ *
  * @return mixed Résultat du select.
  */
-function selectAll($base, $table) {
-    return $base->query('SELECT * FROM ' . $table);
+function selectAll($base, $table, $ordre = "") {
+    if ($ordre != "")
+        return $base->query('SELECT * FROM ' . $table . ' ORDER BY ' . $ordre);
+    else
+        return $base->query('SELECT * FROM ' . $table);
 }
 
 /**
@@ -38,6 +43,7 @@ function selectAll($base, $table) {
  * @param String $colonneCondition Colonne sur laquelle s'applique la condition.
  * @param String $ope Operateur de comparaison (Like, =, >, ...).
  * @param String $condition Condition à respecter.
+ *
  * @return mixed Résultat du select.
  */
 function selectAllFromWhere($base, $table, $colonneCondition, $ope, $condition) {
