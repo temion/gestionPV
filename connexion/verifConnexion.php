@@ -22,6 +22,7 @@ if (empty($utilisateur)) {
         else
             $_SESSION['droit'] = "OP";
 
+        $_SESSION['id_connecte'] = $utilisateur['id_utilisateur'];
         $_SESSION['connexion'] = 1;
         header('Location: /gestionPV/');
         exit;
