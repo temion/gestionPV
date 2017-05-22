@@ -349,7 +349,7 @@ function selectAppareilsUtilisesParPV($base, $idPV) {
 
 /** Réservoirs */
 function selectReservoirParId($base, $id) {
-    return selectAllFromWhere($base, "reservoirs", "id_reservoir", "=", $id);
+    return selectAllFromWhere($base, "reservoirs_tmp", "id_reservoir", "=", $id);
 }
 
 /** Constatations */

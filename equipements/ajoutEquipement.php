@@ -33,9 +33,17 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                 </td>
                 <td>
                     <div class="field">
-                        <label>* Nom de l'équipement : </label>
+                        <label>* Désignation de l'équipement : </label>
                         <div class="ui input">
-                            <input type="text" name="nom" placeholder="Nom (ex. : FB75 Toit fixe)">
+                            <input type="text" name="designation" placeholder="Nom (ex. : Bac 3)">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="field">
+                        <label>* Type d'équipement : </label>
+                        <div class="ui input">
+                            <input type="text" name="type" placeholder="Type (ex. : Toit fixe)">
                         </div>
                     </div>
                 </td>
@@ -47,7 +55,7 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Diamètre : </label>
                         <div class="ui input">
-                            <input type="text" name="diametre" placeholder="Diamètre (m)">
+                            <input type="text" name="diametre" placeholder="Diamètre (mm)">
                         </div>
                     </div>
                 </td>
@@ -55,7 +63,7 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Hauteur : </label>
                         <div class="ui input">
-                            <input type="text" name="hauteur" placeholder="Hauteur (m)">
+                            <input type="text" name="hauteur" placeholder="Hauteur (mm)">
                         </div>
                     </div>
                 </td>
@@ -63,7 +71,7 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Hauteur du produit </label>
                         <div class="ui input">
-                            <input type="text" name="hauteur_produit" placeholder="Hauteur produit (m)">
+                            <input type="text" name="hauteur_produit" placeholder="Hauteur produit (mm)">
                         </div>
                     </div>
                 </td>
@@ -71,7 +79,7 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Volume : </label>
                         <div class="ui input">
-                            <input type="text" name="volume" placeholder="Volume (m²)">
+                            <input type="text" name="volume" placeholder="Volume (mm3)">
                         </div>
                     </div>
                 </td>
@@ -79,7 +87,15 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Distance entre 2 points : </label>
                         <div class="ui input">
-                            <input type="text" name="distance" placeholder="Distance (m)">
+                            <input type="text" name="distance" placeholder="Distance (mm)">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="field">
+                        <label>Nombre de génératrices : </label>
+                        <div class="ui input">
+                            <input type="text" name="nb_generatrices" placeholder="Nombre de génératrices">
                         </div>
                     </div>
                 </td>
@@ -87,6 +103,18 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
         </table>
         <button class="ui right floated blue button">Valider</button>
     </form>
+</div>
+
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Ici, vous pouvez ajouter de nouveaux équipements à contrôler à la base. Après avoir rempli toutes les informations,
+            elles seront vérifiées, et un nouvel équipement possédant les caractéristiques indiquées sera ajouté à la base.
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+        </button>
+    </div>
 </div>
 </body>
 </html>

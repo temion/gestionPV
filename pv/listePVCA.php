@@ -27,7 +27,7 @@ $selectRapport = $bddPortailGestion->prepare('SELECT * FROM rapports WHERE id_ra
 $selectAffaire = $bddPortailGestion->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
 $selectUtilisateur = $bddPlanning->prepare('SELECT * FROM utilisateurs WHERE id_utilisateur = ?');
 $selectAvancement = $bddPortailGestion->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
-$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE id_reservoir = ?');
 ?>
 
 <div id="contenu">

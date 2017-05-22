@@ -35,12 +35,12 @@ class PDFWriter extends mPDF {
     function detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv) {
         $this->ecrireHTML("<table class='details'><tr class='titre'><td colspan='4'>Détails de l'affaire</td></tr>");
 
-        $this->ligneDetails(array("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit']));
+        $this->ligneDetails(array("Clients : ", $societeClient['nom_societe'], "Numéro équipement : ", $reservoir['designation'] . ' ' . $reservoir['type']));
         $this->ligneDetails(array("Personne rencontrée : ", $client['nom'], "Diamètre équipement : ", ($reservoir['diametre'] / 1000) . ' m'));
-        $this->ligneDetails(array("Numéro commande client : ", $affaire['commande'], "Hauteur : ", '?'));
-        $this->ligneDetails(array("Lieu : ", $affaire['lieu_intervention'], "Hauteur produit : ", "?"));
-        $this->ligneDetails(array("Début du contrôle : ", $pv['date_debut'], "Volume : ", "?"));
-        $this->ligneDetails(array("Nbre génératrices : ", '?', "Distance entre 2 points : ", "?"));
+        $this->ligneDetails(array("Numéro commande client : ", $affaire['commande'], "Hauteur : ", ($reservoir['hauteur'] / 1000) . ' m'));
+        $this->ligneDetails(array("Lieu : ", $affaire['lieu_intervention'], "Hauteur produit : ", ($reservoir['hauteur_produit'] / 1000) . ' m'));
+        $this->ligneDetails(array("Début du contrôle : ", $pv['date_debut'], "Volume : ", ($reservoir['volume'] / 1000) . ' m<sup>3</sup>'));
+        $this->ligneDetails(array("Nbre génératrices : ", $reservoir['nb_generatrices'], "Distance entre 2 points : ", ($reservoir['distance_points'] / 1000) . ' m'));
 
         $this->ecrireHTML("</table>");
 

@@ -38,8 +38,28 @@ $listeAppareils = selectAll($bddPortailGestion, "appareils")->fetchAll();
             </table>
         </form>
     </div>
-    </body>
-    </html>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Sur cette page sont indiqués tous les appareils de contrôle présents dans la base, ainsi que les informations
+                les concernant.
+                <?php
+                    if (isset($_SESSION['droit']) && $_SESSION['droit'] == 'CA') {
+                        ?>
+                        En cliquant sur modifier, vous accèderez à une page permettant de modifier les informations
+                        concernant l'appareil sélectionné.
+                <?php
+                    }
+                ?>
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+            </button>
+        </div>
+    </div>
+</body>
+</html>
 
 <?php
 

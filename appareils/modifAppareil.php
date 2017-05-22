@@ -101,5 +101,18 @@ $appareil = selectAppareilParId($bddPortailGestion, $_POST['idAppareil'])->fetch
         </table>
     </form>
 </div>
+
+<div class="ui large modal" id="modalAide">
+    <div class="header">Aide</div>
+    <div>
+        <p>
+            Cette page indique les caractéristiques actuelles de l'appareil, et vous permet d'en modifier certains champs.
+            Une fois les champs souhaités remplis, cliquez sur Valider et les informations concernant l'appareil seront mises à jour.
+        </p>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+        </button>
+    </div>
+</div>
+
 </body>
 </html>

@@ -83,7 +83,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Réservoir : </label>
-                    <label> <?php echo $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit']; ?> </label>
+                    <label> <?php echo $reservoir['designation'] . ' ' . $reservoir['type']; ?> </label>
                 </div>
             </td>
         </tr>
@@ -115,7 +115,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Hauteur : </label>
-                    <label> ? </label>
+                    <label> <?php echo ($reservoir['hauteur'] / 1000) . ' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -130,7 +130,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Hauteur produit : </label>
-                    <label> ? </label>
+                    <label> <?php echo ($reservoir['hauteur_produit'] / 1000) . ' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -145,7 +145,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Volume : </label>
-                    <label> ? </label>
+                    <label> <?php echo ($reservoir['volume'] / 1000) . ' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -160,7 +160,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Distance entre 2 points : </label>
-                    <label> ? </label>
+                    <label> <?php echo ($reservoir['distance_points'] / 1000) . ' m'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -174,7 +174,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Nombre de génératrices : </label>
-                    <label> ? </label>
+                    <label> <?php echo $reservoir['nb_generatrices']; ?> </label>
                 </div>
             </td>
         </tr>
@@ -249,7 +249,7 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '<tr>';
     echo '<td><strong>' . $pv['id_pv'] . '</strong> : ' . $titrePV . '</td>';
     echo '<td>' . $affaire['num_affaire'] . '</td>';
-    echo '<td>' . $reservoir['nom_reservoir'] . ' ' . $reservoir['type_toit'] . '</td>';
+    echo '<td>' . $reservoir['designation'] . ' ' . $reservoir['type'] . '</td>';
     echo '<td>' . $controle['libelle'] . ' ' . $pv['num_ordre'] . ' (' . $controle['code'] . ') <br/>';
     echo 'du ' . conversionDate($pv['date_debut']) . ' au ' . conversionDate($pv['date_fin']) . '</td>';
     echo '<td>' . $controleur['nom'] . '</td>';

@@ -168,22 +168,22 @@ class ConvertisseurPV extends PHPExcel {
         colorerCellule($this, 'A' . $this->celluleAct, $this->couleurs['gris']); // Gris
 
         // Clients + Numéro équipement
-        $this->creerLigneInfos("Clients : ", $this->societeClient['nom_societe'], "Numéro équipement : ", $this->reservoir['nom_reservoir'] . ' ' . $this->reservoir['type_toit']);
+        $this->creerLigneInfos("Clients : ", $this->societeClient['nom_societe'], "Numéro équipement : ", $this->reservoir['designation'] . ' ' . $this->reservoir['type']);
 
         // Personne rencontrée + Diamètre
         $this->creerLigneInfos("Personne rencontrée : ", $this->client['nom'], "Diamètre équipement : ", ($this->reservoir['diametre'] / 1000) . ' m');
 
         // Num commande + Hauteur
-        $this->creerLigneInfos("Numéro commande client : ", $this->affaire['commande'], "Hauteur : ", "?");
+        $this->creerLigneInfos("Numéro commande client : ", $this->affaire['commande'], "Hauteur : ", ($this->reservoir['hauteur'] / 1000) . ' m');
 
         // Lieu + Hauteur produit
-        $this->creerLigneInfos("Lieu : ", $this->affaire['lieu_intervention'], "Hauteur produit : ", "?");
+        $this->creerLigneInfos("Lieu : ", $this->affaire['lieu_intervention'], "Hauteur produit : ", ($this->reservoir['hauteur_produit'] / 1000) . ' m');
 
         // Début contrôle + Volume
-        $this->creerLigneInfos("Début du contrôle : ", conversionDate($this->pv['date_debut']), "Volume : ", "?");
+        $this->creerLigneInfos("Début du contrôle : ", conversionDate($this->pv['date_debut']), "Volume : ", ($this->reservoir['volume'] / 1000) . ' m');
 
         // Nombre génératrices + Distance entre 2 points
-        $this->creerLigneInfos("Nbre génératrices : ", "?", "Distance entre 2 points : ", "?");
+        $this->creerLigneInfos("Nbre génératrices : ", $this->reservoir['nb_generatrices'], "Distance entre 2 points : ", ($this->reservoir['distance_points'] / 1000) . ' m');
     }
 
     /**

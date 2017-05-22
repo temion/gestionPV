@@ -10,9 +10,9 @@ update($bddPortailGestion, "type_controle", "num_controle", $nouvelleVal, "id_ty
 $numOrdreActuel = $bddPortailGestion->query('SELECT max(num_ordre) FROM pv_controle WHERE id_rapport = ' . $_GET['idRapport'] . ' AND id_type_controle = ' . $_GET['controle'])->fetch();
 
 $valeurs = array("null", $_GET['idRapport'], $_GET['reservoir'], $_GET['discipline'], $_GET['controle'], $numOrdreActuel[0] + 1,
-    $_GET['controleur'], "false", "false", 0, "false", "false", "false",
-    $bddPortailGestion->quote(conversionDate($_GET['date_debut'])), $bddPortailGestion->quote(conversionDate($_GET['date_fin'])), 1,
-    "null", "null", "null");
+                $_GET['controleur'], "false", "false", 0, "false", "false", "false",
+                $bddPortailGestion->quote(conversionDate($_GET['date_debut'])), $bddPortailGestion->quote(conversionDate($_GET['date_fin'])), 1,
+                "null", "null", "null");
 
 insert($bddPortailGestion, "pv_controle", $valeurs);
 

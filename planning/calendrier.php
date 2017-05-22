@@ -40,7 +40,7 @@ $prepareAvancement = $bddPortailGestion->prepare('SELECT * FROM avancement WHERE
 $prepareDiscipline = $bddPortailGestion->prepare('SELECT * FROM type_discipline WHERE id_discipline = ?');
 
 
-$prepareReservoir = $bddInspections->prepare('SELECT * FROM reservoirs WHERE id_reservoir = ?');
+$prepareReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE id_reservoir = ?');
 
 $jourControle = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? BETWEEN date_debut AND date_fin');
 ?>

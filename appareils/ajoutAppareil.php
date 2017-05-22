@@ -71,5 +71,18 @@ enTete("Ajout d'un nouvel appareil",
         </table>
     </form>
 </div>
+
+<div class="ui large modal" id="modalAide">
+<div class="header">Aide</div>
+<div>
+    <p>
+        Ici, vous pouvez ajouter de nouveaux appareils de contrôle à la base. Après avoir rempli toutes les informations,
+        elles seront vérifiées, et un nouvel appareil possédant les caractéristiques indiquées sera ajouté à la base.
+    </p>
+    <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+    </button>
+</div>
+</div>
+
 </body>
 </html>

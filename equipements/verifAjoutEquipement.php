@@ -1,7 +1,7 @@
 <?php
 require_once "../util.inc.php";
 
-if ($_POST['societe'] == "" || $_POST['nom'] == "") {
+if ($_POST['societe'] == "" || $_POST['designation'] == "" || $_POST['type'] == "") {
     header("Location: ajoutEquipement.php?erreur=1");
     exit;
 }
@@ -9,8 +9,9 @@ if ($_POST['societe'] == "" || $_POST['nom'] == "") {
 $valeurs = array("diametre" => definirValeur('diametre'), "hauteur" => definirValeur('hauteur'), "hauteur_produit" => definirValeur('hauteur_produit'), "volume" => definirValeur('volume'), "distance" => definirValeur('distance'));
 
 $societe = $bddPortailGestion->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bddPortailGestion->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
-$bddPortailGestion->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bddPortailGestion->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bddPortailGestion->errorInfo(), true));
 
+//$bddPortailGestion->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bddPortailGestion->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bddPortailGestion->errorInfo(), true));
+$bddInspections->exec('insert into reservoirs_tmp values(NULL, '.$bddInspections->quote($_POST['designation']).', '.$bddInspections->quote($_POST['type']).', '.$societe['id_societe'].', '. definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']).', '.definirValeur($_POST['nb_generatrices'].')'));
 header("Location: ajoutEquipement.php?ajout=1");
 ?>
 

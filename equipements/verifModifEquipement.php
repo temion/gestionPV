@@ -3,9 +3,11 @@ require_once "../util.inc.php";
 
 $modifs = 0;
 
-$attributs = array('societe', 'nom_equipement', 'diametre', 'hauteur', 'hauteur_produit', 'volume', 'distance_points');
+$prepareIdSociete = $bddPortailGestion->prepare('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(?, \' \', \'\')');
+
+$attributs = array('societe', 'designation', 'type', 'diametre', 'hauteur', 'hauteur_produit', 'volume', 'distance_points', 'nb_generatrices');
 for ($i = 0; $i < sizeof($attributs); $i++)
-    modifAttribut($bddPortailGestion, $attributs[$i]);
+    modifAttribut($bddInspections, $attributs[$i]);
 
 header('Location: listeEquipements.php?modifs=' . $modifs);
 exit;
@@ -16,16 +18,19 @@ exit;
 /**
  * Modifie dans la base l'attribut sélectionné avec la valeur entrée.
  *
- * @param PDO $bdd Base de données à mettre à jour.
+ * @param PDO $bddInspections Base de données des réservoirs.
  * @param string $attr Attribut à modifier.
  */
-function modifAttribut($bdd, $attr) {
-    global $modifs;
+function modifAttribut($bddInspections, $attr) {
+    global $modifs, $prepareIdSociete;
     if (isset($_POST[$attr]) && $_POST[$attr] != "") {
         if ($attr == 'societe') {
-            $bdd->exec('UPDATE equipements SET id_societe = (SELECT id_societe FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bdd->quote($_POST['societe'] . '%') . ' , \' \', \'\')) WHERE id_equipement = ' . $_POST['idEquipement']);
+            $prepareIdSociete->execute(array($_POST['societe']));
+            $idSociete = $prepareIdSociete->fetchAll();
+
+            $bddInspections->exec('UPDATE reservoirs_tmp SET id_societe = '.$idSociete[0]['id_societe'].' WHERE id_reservoir = ' . $_POST['idEquipement']);
         } else {
-            $bdd->exec('UPDATE equipements SET ' . $attr . ' = upper(' . $bdd->quote($_POST[$attr]) . ') WHERE id_equipement = ' . $_POST['idEquipement']);
+            $bddInspections->exec('UPDATE reservoirs_tmp SET ' . $attr . ' = upper(' . $bddInspections->quote($_POST[$attr]) . ') WHERE id_reservoir = ' . $_POST['idEquipement']);
         }
 
         $modifs++;
