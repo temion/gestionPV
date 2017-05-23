@@ -170,6 +170,44 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
                         ?>
                     </tr>
                 </table>
+                <!-- ToDo -->
+
+<!--                <table>-->
+<!--                    <tr>-->
+<!--                        <th colspan="3"><h4 class="ui dividing header">Informations remplies par l'opérateur</h4></th>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>-->
+<!--                            <label class="labelCB">Contrôle interne</label>-->
+<!--                            <input disabled --><?php //if ($pv['controle_interne'] == 1) echo 'checked'; ?><!-- type="checkbox">-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <label class="labelCB">Contrôle externe</label>-->
+<!--                            <input disabled --><?php //if ($pv['controle_externe'] == 1) echo 'checked'; ?><!--type="checkbox">-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <label class="labelCB">Contrôle périphérique</label>-->
+<!--                            <input disabled --><?php //if ($pv['controle_peripherique'] == 1) echo 'checked'; ?><!--type="checkbox">-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>-->
+<!--                            <label> Nombre d'annexes : </label>-->
+<!--                            --><?php //echo $pv['nb_annexes']; ?>
+<!--                        </td>-->
+<!--                        <td>-->
+<!---->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <select disabled size="2">-->
+<!--                                <option>Théodolite T01</option>-->
+<!--                                <option>Théodolite T02</option>-->
+<!--                            </select>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+
+                <!-- ToDo -->
             </td>
         </tr>
     </table>

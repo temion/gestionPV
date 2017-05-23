@@ -2,6 +2,7 @@
 require_once '../util.inc.php';
 require_once 'ConvertisseurPV.php';
 require_once 'ConvertisseurRapport.php';
+session_start();
 
 $rapport = selectRapportParId($bddPortailGestion, $_POST['idRapport'])->fetch();
 $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();

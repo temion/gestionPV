@@ -26,9 +26,8 @@ if (empty($utilisateur)) {
         $_SESSION['connexion'] = 1;
         header('Location: /gestionPV/');
         exit;
-    } else {
+    } else
         erreur(3);
-    }
 }
 
 function erreur($codeErreur) {

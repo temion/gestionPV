@@ -1,5 +1,6 @@
 <?php
 require_once '../util.inc.php';
+session_start();
 
 update($bddPortailGestion, "pv_controle", "photos_jointes", etatCB($bddPortailGestion, 'photos_jointes'), "id_pv", "=", $_GET['idPV']);
 update($bddPortailGestion, "pv_controle", "pieces_jointes", etatCB($bddPortailGestion, 'pieces_jointes'), "id_pv", "=", $_GET['idPV']);

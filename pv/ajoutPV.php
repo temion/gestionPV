@@ -1,6 +1,6 @@
 <?php
 require_once '../util.inc.php';
-
+session_start();
 verifEntrees();
 
 $controle = selectControleParId($bddPortailGestion, $_GET['controle'])->fetch();

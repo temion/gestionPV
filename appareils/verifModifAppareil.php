@@ -1,5 +1,6 @@
 <?php
 require_once "../util.inc.php";
+session_start();
 
 $modifs = 0;
 

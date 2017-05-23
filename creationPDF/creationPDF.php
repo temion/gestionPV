@@ -2,6 +2,8 @@
 require_once '../bdd/bdd.inc.php';
 require_once 'PDFWriter.php';
 
+session_start();
+
 if (!isset($_GET['idPV'])) {
     header("Location: /gestionPV");
     exit;

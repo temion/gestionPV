@@ -20,6 +20,7 @@ function enTete($titre, $styles, $scripts) {
 <head>
     <meta charset="UTF-8">
     <title><?php echo $titre; ?></title>
+    <link rel="icon" href="/gestionPV/images/logo_scopeo.ico">
 
     <?php
     for ($i = 0; $i < sizeof($styles); $i++) {

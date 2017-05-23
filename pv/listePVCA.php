@@ -93,8 +93,7 @@ $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE 
         <p>
             Cette liste contient l'ensemble des PV présents dans la base, regroupés par affaire. En choisissant une
             affaire, tous les PV correspondants apparaissent, avec les informations principales de chacun. En cliquant
-            sur
-            "Modifier", vous serez redirigé vers la page du PV correspondant.
+            sur "Modifier", vous serez redirigé vers la page du PV correspondant.
         </p>
         <p>
             De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisie en cliquant sur "Détails

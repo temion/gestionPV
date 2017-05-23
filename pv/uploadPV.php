@@ -1,5 +1,6 @@
 <?php
 require_once '../bdd/bdd.inc.php';
+session_start();
 
 upload($_POST['nomFichier'], $bddPortailGestion);
 

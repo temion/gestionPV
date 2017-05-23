@@ -1,6 +1,7 @@
 <?php
 require_once "../util.inc.php";
 require_once "ConvertisseurPV.php";
+session_start();
 
 $pv = selectPVParId($bddPortailGestion, $_POST['idPV'])->fetch();
 $convertisseur = new ConvertisseurPV($pv);

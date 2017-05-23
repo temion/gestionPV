@@ -94,22 +94,22 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             </tbody>
         </table>
 
-        <div style="width: 50%; height: 80%" id="test" class="ui large modal">
-            <div class="header">
-                <table style="width: 100%">
-                    <tr>
-                        <td style="text-align: left;">Aperçu du PV</td>
-                        <td style="text-align: right;"><i class="close icon"></i></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-<!--        <p>-->
-<!--            <button id="link" type="button">Test Ajax</button>-->
-<!--        </p>-->
-
     <?php } ?>
+
+    <div style="width: 50%; height: 80%" id="test" class="ui large modal">
+        <div class="header">
+            <table style="width: 100%">
+                <tr>
+                    <td style="text-align: left;">Aperçu du PV</td>
+                    <td style="text-align: right;"><i class="close icon"></i></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <p>
+        <button id="link" type="button">Test Ajax</button>
+    </p>
 </div>
 
 <div class="ui large modal" id="modalAide">
@@ -152,8 +152,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
         <?php }
         ?>
 
-        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
-        </button>
+        <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
     </div>
 </div>
 
@@ -162,7 +161,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
 <script>
     $('#link').click(function (e) {
         e.preventDefault();
-        jQuery.ajax({
+        $.ajax({
             type: "POST",
             processData: false,
             url: "index.php?name=pdf",
