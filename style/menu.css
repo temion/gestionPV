@@ -68,3 +68,9 @@
     font-weight: bold;
     font-size: 1em;
 }
+
+@media screen and (max-width: 1500px) {
+    #menu {
+        display: none;
+    }
+}

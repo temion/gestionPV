@@ -27,7 +27,7 @@ $controles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 
 $disciplines = selectAll($bddPortailGestion, "type_discipline")->fetchAll();
 
-$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp")->fetchAll();
+$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp", "id_societe")->fetchAll();
 
 $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
@@ -149,7 +149,7 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
                                 for ($i = 0; $i < sizeof($listeReservoirs); $i++) {
                                     $prepareSociete->execute(array($listeReservoirs[$i]['id_societe']));
                                     $nomSociete = trim($prepareSociete->fetch()['nom_societe']);
-                                    echo '<option value="' . $listeReservoirs[$i]['id_reservoir'] . '">' . $listeReservoirs[$i]['designation'] . ' ' . $listeReservoirs[$i]['type'] . ' ('.$nomSociete.')</option>';
+                                    echo '<option value="' . $listeReservoirs[$i]['id_reservoir'] . '">' . $nomSociete . ' : ' . $listeReservoirs[$i]['designation'] . ' ' . $listeReservoirs[$i]['type'] .'</option>';
                                 }
                                 ?>
                             </select>

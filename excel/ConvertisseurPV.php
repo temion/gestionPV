@@ -180,7 +180,7 @@ class ConvertisseurPV extends PHPExcel {
         $this->creerLigneInfos("Lieu : ", $this->affaire['lieu_intervention'], "Hauteur produit : ", ($this->reservoir['hauteur_produit'] / 1000) . ' m');
 
         // Début contrôle + Volume
-        $this->creerLigneInfos("Début du contrôle : ", conversionDate($this->pv['date_debut']), "Volume : ", ($this->reservoir['volume'] / 1000) . ' m');
+        $this->creerLigneInfos("Début du contrôle : ", conversionDate($this->pv['date_debut']), "Volume : ", ($this->reservoir['volume'] / 1000) . ' m³');
 
         // Nombre génératrices + Distance entre 2 points
         $this->creerLigneInfos("Nbre génératrices : ", $this->reservoir['nb_generatrices'], "Distance entre 2 points : ", ($this->reservoir['distance_points'] / 1000) . ' m');
@@ -250,7 +250,7 @@ class ConvertisseurPV extends PHPExcel {
                 $this->celluleAct++;
             }
             $this->feuille->setCellValue('A' . $this->celluleAct, $this->constatations[$i]['constatation']);
-            $celluleAct = $this->celluleAct + 2;
+            $this->celluleAct = $this->celluleAct + 2;
         }
     }
 
@@ -374,8 +374,8 @@ class ConvertisseurPV extends PHPExcel {
         colorerCellule($this, 'G' . $this->celluleAct, $this->couleurs['gris']);
 
         $this->celluleAct++;
-        creerChamp($this->feuille, $this->celluleAct, 'A', 'B', "Date de calibration : ", 'C', 'D', $this->appareils[$ind]['date_calib']);
-        creerChamp($this->feuille, $this->celluleAct, 'E', 'F', "Date de validation : ", 'G', 'H', $this->appareils[$ind]['date_valid']);
+        creerChamp($this->feuille, $this->celluleAct, 'A', 'B', "Date de calibration : ", 'C', 'D', conversionDate($this->appareils[$ind]['date_calib']));
+        creerChamp($this->feuille, $this->celluleAct, 'E', 'F', "Date de validation : ", 'G', 'H', conversionDate($this->appareils[$ind]['date_valid']));
         $this->feuille->getStyle('A' . $this->celluleAct . ':H' . $this->celluleAct)->applyFromArray($this->bordures);
         colorerCellule($this, 'C' . $this->celluleAct, $this->couleurs['gris']);
         colorerCellule($this, 'G' . $this->celluleAct, $this->couleurs['gris']);

@@ -1,5 +1,6 @@
 <?php
 require_once '..\lib\vendor\mpdf\mpdf\mpdf.php';
+require_once '../util.inc.php';
 
 class PDFWriter extends mPDF {
 
@@ -28,7 +29,6 @@ class PDFWriter extends mPDF {
      * @param array $societeClient Société cliente du contrôle.
      * @param array $reservoir Réservoir inspecté.
      * @param array $client Client rencontré.
-     * @param array $ficheTechniqueEquipement Détails techniques de l'équipement inspecté.
      * @param array $affaire Affaire concernée.
      * @param array $pv PV concerné.
      */
@@ -68,6 +68,25 @@ class PDFWriter extends mPDF {
         $this->ecrireHTML("<tr><td>Contrôle interne ? </td><td class='info'>" . ($pv['controle_interne'] ? "OUI" : "NON") . "</td><td>Contrôle externe ? </td><td class='info'>" . ($pv['controle_externe'] ? "OUI" : "NON") . "</td></tr>");
         $this->ecrireHTML("<tr><td>Contrôle périphérique ? </td><td class='info'>" . ($pv['controle_peripherique'] ? "OUI" : "NON") . "</td></tr>");
         $this->ecrireHTML("</table>");
+    }
+
+    /**
+     * Ecrit les informations relatives au matériel utilisé pour le contrôle.
+     */
+    function materielUtilise($appareils) {
+        $this->ecrireHTML("<table class='details'><tr class='titre'><td colspan='4'> Matériel utilisé</td></tr>");
+        for ($i = 0; $i < sizeof($appareils); $i++) {
+            $this->creerLigneAppareil($appareils[$i]);
+            if ($i != sizeof($appareils) - 1)
+                $this->ecrireHTML("<tr><td style='border: none'><br/></td></tr>");
+        }
+        $this->ecrireHTML("</table>");
+    }
+
+    function creerLigneAppareil($appareil) {
+        $this->ecrireHTML("<tr><td>Système : </td><td class='info'>" . $appareil['systeme'] . "</td><td>Marque : </td><td class='info'>" . $appareil['marque'] . "</td></tr>");
+        $this->ecrireHTML("<tr><td>Type : </td><td class='info'>" . $appareil['type'] . "</td><td>Numéro de série : </td><td class='info'> " . $appareil['num_serie'] . "</td></tr>");
+        $this->ecrireHTML("<tr><td>Date de calibration : </td><td class='info'>" . conversionDate($appareil['date_calib']) . "</td><td>Date de validation : </td><td class='info'>" . conversionDate($appareil['date_valid']) . "</td> </tr>");
     }
 
     /**

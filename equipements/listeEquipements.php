@@ -19,7 +19,6 @@ $societe = $bddPortailGestion->prepare('SELECT * FROM societe WHERE id_societe =
         <table class="ui celled table">
             <thead>
             <tr>
-                <th>Identifiant équipement</th>
                 <th>Société propriétaire</th>
                 <th>Désignation</th>
                 <th>Type</th>
@@ -78,8 +77,7 @@ function creerLigneAppareil($equipements, $ind) {
     global $societe;
     $societe->execute(array($equipements[$ind]['id_societe']));
 
-    echo '<tr><td>' . $equipements[$ind]['id_reservoir'] . '</td>';
-    echo '<td>' . $societe->fetch()['nom_societe'] . '</td>';
+    echo '<tr><td>' . $societe->fetch()['nom_societe'] . '</td>';
     echo '<td>' . $equipements[$ind]['designation'] . '</td>';
     echo '<td>' . $equipements[$ind]['type'] . '</td>';
     echo '<td>' . ($equipements[$ind]['diametre'] != "" ? $equipements[$ind]['diametre'] . ' mm' : "") . '</td>';

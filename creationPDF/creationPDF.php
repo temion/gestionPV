@@ -23,6 +23,8 @@ $discipline = selectDisciplineParId($bddPortailGestion, $pv['id_discipline'])->f
 
 $reservoir = selectReservoirParId($bddInspections, $pv['id_reservoir'])->fetch();
 
+$appareils = $bddPortailGestion->query('SELECT * FROM appareils WHERE id_appareil IN (SELECT id_appareil FROM appareils_utilises WHERE id_pv_controle = ' . $pv['id_pv'] . ')')->fetchAll();
+
 $constatations = selectConstatationsParPV($bddPortailGestion, $pv['id_pv'])->fetchAll();
 $conclusions = selectConclusionsParPV($bddPortailGestion, $pv['id_pv'])->fetchAll();
 
@@ -38,6 +40,7 @@ $pdf->ecrireTitre($titre);
 $pdf->detailsAffaire($societeClient, $reservoir, $client, $affaire, $pv);
 $pdf->detailsDocuments($rapport);
 $pdf->situationControle($pv);
+$pdf->materielUtilise($appareils);
 $pdf->constatations($constatations);
 $pdf->conclusions($conclusions);
 $pdf->signatures($pv);

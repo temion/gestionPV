@@ -101,6 +101,7 @@ $jourControle = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? B
             ?>
             </tbody>
         </table>
+
         <table id="tabBoutons">
             <tr>
                 <td>
@@ -108,16 +109,21 @@ $jourControle = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? B
                     echo '<form method="get" action="calendrier.php">';
                     echo '<input type="hidden" name="mois" value="' . getDatePrecedente()[0] . '">';
                     echo '<input type="hidden" name="annee" value="' . getDatePrecedente()[1] . '">';
-                    echo '<button class="ui left floated blue button changementDate"> Mois précédent </button>';
+                    echo '<button class="ui  blue button changementDate"> Mois précédent </button>';
                     echo '</form>';
                     ?>
+                </td>
+                <td>
+                    <form method="get" action="calendrier.php">
+                        <button class="ui blue button changementDate"> Aujourd'hui </button>
+                    </form>
                 </td>
                 <td>
                     <?php
                     echo '<form method="get" action="calendrier.php">';
                     echo '<input type="hidden" name="mois" value="' . getDateSuivante()[0] . '">';
                     echo '<input type="hidden" name="annee" value="' . getDateSuivante()[1] . '">';
-                    echo '<button class="ui right floated blue button changementDate"> Mois suivant </button>';
+                    echo '<button class="ui blue button changementDate"> Mois suivant </button>';
                     echo '</form>';
                     ?>
                 </td>
@@ -135,7 +141,7 @@ $jourControle = $bddPortailGestion->prepare('SELECT * FROM pv_controle WHERE ? B
             <p>
                 Ce planning indique par un fond jaune les jours où des contrôles doivent être effectués. Le jour au fond
                 bleu
-                indique le jour d'aujourd'hui. Vous pouvez naviguer à travers le planning à l'aide des 2 boutons en
+                indique le jour d'aujourd'hui. Vous pouvez naviguer à travers le planning à l'aide des boutons en
                 dessous,
                 ou à l'aide des flèches directionnelles gauche et droite.
             </p>
