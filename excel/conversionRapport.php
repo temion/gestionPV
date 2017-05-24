@@ -9,6 +9,11 @@ if (!verifSessionCA()) {
     exit;
 }
 
+if (!isset($_POST['idRapport']) || $_POST['idRapport'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $rapport = selectRapportParId($bddPortailGestion, $_POST['idRapport'])->fetch();
 $convertisseur = new ConvertisseurRapport($rapport);
 

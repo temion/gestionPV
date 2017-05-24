@@ -8,6 +8,11 @@ if (!verifSession()) {
     exit;
 }
 
+if (!isset($_POST['lienRetour']) || $_POST['lienRetour'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 upload($_POST['nomFichier'], $bddPortailGestion);
 
 /**

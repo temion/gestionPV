@@ -7,6 +7,11 @@ if (!verifSessionCA()) {
     exit;
 }
 
+if (!isset($_POST['idEquipement']) || $_POST['idEquipement'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $modifs = 0;
 
 $prepareIdSociete = $bddPortailGestion->prepare('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(?, \' \', \'\')');

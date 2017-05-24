@@ -8,6 +8,11 @@ if (!verifSession()) {
     exit;
 }
 
+if (!isset($_POST['idPV']) || $_POST['idPV'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $pv = selectPVParId($bddPortailGestion, $_POST['idPV'])->fetch();
 $convertisseur = new ConvertisseurPV($pv);
 

@@ -7,6 +7,11 @@ if (!verifSessionCA()) {
     exit;
 }
 
+if (!isset($_POST['idAppareil']) || $_POST['idAppareil'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $modifs = 0;
 
 $attributs = array('systeme', 'type', 'marque', 'serie');

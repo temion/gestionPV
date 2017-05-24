@@ -7,7 +7,6 @@ if (!verifSession()) {
     exit;
 }
 
-
 if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
     $_SESSION['droit'] = $_POST['utilisateur'];
 }
