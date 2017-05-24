@@ -4,6 +4,11 @@ require_once "excelUtil.inc.php";
 require_once "ConvertisseurRapport.php";
 session_start();
 
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $rapport = selectRapportParId($bddPortailGestion, $_POST['idRapport'])->fetch();
 $convertisseur = new ConvertisseurRapport($rapport);
 

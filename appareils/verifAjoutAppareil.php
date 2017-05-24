@@ -2,6 +2,11 @@
 require_once "../util.inc.php";
 session_start();
 
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 if ($_POST['systeme'] == "" || $_POST['type'] == "" || $_POST['marque'] == "" || $_POST['serie'] == "") {
     header("Location: ajoutAppareil.php?erreur=1");
     exit;

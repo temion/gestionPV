@@ -4,6 +4,11 @@ require_once 'PDFWriter.php';
 
 session_start();
 
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 if (!isset($_GET['idPV'])) {
     header("Location: /gestionPV");
     exit;

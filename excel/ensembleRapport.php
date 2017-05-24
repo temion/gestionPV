@@ -4,6 +4,11 @@ require_once 'ConvertisseurPV.php';
 require_once 'ConvertisseurRapport.php';
 session_start();
 
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $rapport = selectRapportParId($bddPortailGestion, $_POST['idRapport'])->fetch();
 $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
 

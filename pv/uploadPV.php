@@ -1,6 +1,12 @@
 <?php
-require_once '../bdd/bdd.inc.php';
+require_once '../util.inc.php';
+
 session_start();
+
+if (!verifSession()) {
+    header('Location: /gestionPV/connexion/connexion.php');
+    exit;
+}
 
 upload($_POST['nomFichier'], $bddPortailGestion);
 

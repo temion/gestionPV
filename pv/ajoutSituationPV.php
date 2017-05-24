@@ -2,6 +2,11 @@
 require_once '../util.inc.php';
 session_start();
 
+if (!verifSessionOP()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 update($bddPortailGestion, "pv_controle", "photos_jointes", etatCB($bddPortailGestion, 'photos_jointes'), "id_pv", "=", $_GET['idPV']);
 update($bddPortailGestion, "pv_controle", "pieces_jointes", etatCB($bddPortailGestion, 'pieces_jointes'), "id_pv", "=", $_GET['idPV']);
 

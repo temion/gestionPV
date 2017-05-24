@@ -1,6 +1,12 @@
 <?php
-session_start();
 require_once "util.inc.php";
+
+session_start();
+if (!verifSession()) {
+    header('Location: /gestionPV/connexion/connexion.php');
+    exit;
+}
+
 
 if (isset($_POST['utilisateur']) && $_POST['utilisateur'] != "") {
     $_SESSION['droit'] = $_POST['utilisateur'];
@@ -121,16 +127,6 @@ fonctionMenu();
 }
 
 /**
- * Vérifie qu'une session est ouverte, pour éviter l'accès direct aux différentes fonctionnalités du portail.
- *
- * @param string $droit Type de droit à empêcher.
- */
-function verifSession($droit = "") {
-    if (!isset($_SESSION['droit']) || $_SESSION['droit'] == $droit)
-        header('Location: /gestionPV/index.php');
-}
-
-/**
  * Permet la coloration des liens actifs du menu.
  */
 function fonctionMenu() {
@@ -172,7 +168,7 @@ function fonctionMenu() {
             if ($("#menuMobile").length == 0) {
                 var session = '<?php echo $_SESSION['droit']; ?>';
 
-                var enTeteMenu = "<div class='ui dropdown' id='menuMobile'><i class='content big icon'></i><div class='menu'>";
+                var enTeteMenu = "<div class='ui dropdown' id='menuMobile'><i class='content big icon'></i><div id='dropdownMenu' class='menu'>";
                 enTeteMenu += "<div class='item'><h1 class='ui center aligned blue header'><a href='/gestionPV/'> Gestion des PV </a></h1></div>";
 
                 var menuPV = "<div class='header'> PV </div>";
@@ -207,6 +203,8 @@ function fonctionMenu() {
 
                 $("#contenu").before(menuMobile);
 
+                $("#menuMobile").on("mouseover", function() {$(".content.big.icon").addClass("blue")});
+                $("#menuMobile").on("mouseleave", function() {$(".content.big.icon").removeClass("blue")});
                 $("#menuMobile").dropdown();
             }
         }

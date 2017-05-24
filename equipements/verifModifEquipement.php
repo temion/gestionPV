@@ -2,6 +2,11 @@
 require_once "../util.inc.php";
 session_start();
 
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 $modifs = 0;
 
 $prepareIdSociete = $bddPortailGestion->prepare('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(?, \' \', \'\')');

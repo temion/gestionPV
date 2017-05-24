@@ -54,6 +54,23 @@ function verifFormatDates($date) {
 }
 
 /**
+ * Vérifie qu'une session est ouverte, pour éviter l'accès direct aux différentes fonctionnalités du portail.
+ *
+ * @return boolean Vrai si une session valide (CA ou OP) est ouverte.
+ */
+function verifSession() {
+    return (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA" || $_SESSION['droit'] == "OP");
+}
+
+function verifSessionCA() {
+    return (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA");
+}
+
+function verifSessionOP() {
+    return (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP");
+}
+
+/**
  * Affiche les différentes informations concernant l'affaire passée en paramètre.
  *
  * @param array $affaire Informations de l'affaire.

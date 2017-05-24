@@ -1,6 +1,12 @@
 <?php
 require_once '../util.inc.php';
 session_start();
+
+if (!verifSessionCA()) {
+    header('Location: /gestionPV/index.php');
+    exit;
+}
+
 verifEntrees();
 
 $controle = selectControleParId($bddPortailGestion, $_GET['controle'])->fetch();
@@ -26,8 +32,8 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
 
 ajouterHistorique($bddPortailGestion, "Création du PV " . $titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
 
-header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
-exit;
+//header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
+//exit;
 
 /**
  * Vérifie les valeurs, et détermine la valeur du responsable du contrôle.
@@ -51,5 +57,5 @@ function condition() {
     return (!isset($_GET['reservoir']) || $_GET['reservoir'] == "" || !isset($_GET['controle']) ||
         $_GET['controle'] == "" || !isset($_GET['discipline']) || $_GET['discipline'] == "" ||
         !isset($_GET['date_debut']) || !verifFormatDates($_GET['date_debut']) ||
-        !isset($_GET['date_fin']) || !verifFormatDates($_GET['date_fin']));
+        !isset($_GET['date_fin']) || !verifFormatDates($_GET['date_fin']) || date_create($_GET['date_fin']) < date_create($_GET['date_debut']));
 }
