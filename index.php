@@ -48,23 +48,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             page une aide, accessible via l'icône présente en bas du menu latéral.
         </p>
     </div>
-<!--    <div id="boutonsUtilisateur">-->
-<!--        <form method="post" action="#">-->
-<!--            --><?php
-//            // Permet d'indiquer visuellement quel droit a été sélectionné
-//            if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") {
-//                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui active left attached button">Chargé d\'affaires</button>';
-//                echo '<button name="utilisateur" value="OP" id="bRight" class="ui right attached button">Opérateur</button>';
-//            } else if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP") {
-//                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">Chargé d\'affaires</button>';
-//                echo '<button name="utilisateur" value="OP" id="bRight" class="ui right active attached button">Opérateur</button>';
-//            } else {
-//                echo '<button name="utilisateur" value="CA" id="bLeft" class="ui left attached button">Chargé d\'affaires</button>';
-//                echo '<button name="utilisateur" value="OP" id="bRight" class="ui right attached button">Opérateur</button>';
-//            }
-//            ?>
-<!--        </form>-->
-<!--    </div>-->
+
     <form method="post" action="index.php">
         <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
     </form>

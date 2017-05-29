@@ -6,11 +6,6 @@ if (!verifSessionCA()) {
     exit;
 }
 
-if (!isset($_GET['idRapport']) ||$_GET['idRapport'] == "") {
-    header('Location: /gestionPV/index.php');
-    exit;
-}
-
 enTete("Modification de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/modifRapport.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
@@ -22,6 +17,11 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
     $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
     $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
     ajouterHistorique($bddPortailGestion, "Création du rapport de l'affaire " . $affaire['num_affaire'], "pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
+}
+
+if (!isset($_GET['idRapport']) ||$_GET['idRapport'] == "") {
+    header('Location: /gestionPV/index.php');
+    exit;
 }
 
 $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();

@@ -32,8 +32,8 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
 
 ajouterHistorique($bddPortailGestion, "Création du PV " . $titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
 
-//header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
-//exit;
+header('Location: /gestionPV/pv/modifRapportCA.php?idRapport=' . $_GET['idRapport'] . '&ajout=1');
+exit;
 
 /**
  * Vérifie les valeurs, et détermine la valeur du responsable du contrôle.

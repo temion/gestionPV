@@ -43,6 +43,7 @@ function conversionDate($date) {
  * Vérifie le format dans lequel l'utilisateur a rentré la date.
  *
  * @param string $date Date à vérifier.
+ *
  * @return bool Vrai si la format est bien JJ-MM-AAAA.
  */
 function verifFormatDates($date) {
@@ -56,16 +57,26 @@ function verifFormatDates($date) {
 /**
  * Vérifie qu'une session est ouverte, pour éviter l'accès direct aux différentes fonctionnalités du portail.
  *
- * @return boolean Vrai si une session valide (CA ou OP) est ouverte.
+ * @return bool Vrai si une session valide (CA ou OP) est ouverte.
  */
 function verifSession() {
     return (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA" || $_SESSION['droit'] == "OP");
 }
 
+/**
+ * Vérifie qu'une session est ouverte en tant que chargé d'affaires.
+ *
+ * @return bool Vrai si une session chargé d'affaires est ouverte.
+ */
 function verifSessionCA() {
     return (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA");
 }
 
+/**
+ * Vérifie qu'une session est ouverte en tant qu'opérateur.
+ *
+ * @return bool Vrai si une session opérateur est ouverte.
+ */
 function verifSessionOP() {
     return (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP");
 }
@@ -162,7 +173,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
             <td>
                 <div class="field">
                     <label>Volume : </label>
-                    <label> <?php echo ($reservoir['volume'] / 1000) . ' m'; ?> </label>
+                    <label> <?php echo ($reservoir['volume'] / 1000) . ' m<sup>3</sup>'; ?> </label>
                 </div>
             </td>
         </tr>
@@ -181,6 +192,7 @@ function creerApercuModif($affaire, $societe, $reservoir, $client, $controleur, 
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
                 <div class="field">
