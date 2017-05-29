@@ -57,6 +57,13 @@ readfile($nomZip);
 if (file_exists($nomZip))
     unlink($nomZip);
 
+/**
+ * Ajoute dans l'archive zip passée en paramètre un répertoire contenant les fichiers du répertoire passé en paramètre.
+ *
+ * @param ZipArchive $zip Archive zip à remplir.
+ * @param string $repertoireZip Nom du répertoire à créer dans l'archive.
+ * @param string $repertoire Chemin du répertoire à ajouter dans l'archive.
+ */
 function archiver($zip, $repertoireZip, $repertoire) {
     global $affaire;
 
@@ -72,6 +79,12 @@ function archiver($zip, $repertoireZip, $repertoire) {
     }
 }
 
+/**
+ * Renvoie le chemin des fichiers de l'affaire concernée en fonction du paramètre.
+ *
+ * @param string $documents Nom du type de fichier (rapports, pv excel, ...)
+ * @return string Chemin des documents sur l'affaire concernée.
+ */
 function cheminRepertoire($documents) {
     global $affaire;
 

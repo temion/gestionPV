@@ -270,6 +270,13 @@ function creerTableInfos() {
     }
 }
 
+/**
+ * Indique si un contrôle a lieu au jour passé en paramètre.
+ *
+ * @param string $dateJour Date du jour.
+ * 
+ * @return bool Vrai si un contrôle a lieu au jour indiqué.
+ */
 function jourDeControle($dateJour) {
     global $jourControle;
     $jourControle->execute(array(explode("-", $dateJour)[2] . '-' . explode("-", $dateJour)[1] . '-' . explode("-", $dateJour)[0]));

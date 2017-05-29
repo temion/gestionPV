@@ -37,6 +37,11 @@ class ConvertisseurPV extends PHPExcel {
 
     private $titre;
 
+    /**
+     * ConvertisseurPV constructor.
+     *
+     * @param array $pv Informations du PV à représenter au format Excel.
+     */
     function __construct($pv) {
         parent::__construct();
         $this->pv = $pv;
@@ -44,6 +49,10 @@ class ConvertisseurPV extends PHPExcel {
         $this->creerFeuille();
     }
 
+    /**
+     * Crée la feuille Excel, dimensionne les colonnes, et fait appel aux méthodes de récupération
+     * et d'écriture des données.
+     */
     function creerFeuille() {
         $this->setActiveSheetIndex(0);
 
@@ -66,6 +75,9 @@ class ConvertisseurPV extends PHPExcel {
         $this->remplirFeuille();
     }
 
+    /**
+     * Récupère dans la base de données toutes les informations nécessaires pour générer le fichier.
+     */
     function recupBDD() {
         $this->bddAffaire = connexion('portail_gestion');
         $this->bddPlanning = connexion('planning');
@@ -91,6 +103,9 @@ class ConvertisseurPV extends PHPExcel {
         $this->reservoir = selectReservoirParId($this->bddInspection, $this->pv['id_reservoir'])->fetch();
     }
 
+    /**
+     * Appelle les différentes méthodes permettant de remplir le fichier avec les informations nécessaires.
+     */
     function remplirFeuille() {
         // Présentation PV
         $this->celluleAct = 1; // Cellule active

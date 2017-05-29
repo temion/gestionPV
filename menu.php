@@ -121,108 +121,96 @@ function enTete($titre, $styles, $scripts) {
     </div>
 </div>
 
-<?php
-fonctionMenu();
-}
-
-/**
- * Permet la coloration des liens actifs du menu.
- */
-function fonctionMenu() {
-    ?>
-    <script>
-        $(function () {
-            var liens = $(".lienMenu");
-            for (var i = 0; i < liens.length; i++) {
-                if (liens[i].id != "deconnexion") {
-                    liens[i].classList.remove("active", "blue");
-                    if ($(location).attr('href').startsWith(liens[i].href))
-                        liens[i].classList.add("active", "blue");
-                }
-            }
-
-            if (window.matchMedia("(min-width: 1500px)").matches) {
-                grandEcran();
-            } else {
-                petitEcran();
-            }
-        })
-
-        $(window).on("resize", function () {
-            if (window.matchMedia("(min-width: 1500px)").matches)
-                grandEcran();
-            else
-                petitEcran();
-        });
-
-        function grandEcran() {
-            $("#menu").removeClass("hidden");
-            if ($("#menuMobile").length != 0) {
-                $("#menuMobile").remove();
+<script>
+    $(function () {
+        var liens = $(".lienMenu");
+        for (var i = 0; i < liens.length; i++) {
+            if (liens[i].id != "deconnexion") {
+                liens[i].classList.remove("active", "blue");
+                if ($(location).attr('href').startsWith(liens[i].href))
+                    liens[i].classList.add("active", "blue");
             }
         }
 
-        function petitEcran() {
-            $("#menu").addClass("hidden");
-            if ($("#menuMobile").length == 0) {
-                var session = '<?php echo $_SESSION['droit']; ?>';
-
-                var enTeteMenu = "<div class='ui dropdown' id='menuMobile'><i class='content big icon'></i><div id='dropdownMenu' class='menu'>";
-                enTeteMenu += "<div class='item'><h1 class='ui center aligned blue header'><a href='/gestionPV/'> Gestion des PV </a></h1></div>";
-
-                var menuPV = "<div class='header'> PV </div>";
-                if (session == "CA") {
-                    menuPV += "<div class='item'><a href='/gestionPV/pv/creationRapport.php'>Création de rapport</a></div>";
-                    menuPV += "<div class='item'><a href='/gestionPV/pv/listeRapportsCA.php'>Liste des rapports existants</a></div>";
-                    menuPV += "<div class='item'><a href='/gestionPV/pv/listePVCA.php'>Liste des PV</a></div>";
-                } else
-                    menuPV += "<div class='item'><a href='/gestionPV/pv/listePVOP.php'>Liste des PV</a></div>";
-
-
-                var menuAppareils = "<div class='header'> Appareils </div>";
-                if (session == "CA")
-                    menuAppareils += "<div class='item'><a href='/gestionPV/appareils/ajoutAppareil.php'>Ajout d'appareils</a></div>";
-                menuAppareils += "<div class='item'><a href='/gestionPV/appareils/listeAppareils.php'>Liste des appareils existants</a></div>";
-
-                var menuEquipements = "<div class='header'> Équipements </div>";
-                if (session == "CA")
-                    menuEquipements += "<div class='item'><a href='/gestionPV/equipements/ajoutEquipement.php'>Ajout d'équipements</a></div>";
-                menuEquipements += "<div class='item'><a href='/gestionPV/equipements/listeEquipements.php'>Liste des équipements existants</a></div>";
-
-                if (session == "CA") {
-                    var menuPlanning = "<div class='header'> Planning </div>";
-                    menuPlanning += "<div class='item'><a href='/gestionPV/planning/calendrier.php'>Planning des PV</a></div>";
-                }
-
-                var deconnexion = "<div class='header' id='deconnexion'><a style='color: red' href='/gestionPV/connexion/connexion.php'>Déconnexion</a></div>";
-
-                var finMenu = "</div></div>";
-
-                var menuMobile = $(enTeteMenu + menuPV + menuAppareils + menuEquipements + (session == "CA" ? menuPlanning : "") + deconnexion + finMenu);
-
-                $("#contenu").before(menuMobile);
-
-                $("#menuMobile").on("mouseover", function() {$(".content.big.icon").addClass("blue")});
-                $("#menuMobile").on("mouseleave", function() {$(".content.big.icon").removeClass("blue")});
-                $("#menuMobile").dropdown();
-            }
+        if (window.matchMedia("(min-width: 1500px)").matches) {
+            grandEcran();
+        } else {
+            petitEcran();
         }
+    })
 
-        $(".circle.help.icon").on('click', function () {
-            $('#modalAide').modal('show');
-        });
+    $(window).on("resize", function () {
+        if (window.matchMedia("(min-width: 1500px)").matches)
+            grandEcran();
+        else
+            petitEcran();
+    });
 
-        $("#iconeAide").on('mouseover', function () {
-            console.log('mouseover');
-            $("#iconeAide").addClass("blue");
-        });
+    function grandEcran() {
+        $("#menu").removeClass("hidden");
+        if ($("#menuMobile").length != 0) {
+            $("#menuMobile").remove();
+        }
+    }
 
-        $("#iconeAide").on('mouseleave', function () {
-            console.log('mouseleave');
-            $("#iconeAide").removeClass("blue");
-        });
-    </script>
-    <?php
-}
+    function petitEcran() {
+        $("#menu").addClass("hidden");
+        if ($("#menuMobile").length == 0) {
+            var session = '<?php echo $_SESSION['droit']; ?>';
 
-?>
+            var enTeteMenu = "<div class='ui dropdown' id='menuMobile'><i class='content big icon'></i><div id='dropdownMenu' class='menu'>";
+            enTeteMenu += "<div class='item'><h1 class='ui center aligned blue header'><a href='/gestionPV/'> Gestion des PV </a></h1></div>";
+
+            var menuPV = "<div class='header'> PV </div>";
+            if (session == "CA") {
+                menuPV += "<div class='item'><a href='/gestionPV/pv/creationRapport.php'>Création de rapport</a></div>";
+                menuPV += "<div class='item'><a href='/gestionPV/pv/listeRapportsCA.php'>Liste des rapports existants</a></div>";
+                menuPV += "<div class='item'><a href='/gestionPV/pv/listePVCA.php'>Liste des PV</a></div>";
+            } else
+                menuPV += "<div class='item'><a href='/gestionPV/pv/listePVOP.php'>Liste des PV</a></div>";
+
+
+            var menuAppareils = "<div class='header'> Appareils </div>";
+            if (session == "CA")
+                menuAppareils += "<div class='item'><a href='/gestionPV/appareils/ajoutAppareil.php'>Ajout d'appareils</a></div>";
+            menuAppareils += "<div class='item'><a href='/gestionPV/appareils/listeAppareils.php'>Liste des appareils existants</a></div>";
+
+            var menuEquipements = "<div class='header'> Équipements </div>";
+            if (session == "CA")
+                menuEquipements += "<div class='item'><a href='/gestionPV/equipements/ajoutEquipement.php'>Ajout d'équipements</a></div>";
+            menuEquipements += "<div class='item'><a href='/gestionPV/equipements/listeEquipements.php'>Liste des équipements existants</a></div>";
+
+            if (session == "CA") {
+                var menuPlanning = "<div class='header'> Planning </div>";
+                menuPlanning += "<div class='item'><a href='/gestionPV/planning/calendrier.php'>Planning des PV</a></div>";
+            }
+
+            var deconnexion = "<div class='header' id='deconnexion'><a style='color: red' href='/gestionPV/connexion/connexion.php'>Déconnexion</a></div>";
+
+            var finMenu = "</div></div>";
+
+            var menuMobile = $(enTeteMenu + menuPV + menuAppareils + menuEquipements + (session == "CA" ? menuPlanning : "") + deconnexion + finMenu);
+
+            $("#contenu").before(menuMobile);
+
+            $("#menuMobile").on("mouseover", function() {$(".content.big.icon").addClass("blue")});
+            $("#menuMobile").on("mouseleave", function() {$(".content.big.icon").removeClass("blue")});
+            $("#menuMobile").dropdown();
+        }
+    }
+
+    $(".circle.help.icon").on('click', function () {
+        $('#modalAide').modal('show');
+    });
+
+    $("#iconeAide").on('mouseover', function () {
+        console.log('mouseover');
+        $("#iconeAide").addClass("blue");
+    });
+
+    $("#iconeAide").on('mouseleave', function () {
+        console.log('mouseleave');
+        $("#iconeAide").removeClass("blue");
+    });
+</script>
+<?php } ?>

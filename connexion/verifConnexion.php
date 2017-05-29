@@ -30,6 +30,14 @@ if (empty($utilisateur)) {
         erreur(3);
 }
 
+/**
+ * Renvoie à la page de connexion, avec un code d'erreur différent selon l'entrée de l'utilisateur :
+ *  1 - Champs non remplis.
+ *  2 - Utilisateur inexistant.
+ *  3 - Combinaison login/pwd erronée.
+ *
+ * @param int $codeErreur Code d'erreur.
+ */
 function erreur($codeErreur) {
     header('Location: connexion.php?erreur=' . $codeErreur);
     exit;

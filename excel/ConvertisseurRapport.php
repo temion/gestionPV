@@ -30,6 +30,11 @@ class ConvertisseurRapport extends PHPExcel {
 
     private $bordures;
 
+    /**
+     * ConvertisseurRapport constructor.
+     *
+     * @param array $rapport Informations du rapport à représenter au format Excel.
+     */
     function __construct($rapport) {
         parent::__construct();
         $this->rapport = $rapport;
@@ -37,6 +42,10 @@ class ConvertisseurRapport extends PHPExcel {
         $this->creerFeuille();
     }
 
+    /**
+     * Crée la feuille Excel, dimensionne les colonnes, et fait appel aux méthodes de récupération
+     * et d'écriture des données.
+     */
     function creerFeuille() {
         $this->setActiveSheetIndex(0);
 
@@ -59,6 +68,9 @@ class ConvertisseurRapport extends PHPExcel {
         $this->remplirFeuille();
     }
 
+    /**
+     * Récupère dans la base de données toutes les informations nécessaires pour générer le fichier.
+     */
     function recupBDD() {
         $this->bdd = connexion('portail_gestion');
         $this->bddPlanning = connexion('planning');
@@ -77,6 +89,9 @@ class ConvertisseurRapport extends PHPExcel {
         $this->prep_avancement = $this->bdd->prepare('SELECT * FROM avancement WHERE id_avancement = ?');
     }
 
+    /**
+     * Fais appel aux différentes méthodes écrivant les parties composant le rapport.
+     */
     function remplirFeuille() {
         $this->celluleAct = 1;
         $this->presentationRapport();

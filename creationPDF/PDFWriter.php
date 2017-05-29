@@ -83,6 +83,11 @@ class PDFWriter extends mPDF {
         $this->ecrireHTML("</table>");
     }
 
+    /**
+     * Ecrit dans le tableau les informations de l'appareil passé en paramètre.
+     *
+     * @param array $appareil Appareil.
+     */
     function creerLigneAppareil($appareil) {
         $this->ecrireHTML("<tr><td>Système : </td><td class='info'>" . $appareil['systeme'] . "</td><td>Marque : </td><td class='info'>" . $appareil['marque'] . "</td></tr>");
         $this->ecrireHTML("<tr><td>Type : </td><td class='info'>" . $appareil['type'] . "</td><td>Numéro de série : </td><td class='info'> " . $appareil['num_serie'] . "</td></tr>");
