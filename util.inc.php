@@ -12,11 +12,13 @@ require_once "bdd/bdd.inc.php";
  */
 function afficherMessage($conditionSucces, $titreSucces, $messageSucces, $titreErreur, $messageErreur) {
     if (isset($_GET[$conditionSucces]) && $_GET[$conditionSucces] >= 1) {
+        // Zone de message en cas de "succès"
         echo '<td><div class="ui message">';
         echo '<div class="header">' . $titreSucces . '</div>';
         echo '<p id="infosAction">' . $messageSucces . '</p>';
         echo '</div></td>';
     } else if (isset($_GET[$conditionSucces])) {
+        // Zone de message en cas d'"échec"
         echo '<td><div class="ui message">';
         echo '<div class="header">' . $titreErreur . '</div>';
         echo '<p id="infosAction">' . $messageErreur . '</p>';
@@ -49,7 +51,7 @@ function conversionDate($date) {
 function verifFormatDates($date) {
     $tab = explode("-", $date);
     if (sizeof($tab) == 3)
-        return checkdate($tab[1], $tab[0], $tab[2]);
+        return checkdate($tab[1], $tab[0], $tab[2]);    // Date convertie pour permettre sa vérification
 
     return false;
 }
@@ -283,7 +285,14 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '<td>' . $affaire['num_affaire'] . '</td>';
     echo '<td>' . $reservoir['designation'] . ' ' . $reservoir['type'] . '</td>';
     echo '<td>' . $controle['libelle'] . ' ' . $pv['num_ordre'] . ' (' . $controle['code'] . ') <br/>';
-    echo 'du ' . conversionDate($pv['date_debut']) . ' au ' . conversionDate($pv['date_fin']) . '</td>';
+
+    if ($pv['date_debut'] != "" && $pv['date_fin'] != "")
+        echo 'du ' . conversionDate($pv['date_debut']) . ' au ' . conversionDate($pv['date_fin']) . '</td>';
+    else if ($pv['date_debut'] != "" && $pv['date_fin'] == "")
+        echo 'début du contrôle le '.conversionDate($pv['date_debut']);
+    else if ($pv['date_debut'] == "" && $pv['date_fin'] != "")
+        echo 'fin du contrôle le '.conversionDate($pv['date_fin']);
+
     echo '<td>' . $controleur['nom'] . '</td>';
     echo '<td>' . $avancement['stade'] . '</td>';
     echo '<td><form method="get" action="' . $lienRetour . '"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
@@ -298,6 +307,7 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
  */
 function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
     $dernierAjout = $bdd->query('SELECT * FROM historique_activite WHERE date_activite IN (SELECT max(date_activite) FROM historique_activite)')->fetch();
+    // Vérification du dernier élément de l'historique, pour éviter les redondances dans le tableau
     if ($bdd->quote($libelle) != $bdd->quote($dernierAjout['libelle']))
         insert($bdd, "historique_activite", array("null", $_SESSION['id_connecte'], $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
 }

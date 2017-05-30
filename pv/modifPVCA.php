@@ -17,8 +17,18 @@ enTete("Modification de PV",
 
 $pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
 
+majDates("date_fin", "date_debut", $bddPortailGestion);
+majDates("date_debut", "date_fin", $bddPortailGestion);
+majDates("date_fin", "date_debut", $bddPortailGestion);
+
+if (isset($_GET['controleur']) && $_GET['controleur'] != "") {
+    update($bddPortailGestion, "pv_controle", "id_controleur", $_GET['controleur'], "id_pv", "=", $_GET['idPV']);
+    $modifs = 1;
+}
+
 if (isset($_GET['avancement']) && $_GET['avancement'] != "") {
     update($bddPortailGestion, "pv_controle", "id_avancement", $_GET['avancement'], "id_pv", "=", $_GET['idPV']);
+    $modifs = 1;
 }
 
 if (isset($_GET['commentaires']) && $_GET['ajoutComm'] == 1) {
@@ -38,12 +48,16 @@ $societe = selectSocieteParId($bddPortailGestion, $affaire['id_societe'])->fetch
 $odp = selectODPParId($bddPortailGestion, $affaire['id_odp'])->fetch();
 $client = selectClientParId($bddPortailGestion, $odp['id_client'])->fetch();
 $controleur = selectUtilisateurParId($bddPlanning, $pv['id_controleur'])->fetch();
+$listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
 $bddInspection = connexion('inspections');
 
 $reservoir = selectReservoirParId($bddInspection, $pv['id_reservoir'])->fetch();
 
 $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
+
+if (isset($modifs) && $modifs == 1)
+    ajouterHistorique($bddPortailGestion, "Modification chargé d'affaires du PV " . $titre, "pv/modifPVCA.php?idPV=", $pv['id_pv']);
 ?>
 
 <div id="contenu">
@@ -81,6 +95,67 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
             </td>
 
             <td class="partieTableau">
+
+
+
+
+                <!-- ToDo -->
+                <table>
+                    <tr>
+                        <th colspan="3"><h4 class="ui dividing header">Modifier les détails du PV</h4></th>
+                    </tr>
+
+                    <form method="get" action="modifPVCA.php">
+                        <tr>
+                            <td>
+                                <label class="desc">Date de début prévue : </label>
+                                <div class="ui input">
+                                    <input type="date" name="date_debut" placeholder="<?php echo ($pv['date_debut'] == "" ? "JJ-MM-AAAA" : conversionDate($pv['date_debut'])); ?>">
+                                </div>
+                            </td>
+                            <td>
+                                <label class="desc">Date de fin prévue : </label>
+                                <div class="ui input">
+                                    <input type="date" name="date_fin" placeholder="<?php echo ($pv['date_fin'] == "" ? "JJ-MM-AAAA" : conversionDate($pv['date_fin'])); ?>">
+                                </div>
+                            </td>
+                            <td>
+                                <label class="desc" for="controleur"> Responsable du contrôle : </label>
+                                <select style="width: 20vh;" class="ui search dropdown" name="controleur">
+                                    <option selected></option>
+                                    <?php
+                                    for ($i = 0; $i < sizeof($listeUtilisateurs); $i++) {
+                                        if ($listeUtilisateurs[$i]['id_utilisateur'] == $pv['id_controleur'])
+                                            echo '<option selected value="' . $listeUtilisateurs[$i]['id_utilisateur'] . '">' . $listeUtilisateurs[$i]['nom'] . '</option>';
+                                        else if ($listeUtilisateurs[$i]['nom'] != 'root')
+                                            echo '<option value="' . $listeUtilisateurs[$i]['id_utilisateur'] . '">' . $listeUtilisateurs[$i]['nom'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <?php
+                                if (isset($erreurs) && $erreurs == 1) {
+                                    echo '<div class="ui message">';
+                                    echo '<div class="header">Erreur</div>';
+                                    echo '<p id="infosAction">Erreur dans les dates rentrées</p>';
+                                    echo '</div>';
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <input type="hidden" name="idPV" value="<?php echo $pv['id_pv']; ?>">
+                                <button class="ui blue button">Valider les modifications</button>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+                <!-- ToDo -->
+
+
+
                 <table>
                     <tr>
                         <th colspan="2"><h4 class="ui dividing header">Modifier l'avancement du PV</h4></th>
@@ -262,3 +337,33 @@ $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['c
     });
 </script>
 
+<?php
+function majDates($dateA, $dateB, $bddPortailGestion) {
+    global $pv, $modifs, $erreurs;
+
+    if (isset($_GET[$dateA]) && $_GET[$dateA] != "") {
+        if (verifFormatDates($_GET[$dateA])) {
+            if (isset($pv[$dateB]) && $pv[$dateB] != "") {
+
+                if ($dateA == "date_debut")
+                    $condition = date_create($_GET['date_debut']) <= date_create($pv['date_fin']);
+                else
+                    $condition = date_create($_GET['date_fin']) >= date_create($pv['date_debut']);
+
+                if ($condition) {
+                    update($bddPortailGestion, "pv_controle", $dateA, conversionDate($_GET[$dateA]), "id_pv", "=", $_GET['idPV']);
+                    $modifs = 1;
+                } else {
+                    $erreurs = 1;
+                }
+            } else {
+                update($bddPortailGestion, "pv_controle", $dateA, conversionDate($_GET[$dateA]), "id_pv", "=", $_GET['idPV']);
+                $modifs = 1;
+            }
+        } else {
+            $erreurs = 1;
+        }
+    }
+
+    $pv = selectPVParId($bddPortailGestion, $_GET['idPV'])->fetch();
+}

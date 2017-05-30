@@ -57,7 +57,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
         <table class="ui celled table" id="historique">
             <thead>
             <tr>
-                <th colspan="2" id="titreHistorique"> Activités récentes</th>
+                <th colspan="3" id="titreHistorique">Activités récentes <a href="historique/historique.php">(Détails)</a></th>
             </tr>
             <tr>
                 <th>
@@ -65,6 +65,9 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
                 </th>
                 <th>
                     Libellé
+                </th>
+                <th>
+                    Par
                 </th>
             </tr>
             </thead>
@@ -77,7 +80,8 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             for ($i = 0; $i < $max; $i++) {
                 $prepareUtilisateur->execute(array($historique[$i]['id_utilisateur']));
                 $utilisateur = $prepareUtilisateur->fetch();
-                echo '<tr><td>' . $historique[$i]['date_activite'] . '</td><td><a href="' . $historique[$i]['page_action'] . $historique[$i]['param'] . '">' . $historique[$i]['libelle'] . ' par '.$utilisateur['nom'].'</a></td>';
+                echo '<tr><td>' . $historique[$i]['date_activite'] . '</td><td><a href="' . $historique[$i]['page_action'] . $historique[$i]['param'] . '">' . $historique[$i]['libelle'].'</a></td>';
+                echo '<td>'.$utilisateur['nom'].'</td></tr>';
             }
             ?>
             </tbody>
@@ -146,6 +150,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
 
 </body>
 
+<!-- ToDo -->
 <script>
     $('#link').click(function (e) {
         e.preventDefault();
@@ -164,3 +169,4 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
         });
     });
 </script>
+<!-- ToDo -->

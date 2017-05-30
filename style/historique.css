@@ -1,0 +1,13 @@
+table {
+    margin: auto;
+    background-color: red;
+}
+
+td {
+    width: 30vh;
+}
+
+#titreHistorique {
+    text-align: center;
+    color: #00CC00;
+}

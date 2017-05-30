@@ -9,7 +9,7 @@ session_destroy();
     <meta charset="UTF-8">
     <title> Connexion au portail de gestion de PV </title>
 
-    <link rel="icon" href="/gestionPV/logo_scopeo.ico">
+    <link rel="icon" href="/gestionPV/images/logo_scopeo.ico"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
     <link rel="stylesheet" href="../style/connexion.css"/>

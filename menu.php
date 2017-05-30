@@ -126,9 +126,9 @@ function enTete($titre, $styles, $scripts) {
         var liens = $(".lienMenu");
         for (var i = 0; i < liens.length; i++) {
             if (liens[i].id != "deconnexion") {
-                liens[i].classList.remove("active", "blue");
+                liens[i].classList.remove("active", "blue");    // Retire l'attribut actif de tous les liens
                 if ($(location).attr('href').startsWith(liens[i].href))
-                    liens[i].classList.add("active", "blue");
+                    liens[i].classList.add("active", "blue");   // Rajoute l'attribut actif au lien actuel
             }
         }
 

@@ -205,14 +205,14 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
 
                     <tr>
                         <td>
-                            <label class="desc"> * Date de début prévue : </label>
+                            <label class="desc">Date de début prévue : </label>
                             <div class="ui input">
                                 <input type="date" name="date_debut" placeholder="(JJ-MM-AAAA)">
                             </div>
                         </td>
 
                         <td>
-                            <label class="desc"> * Date de fin prévue : </label>
+                            <label class="desc">Date de fin prévue : </label>
                             <div class="ui input">
                                 <input type="date" name="date_fin" placeholder="(JJ-MM-AAAA)">
                             </div>
