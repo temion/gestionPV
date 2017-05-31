@@ -1,13 +1,22 @@
-table {
+#historique {
     margin: auto;
-    background-color: red;
+    width: auto;
 }
 
 td {
-    width: 30vh;
+    width: 50vh;
+}
+
+#selected {
+    background-color: #91d1f7;
 }
 
 #titreHistorique {
     text-align: center;
     color: #00CC00;
+}
+
+thead a {
+    text-decoration: none;
+    color: black;
 }

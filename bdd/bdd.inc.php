@@ -8,6 +8,7 @@ $bddPlanning = connexion('planning');
  * Retourne un objet connexion vers la base dont le nom est indiqué en paramètre.
  *
  * @param string $base Nom de la base de données.
+ *
  * @return PDO Connexion vers la base souhaitée.
  */
 function connexion($base) {
@@ -33,6 +34,32 @@ function selectAll($base, $table, $ordre = "") {
         return $base->query('SELECT * FROM ' . $table . ' ORDER BY ' . $ordre);
     else
         return $base->query('SELECT * FROM ' . $table);
+}
+
+/**
+ * Retourne l'ensemble des données de la table passée en paramètre, triées suivant la colonne indiquée dans l'ordre ascendant.
+ *
+ * @param PDO $base Base de données.
+ * @param String $table Table à consulter.
+ * @param String $ordre Trie le résultat en suivant la colonne indiquée.
+ *
+ * @return mixed Résultat du select.
+ */
+function selectAllAsc($base, $table, $ordre) {
+    return $base->query('SELECT * FROM ' . $table . ' ORDER BY ' . $ordre . ' ASC');
+}
+
+/**
+ * Retourne l'ensemble des données de la table passée en paramètre, triées suivant la colonne indiquée dans l'ordre descendant.
+ *
+ * @param PDO $base Base de données.
+ * @param String $table Table à consulter.
+ * @param String $ordre Trie le résultat en suivant la colonne indiquée.
+ *
+ * @return mixed Résultat du select.
+ */
+function selectAllDesc($base, $table, $ordre) {
+    return $base->query('SELECT * FROM ' . $table . ' ORDER BY ' . $ordre . ' DESC');
 }
 
 /**
