@@ -1,5 +1,6 @@
 <?php
 require_once "../menu.php";
+require_once '../historique/gestionHistoriqueUtil.inc.php';
 
 if (!verifSessionOP()) {
     header('Location: /gestionPV/index.php');

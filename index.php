@@ -127,8 +127,8 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             </p>
             <p>
                 Enfin, le tableau "Activités récentes" vous indique les derniers ajouts et modifications effectués. En
-                cliquant sur le libellé
-                d'une activité, vous serez redirigé vers la page correspondant au rapport ou au PV concerné.
+                cliquant sur le libellé d'une activité, vous serez redirigé vers la page correspondant au rapport ou au PV concerné.
+                Le lien détail vous redirigera vers un tableau comportant l'intégralité des activités enregistrées dans la base.
             </p>
         <?php } else { ?>
             <p>

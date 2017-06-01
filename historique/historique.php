@@ -84,6 +84,9 @@ $nbAct = $bddPortailGestion->query('select count(*) from historique_activite;')-
         <tfoot>
             <tr>
                 <th style="background-color: #f0f0f0;" colspan="3">
+                    <form method="get" action="archives.php">
+                        <button name="archives" value="1" class="ui left floated blue button"> Archives </button>
+                    </form>
                     <div class="ui right floated pagination menu">
                         <?php
 

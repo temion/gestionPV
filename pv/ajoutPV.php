@@ -1,5 +1,6 @@
 <?php
 require_once '../util.inc.php';
+require_once '../historique/gestionHistoriqueUtil.inc.php';
 session_start();
 
 if (!verifSessionCA()) {

@@ -298,18 +298,4 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '<td><form method="get" action="' . $lienRetour . '"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
     echo '</tr>';
 }
-
-/**
- * Ajoute dans la base l'action passée en paramètre.
- *
- * @param PDO $bdd Base de données.
- * @param string $libelle Libellé de l'action.
- */
-function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
-    $dernierAjout = $bdd->query('SELECT * FROM historique_activite WHERE date_activite IN (SELECT max(date_activite) FROM historique_activite)')->fetch();
-    // Vérification du dernier élément de l'historique, pour éviter les redondances dans le tableau
-    if ($bdd->quote($libelle) != $bdd->quote($dernierAjout['libelle']))
-        insert($bdd, "historique_activite", array("null", $_SESSION['id_connecte'], $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
-}
-
 ?>
