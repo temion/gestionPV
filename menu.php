@@ -99,11 +99,17 @@ function enTete($titre, $styles, $scripts) {
         </div>
         <?php if (isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") { ?>
             <div class="item">
-                <div class="header">Planning</div>
+                <div class="header">Gestion</div>
 
                 <div class="menu">
                     <a href="/gestionPV/planning/calendrier.php" class="item lienMenu">
                         Planning des PV
+                    </a>
+                </div>
+
+                <div class="menu">
+                    <a href="/gestionPV/historique/historique.php" class="item lienMenu">
+                        Historique des activités effectuées
                     </a>
                 </div>
             </div>

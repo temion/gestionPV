@@ -133,16 +133,16 @@ $nbAct = $bddPortailGestion->query('select count(*) from historique_activite;')-
         <div class="header">Aide</div>
         <div>
             <p>
-                Cette liste indique l'intégralité des activités enregistrées dans la base. Vous pouvez les trier par
+                Cette liste indique l'intégralité des activités de l'année en cours enregistrées dans la base. Vous pouvez les trier par
                 date, libellé ou utilisateur en cliquant sur les titres de colonne, et naviguer dans le tableau
                 à l'aide des flèches et des numéros de page placés en bas.
             </p>
             <p>
-                Vous pouvez également accéder aux informations du document concerné par un évènement en cliquant sur le
-                libellé de ce dernier.
+                La base comportant l'historique s'archive automatiquement chaque année, et un fichier Excel comportant les
+                informations archivées est généré. Pour accéder à la liste des archives disponibles, cliquez sur le bouton "Archives"
+                en bas à gauche.
             </p>
-            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
-            </button>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
         </div>
     </div>
 </div>

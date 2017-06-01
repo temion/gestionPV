@@ -22,8 +22,11 @@ $archives = selectAll($bddPortailGestion, 'archives_activites', 'annee_activites
 
 <div id="contenu">
     <h1 id="titreDoc" class="ui blue center aligned huge header">Archives des activités</h1>
-    <table class="ui celled table" id="historique">
-            <thead>
+    <?php
+        if (sizeof($archives) > 0) {
+            ?>
+            <table class="ui celled table" id="historique">
+                <thead>
                 <tr>
                     <th>
                         Année de l'archive
@@ -35,16 +38,44 @@ $archives = selectAll($bddPortailGestion, 'archives_activites', 'annee_activites
                         Télécharger
                     </th>
                 </tr>
-            </thead>
-        <tbody>
-        <?php
-            for ($i = 0; $i < sizeof($archives); $i++) {
-                echo '<tr><td>'.$archives[$i]['annee_activites'].'</td>';
-                echo '<td>'.$archives[$i]['nb_activites'].'</td>';
-                echo '<td><form method="post" action="archives.php">';
-                echo '<button name="idArchive" value="'.$archives[$i]['id_archive'].'" class="ui blue button">Télécharger au format Excel</button></form></td></tr>';
-            }
-        ?>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                <?php
+                for ($i = 0; $i < sizeof($archives); $i++) {
+                    echo '<tr><td>' . $archives[$i]['annee_activites'] . '</td>';
+                    echo '<td>' . $archives[$i]['nb_activites'] . '</td>';
+                    echo '<td><form method="post" action="archives.php">';
+                    echo '<button name="idArchive" value="' . $archives[$i]['id_archive'] . '" class="ui blue button">Télécharger au format Excel</button></form></td></tr>';
+                }
+                ?>
+                </tbody>
+            </table>
+            <?php
+        } else {
+    ?>
+            <div class="ui message">
+                <div class="header">
+                    Aucune archive disponible !
+                </div>
+                <p>
+                    Pour le moment, aucune archivage des activités n'a été effectué. Un archivage de la base s'effectue
+                    automatiquement chaque année. Vous pourrez sur cette page télécharger les fichiers Excel comportant
+                    les informations des activités effectuées lors des années précédentes.
+                </p>
+            </div>
+    <?php
+        }
+    ?>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Cette liste indique les archives disponibles des activités effectuées sur ce portail les années précédentes.
+                En cliquant sur "Télécharger", vous obtiendrez un fichier Excel contenant le résumé des activités effectuées
+                durant l'année souhaitée.
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK </button>
+        </div>
+    </div>
 </div>
