@@ -11,8 +11,10 @@ class ConvertisseurHistorique extends PHPExcel {
 
     private $annee;
     private $historique;
+    private $prepareUtilisateur;
 
     private $bddPortailGestion;
+    private $bddPlanning;
 
     function __construct($annee) {
         parent::__construct();
@@ -47,8 +49,10 @@ class ConvertisseurHistorique extends PHPExcel {
 
     function recupBDD() {
         $this->bddPortailGestion = connexion('portail_gestion');
+        $this->bddPlanning = connexion('planning');
 
         $this->historique = selectAllFromWhere($this->bddPortailGestion, 'historique_activite', 'date_activite', 'like', $this->annee.'%')->fetchAll();
+        $this->prepareUtilisateur = $this->bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
     }
 
     function dimensionnerColonnes() {
@@ -68,9 +72,13 @@ class ConvertisseurHistorique extends PHPExcel {
 
         for ($i = 0; $i < sizeof($this->historique); $i++) {
             $this->celluleAct++;
+
+            $this->prepareUtilisateur->execute(array($this->historique[$i]['id_utilisateur']));
+            $utilisateur = $this->prepareUtilisateur->fetch();
+
             remplirCellules($this->feuille, 'A' . $this->celluleAct, "", $this->historique[$i]['date_activite']);
             remplirCellules($this->feuille, 'B' . $this->celluleAct, "", $this->historique[$i]['libelle']);
-            remplirCellules($this->feuille, 'C' . $this->celluleAct, "", $this->historique[$i]['id_utilisateur']);
+            remplirCellules($this->feuille, 'C' . $this->celluleAct, "", $utilisateur['nom']);
         }
 
         $this->feuille->getStyle('A1:C' . $this->celluleAct)->applyFromArray($this->bordures);

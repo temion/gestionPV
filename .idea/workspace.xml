@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="03072153-2bba-49fb-8bb9-343234fe23e1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/excel/ConvertisseurHistorique.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/historique/archives.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php" />
+    <list default="true" id="03072153-2bba-49fb-8bb9-343234fe23e1" name="Default" comment="Impl">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/historique/historique.php" afterPath="$PROJECT_DIR$/historique/historique.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/ajoutPV.php" afterPath="$PROJECT_DIR$/pv/ajoutPV.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifPVCA.php" afterPath="$PROJECT_DIR$/pv/modifPVCA.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifPVOP.php" afterPath="$PROJECT_DIR$/pv/modifPVOP.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pv/modifRapportCA.php" afterPath="$PROJECT_DIR$/pv/modifRapportCA.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/util.inc.php" afterPath="$PROJECT_DIR$/util.inc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/excel/ConvertisseurHistorique.php" afterPath="$PROJECT_DIR$/excel/ConvertisseurHistorique.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/historique/archives.php" afterPath="$PROJECT_DIR$/historique/archives.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,11 +31,11 @@
       <file leaf-file-name="historique.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/historique/historique.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="87" column="113" lean-forward="false" selection-start-line="87" selection-start-column="113" selection-end-line="87" selection-end-column="113" />
+            <state relative-caret-position="595">
+              <caret line="47" column="80" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="80" />
               <folding>
-                <marker date="1496304282824" expanded="true" signature="764:815" ph="select * fro... utilisateurs" />
-                <marker date="1496304282824" expanded="true" signature="1573:1613" ph="select count... historique_activite" />
+                <marker date="1496317899630" expanded="true" signature="764:815" ph="select * fro... utilisateurs" />
+                <marker date="1496317899630" expanded="true" signature="1573:1613" ph="select count... historique_activite" />
               </folding>
             </state>
           </provider>
@@ -78,9 +70,12 @@
       <file leaf-file-name="archives.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/historique/archives.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="113">
+              <caret line="9" column="62" lean-forward="true" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+              <folding>
+                <marker date="1496318606572" expanded="true" signature="1600:1669" ph="..." />
+                <marker date="1496318606572" expanded="true" signature="1600:1949" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,26 +83,14 @@
       <file leaf-file-name="gestionHistoriqueUtil.inc.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="99" lean-forward="true" selection-start-line="18" selection-start-column="99" selection-end-line="18" selection-end-column="99" />
+            <state relative-caret-position="612">
+              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding>
-                <marker date="1496304230723" expanded="true" signature="338:447" ph="SELECT * FRO... historique_activite" />
-                <marker date="1496304230723" expanded="true" signature="396:446" ph="SELECT max(d... historique_activite" />
-                <marker date="1496304230723" expanded="true" signature="1316:1368" ph="delete from " />
-                <marker date="1496304230723" expanded="true" signature="1427:1477" ph="alter table historique_activite... " />
-                <marker date="1496304230723" expanded="true" signature="1438:1477" ph="update histo... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ajoutPV.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pv/ajoutPV.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="59" />
-              <folding>
-                <marker date="1496303567131" expanded="true" signature="575:683" ph="SELECT max(n... pv_controle" />
+                <marker date="1496318605957" expanded="true" signature="338:447" ph="SELECT * FRO... historique_activite" />
+                <marker date="1496318605957" expanded="true" signature="396:446" ph="SELECT max(d... historique_activite" />
+                <marker date="1496318605957" expanded="true" signature="1316:1368" ph="delete from " />
+                <marker date="1496318605957" expanded="true" signature="1427:1477" ph="alter table historique_activite... " />
+                <marker date="1496318605957" expanded="true" signature="1438:1477" ph="update histo... " />
               </folding>
             </state>
           </provider>
@@ -125,12 +108,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="conversionPV.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/excel/conversionPV.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="884">
+              <caret line="52" column="16" lean-forward="false" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ConvertisseurHistorique.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/excel/ConvertisseurHistorique.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="861">
-              <caret line="66" column="38" lean-forward="false" selection-start-line="66" selection-start-column="38" selection-end-line="66" selection-end-column="38" />
-              <folding />
+            <state relative-caret-position="-1111">
+              <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+              <folding>
+                <marker date="1496305295654" expanded="true" signature="1589:1640" ph="select * fro... utilisateurs" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -138,8 +133,8 @@
       <file leaf-file-name="ConvertisseurPV.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/excel/ConvertisseurPV.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="227" column="8" lean-forward="false" selection-start-line="227" selection-start-column="8" selection-end-line="227" selection-end-column="118" />
+            <state relative-caret-position="-493">
+              <caret line="67" column="13" lean-forward="true" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
               <folding>
                 <marker date="1496047666119" expanded="true" signature="3386:3525" ph="SELECT * FRO... appareils" />
                 <marker date="1496047666119" expanded="true" signature="3432:3498" ph="SELECT id_ap... appareils_utilises" />
@@ -285,7 +280,6 @@
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/excel/conversionHistorique.php" />
         <option value="$PROJECT_DIR$/excel/excelUtil.inc.php" />
-        <option value="$PROJECT_DIR$/historique/archives.php" />
         <option value="$PROJECT_DIR$/util.inc.php" />
         <option value="$PROJECT_DIR$/historique/gestioHistoriqueUtil.inc.php" />
         <option value="$PROJECT_DIR$/pv/ajoutPV.php" />
@@ -293,9 +287,10 @@
         <option value="$PROJECT_DIR$/pv/modifPVOP.php" />
         <option value="$PROJECT_DIR$/pv/modifRapportCA.php" />
         <option value="$PROJECT_DIR$/historique/gestionHistorique.php" />
-        <option value="$PROJECT_DIR$/excel/ConvertisseurHistorique.php" />
-        <option value="$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php" />
         <option value="$PROJECT_DIR$/historique/historique.php" />
+        <option value="$PROJECT_DIR$/excel/ConvertisseurHistorique.php" />
+        <option value="$PROJECT_DIR$/historique/archives.php" />
+        <option value="$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php" />
       </list>
     </option>
   </component>
@@ -388,76 +383,6 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="style" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pv" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="planning" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="historique" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -473,76 +398,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="excel" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="equipements" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="documents" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="creationPDF" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connexion" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gestionPV" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bdd" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -770,14 +625,7 @@
       <workItem from="1496143873485" duration="10846000" />
       <workItem from="1496212592257" duration="9706000" />
       <workItem from="1496232046860" duration="6705000" />
-      <workItem from="1496298923554" duration="4532000" />
-    </task>
-    <task id="LOCAL-00028" summary="modification &quot;affaire_inspection&quot; =&gt; &quot;rapports&quot; dans la base de données + adaptation à la base dans le code">
-      <created>1493364054294</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1493364054294</updated>
+      <workItem from="1496298923554" duration="7787000" />
     </task>
     <task id="LOCAL-00029" summary="Début implémentation système ajout d'équipement à inspecter sur les rapports">
       <created>1493370702599</created>
@@ -1115,11 +963,18 @@
       <option name="project" value="LOCAL" />
       <updated>1496224471549</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="système d'archivage annuel des activités effectuées">
+      <created>1496304331213</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1496304331213</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="656753000" />
+    <option name="totallyTimeSpent" value="660008000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1132,8 +987,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1328125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1328125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1165,7 +1021,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/PHPExcel" />
     </ignored-roots>
-    <MESSAGE value="Restructuration du code (Requètes SQL en méthodes)" />
     <MESSAGE value="Doc bdd.inc.php" />
     <MESSAGE value="backup" />
     <MESSAGE value="Migration vers la base inspections (Sauf pour rép equipements)" />
@@ -1190,7 +1045,8 @@
     <MESSAGE value="Mise à jour documentation" />
     <MESSAGE value="ajout système modification date et responsable PV + début mise en place historique complet" />
     <MESSAGE value="Historique complet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Historique complet" />
+    <MESSAGE value="système d'archivage annuel des activités effectuées" />
+    <option name="LAST_COMMIT_MESSAGE" value="système d'archivage annuel des activités effectuées" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1430,6 +1286,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1543,14 +1400,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/excel/conversionPV.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="52" column="16" lean-forward="false" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pv/ajoutPV.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1594,17 +1443,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/excel/ConvertisseurPV.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="227" column="8" lean-forward="false" selection-start-line="227" selection-start-column="8" selection-end-line="227" selection-end-column="118" />
-          <folding>
-            <marker date="1496047666119" expanded="true" signature="3386:3525" ph="SELECT * FRO... appareils" />
-            <marker date="1496047666119" expanded="true" signature="3432:3498" ph="SELECT id_ap... appareils_utilises" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2210">
@@ -1629,44 +1467,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php">
+    <entry file="file://$PROJECT_DIR$/excel/ConvertisseurPV.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="99" lean-forward="true" selection-start-line="18" selection-start-column="99" selection-end-line="18" selection-end-column="99" />
+        <state relative-caret-position="-493">
+          <caret line="67" column="13" lean-forward="true" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
           <folding>
-            <marker date="1496304230723" expanded="true" signature="338:447" ph="SELECT * FRO... historique_activite" />
-            <marker date="1496304230723" expanded="true" signature="396:446" ph="SELECT max(d... historique_activite" />
-            <marker date="1496304230723" expanded="true" signature="1316:1368" ph="delete from " />
-            <marker date="1496304230723" expanded="true" signature="1427:1477" ph="alter table historique_activite... " />
-            <marker date="1496304230723" expanded="true" signature="1438:1477" ph="update histo... " />
+            <marker date="1496047666119" expanded="true" signature="3386:3525" ph="SELECT * FRO... appareils" />
+            <marker date="1496047666119" expanded="true" signature="3432:3498" ph="SELECT id_ap... appareils_utilises" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/excel/ConvertisseurHistorique.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="861">
-          <caret line="66" column="38" lean-forward="false" selection-start-line="66" selection-start-column="38" selection-end-line="66" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/historique/historique.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="87" column="113" lean-forward="false" selection-start-line="87" selection-start-column="113" selection-end-line="87" selection-end-column="113" />
+        <state relative-caret-position="595">
+          <caret line="47" column="80" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="80" />
           <folding>
-            <marker date="1496304282824" expanded="true" signature="764:815" ph="select * fro... utilisateurs" />
-            <marker date="1496304282824" expanded="true" signature="1573:1613" ph="select count... historique_activite" />
+            <marker date="1496317899630" expanded="true" signature="764:815" ph="select * fro... utilisateurs" />
+            <marker date="1496317899630" expanded="true" signature="1573:1613" ph="select count... historique_activite" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/excel/conversionPV.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="52" column="16" lean-forward="false" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/excel/ConvertisseurHistorique.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1111">
+          <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding>
+            <marker date="1496305295654" expanded="true" signature="1589:1640" ph="select * fro... utilisateurs" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/historique/gestionHistoriqueUtil.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding>
+            <marker date="1496318605957" expanded="true" signature="338:447" ph="SELECT * FRO... historique_activite" />
+            <marker date="1496318605957" expanded="true" signature="396:446" ph="SELECT max(d... historique_activite" />
+            <marker date="1496318605957" expanded="true" signature="1316:1368" ph="delete from " />
+            <marker date="1496318605957" expanded="true" signature="1427:1477" ph="alter table historique_activite... " />
+            <marker date="1496318605957" expanded="true" signature="1438:1477" ph="update histo... " />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/historique/archives.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="113">
+          <caret line="9" column="62" lean-forward="true" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+          <folding>
+            <marker date="1496318606572" expanded="true" signature="1600:1669" ph="..." />
+            <marker date="1496318606572" expanded="true" signature="1600:1949" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
