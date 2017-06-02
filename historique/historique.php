@@ -39,7 +39,7 @@ if (isset($_GET['tri'])) {
     else if (strstr($_GET['tri'], "Desc") != "")
         $historique = selectAllDesc($bddPortailGestion, "historique_activite", $colonneTri)->fetchAll();
 } else
-    $historique = selectAll($bddPortailGestion, "historique_activite")->fetchAll();
+    $historique = selectAllDesc($bddPortailGestion, "historique_activite", 'date_activite')->fetchAll();
 
 $nbAct = $bddPortailGestion->query('select count(*) from historique_activite;')->fetch()[0];
 ?>

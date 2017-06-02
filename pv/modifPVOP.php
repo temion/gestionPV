@@ -88,7 +88,7 @@ creerModal("conclusion");
                                 <td>
                                     <?php
                                     echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                                    echo '<button id="boutonGenere" class="ui right floated blue button">Télécharger le fichier Excel</button>';
+                                    echo '<button id="boutonGenere" class="ui right floated blue button">Générer/Télécharger le fichier Excel</button>';
                                     ?>
                                 </td>
                             </tr>
@@ -314,15 +314,15 @@ creerModal("conclusion");
                 également indiquer les appareils utilisés pour effectuer le contrôle parmi ceux présents dans la base,
                 indiquer la situation du contrôle, le nombre et le type d'annexes, et enfin les constatations et
                 conclusions
-                effectuées. Une fois ces informations rentrées, vous pouvez cliquer sur le bouton "Télécharger le
+                effectuées. Une fois ces informations rentrées, vous pouvez cliquer sur le bouton "Générer/Télécharger le
                 fichier
                 Excel", qui vous génerera automatiquement un fichier Excel comprenant toutes les informations indiquées,
-                qui sera stocké sur le serveur. Vous pouvez ensuite télécharger le fichier, et le réuploader si besoin.
+                qui sera stocké sur le serveur. Vous pouvez ensuite télécharger le fichier, et le regénérer si besoin.
             </p>
-            <p>
-                <strong> Attention : </strong> réuploader des fichiers Excel ne modifie pas les informations stockées
-                dans la base.
-            </p>
+<!--            <p>-->
+<!--                <strong> Attention : </strong> réuploader des fichiers Excel ne modifie pas les informations stockées-->
+<!--                dans la base.-->
+<!--            </p>-->
             <p>
                 <strong> Attention : </strong> "Télécharger le fichier Excel" ne fait que télécharger le fichier présent
                 sur le serveur

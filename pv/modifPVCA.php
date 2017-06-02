@@ -256,44 +256,6 @@ if (isset($modifs) && $modifs == 1)
                         ?>
                     </tr>
                 </table>
-                <!-- ToDo -->
-
-<!--                <table>-->
-<!--                    <tr>-->
-<!--                        <th colspan="3"><h4 class="ui dividing header">Informations remplies par l'opérateur</h4></th>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <label class="labelCB">Contrôle interne</label>-->
-<!--                            <input disabled --><?php //if ($pv['controle_interne'] == 1) echo 'checked'; ?><!-- type="checkbox">-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <label class="labelCB">Contrôle externe</label>-->
-<!--                            <input disabled --><?php //if ($pv['controle_externe'] == 1) echo 'checked'; ?><!--type="checkbox">-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <label class="labelCB">Contrôle périphérique</label>-->
-<!--                            <input disabled --><?php //if ($pv['controle_peripherique'] == 1) echo 'checked'; ?><!--type="checkbox">-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <label> Nombre d'annexes : </label>-->
-<!--                            --><?php //echo $pv['nb_annexes']; ?>
-<!--                        </td>-->
-<!--                        <td>-->
-<!---->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <select disabled size="2">-->
-<!--                                <option>Théodolite T01</option>-->
-<!--                                <option>Théodolite T02</option>-->
-<!--                            </select>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </table>-->
-
-                <!-- ToDo -->
             </td>
         </tr>
     </table>
@@ -301,6 +263,7 @@ if (isset($modifs) && $modifs == 1)
         <?php echo '<input type="hidden" name="nomPV" value="' . $titre . '">'; ?>
         <button class="ui right floated blue button">Retour à la liste des PV</button>
     </form>
+    <button id="boutonSuppr" class="ui right floated red button">Supprimer le PV</button>
 </div>
 
 <div class="ui large modal" id="modalAide">
@@ -325,12 +288,32 @@ if (isset($modifs) && $modifs == 1)
     </div>
 </div>
 
+<div class="ui small modal" id="modalConf">
+    <div class="header">Attention</div>
+    <div>
+        <p>
+            Une fois supprimé, vous ne pourrez plus travailler sur ce PV. Etes-vous sûrs de vouloir le supprimer ?
+        </p>
+        <form method="get" action="listePVCA.php">
+            <?php echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">'; ?>
+            <?php echo '<input type="hidden" name="nomPV" value="' . $titre . '">'; ?>
+            <button class="ui right floated red button"> Supprimer le PV </button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>
 
 <script>
     $(function () {
         $("#detailsFichier").on("click", function () {
+            $('.small.modal')
+                .modal('show')
+            ;
+        });
+
+        $("#boutonSuppr").on("click", function () {
             $('.small.modal')
                 .modal('show')
             ;

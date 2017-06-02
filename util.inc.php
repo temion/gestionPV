@@ -298,4 +298,11 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '<td><form method="get" action="' . $lienRetour . '"><button name="idPV" value="' . $pv['id_pv'] . '" class="ui right floated blue button">Modifier</button></form></td>';
     echo '</tr>';
 }
+
+function supprimerPV($bdd, $idPV) {
+    $bdd->query('delete from pv_controle where id_pv = ' .$idPV);
+    $bdd->query('delete from appareils_utilises where id_pv_controle = '.$idPV);
+    $bdd->query('delete from constatations_pv where id_pv = '.$idPV);
+    $bdd->query('delete from conclusions_pv where id_pv = '.$idPV);
+}
 ?>

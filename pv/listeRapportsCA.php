@@ -27,7 +27,17 @@ $comptePV = $bddPortailGestion->prepare('SELECT count(*) FROM pv_controle WHERE 
         if (isset($_GET['erreur'])) {
             afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
         }
-        ?>
+
+        if (sizeof($numRapports) == 0) { ?>
+        <div class="ui message">
+            <div class="header">
+                Aucun rapport disponible !
+            </div>
+            <p>
+                Pour le moment, aucun rapport n'a été crée. Pour créer de nouveaux rapports, dirigez vous vers la section "PV > Création de rapport".
+            </p>
+        </div>
+        <?php } else { ?>
         <table class="ui celled table">
             <thead>
             <tr>
@@ -46,6 +56,7 @@ $comptePV = $bddPortailGestion->prepare('SELECT count(*) FROM pv_controle WHERE 
             ?>
             </tbody>
         </table>
+        <?php } ?>
     </div>
 
     <div class="ui large modal" id="modalAide">

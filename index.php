@@ -21,6 +21,8 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bddPortailGestion->exec('truncate table pv_controle');
     $bddPortailGestion->exec('truncate table conclusions_pv');
     $bddPortailGestion->exec('truncate table constatations_pv');
+    $bddPortailGestion->exec('truncate table historique_activite');
+    $bddPortailGestion->exec('truncate table archives_activites');
     $bddPortailGestion->exec('DELETE FROM appareils WHERE id_appareil > 15');
     $bddPortailGestion->exec('ALTER TABLE rapports AUTO_INCREMENT = 1');
     $bddPortailGestion->exec('ALTER TABLE appareils_utilises AUTO_INCREMENT = 1');
@@ -28,6 +30,8 @@ if (isset($_POST['reset']) && $_POST['reset'] == 1) {
     $bddPortailGestion->exec('ALTER TABLE appareils AUTO_INCREMENT = 1');
     $bddPortailGestion->exec('ALTER TABLE conclusions_pv AUTO_INCREMENT = 1');
     $bddPortailGestion->exec('ALTER TABLE constatations_pv AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE historique_activite AUTO_INCREMENT = 1');
+    $bddPortailGestion->exec('ALTER TABLE archives_activites AUTO_INCREMENT = 1');
     $bddPortailGestion->exec('UPDATE type_controle SET num_controle = 0');
 }
 

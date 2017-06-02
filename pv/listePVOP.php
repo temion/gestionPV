@@ -40,7 +40,18 @@ $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE 
         afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
     if (isset($_GET['erreur']))
         afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
-    ?>
+
+    if (sizeof($numRapports) == 0) { ?>
+    <div class="ui message">
+        <div class="header">
+            Aucun rapport disponible !
+        </div>
+        <p>
+            Pour le moment, aucun rapport n'a été crée. Les PV à remplir apparaîtront sur cette page au fur et à mesure
+            de leur création.
+        </p>
+    </div>
+    <?php } else { ?>
     <form method="get" action="listePVOP.php" id="choixAffaire">
         <label for="numAffaire"> Choix de l'affaire : </label>
         <?php $url = "listePVOP.php?numAffaire=" ?>
@@ -81,6 +92,7 @@ $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE 
         ?>
         </tbody>
     </table>
+    <?php } ?>
 </div>
 
 <div class="ui large modal" id="modalAide">

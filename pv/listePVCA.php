@@ -14,6 +14,10 @@ if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
     $_GET['numAffaire'] = "SCOPEO " . explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
 }
 
+if (isset($_GET['idPV']) && $_GET['idPV'] != "")
+    supprimerPV($bddPortailGestion, $_GET['idPV']);
+
+
 // Ensemble des affaires disponibles
 $numAffaires = $bddPortailGestion->query('SELECT * FROM affaire WHERE affaire.id_affaire IN (SELECT rapports.id_affaire FROM rapports)')->fetchAll();
 
@@ -42,54 +46,67 @@ $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE 
         afficherMessage('excelG', "Succès", "Le PV " . $_GET['nomPV'] . " a été généré avec succès !", "", "");
     if (isset($_GET['erreur']))
         afficherMessage('erreur', "Erreur", "Erreur dans la sauvegarde du fichier.", "", "");
-    ?>
-    <form method="get" action="listePVCA.php" id="choixAffaire">
-        <label for="numAffaire"> Choix de l'affaire : </label>
-        <?php $url = "listePVCA.php?numAffaire=" ?>
-        <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
-                class="ui search dropdown" name="numAffaire">
-            <option selected></option>
+
+    if (sizeof($numAffaires) == 0) { ?>
+        <div class="ui message">
+            <div class="header">
+                Aucun rapport disponible !
+            </div>
+            <p>
+                Pour le moment, aucun rapport n'a été crée. Les PV à remplir apparaîtront sur cette page au fur et à mesure
+                de leur création.
+            </p>
+        </div>
+    <?php } else { ?>
+        <form method="get" action="listePVCA.php" id="choixAffaire">
+            <label for="numAffaire"> Choix de l'affaire : </label>
+            <?php $url = "listePVCA.php?numAffaire=" ?>
+            <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)'
+                    class="ui search dropdown" name="numAffaire">
+                <option selected></option>
+                <?php
+                for ($i = 0; $i < sizeof($numAffaires); $i++) {
+                    if (isset($_GET['numAffaire']) && $numAffaires[$i]['num_affaire'] == $_GET['numAffaire'])
+                        echo '<option selected>' . $numAffaires[$i]['num_affaire'] . '</option>';
+                    else
+                        echo '<option>' . $numAffaires[$i]['num_affaire'] . '</option>';
+                }
+                ?>
+            </select>
+        </form>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Identifiant PV</th>
+                <th>Numéro d'affaire</th>
+                <th>Réservoir à inspecter</th>
+                <th>Contrôle (Dates)</th>
+                <th>Responsable</th>
+                <th>Avancement</th>
+                <th>Informations</th>
+            </tr>
+            </thead>
+            <tbody>
             <?php
-            for ($i = 0; $i < sizeof($numAffaires); $i++) {
-                if (isset($_GET['numAffaire']) && $numAffaires[$i]['num_affaire'] == $_GET['numAffaire'])
-                    echo '<option selected>' . $numAffaires[$i]['num_affaire'] . '</option>';
-                else
-                    echo '<option>' . $numAffaires[$i]['num_affaire'] . '</option>';
+            if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
+                $listePV->execute(array($_GET['numAffaire']));
+                $PVs = $listePV->fetchAll();
+                for ($i = 0; $i < sizeof($PVs); $i++) {
+                    creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVCA.php");
+                }
             }
             ?>
-        </select>
-    </form>
-    <table class="ui celled table">
-        <thead>
-        <tr>
-            <th>Identifiant PV</th>
-            <th>Numéro d'affaire</th>
-            <th>Réservoir à inspecter</th>
-            <th>Contrôle (Dates)</th>
-            <th>Responsable</th>
-            <th>Avancement</th>
-            <th>Informations</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") {
-            $listePV->execute(array($_GET['numAffaire']));
-            $PVs = $listePV->fetchAll();
-            for ($i = 0; $i < sizeof($PVs); $i++) {
-                creerLignePV($PVs[$i], $selectUtilisateur, $selectRapport, $selectAffaire, $selectTypeControle, $selectReservoir, $selectAvancement, $selectDiscipline, "modifPVCA.php");
-            }
-        }
-        ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <?php if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") { ?>
-        <form method="get" action="modifRapportCA.php">
-            <button name="idRapport" value="<?php echo $rapport['id_rapport']; ?>" class="ui right floated blue button">
-                Détails du rapport <?php echo explode(" ", $affaire['num_affaire'])[1]; ?></button>
-        </form>
-    <?php } ?>
+        <?php if (isset($_GET['numAffaire']) && $_GET['numAffaire'] != "") { ?>
+            <form method="get" action="modifRapportCA.php">
+                <button name="idRapport" value="<?php echo $rapport['id_rapport']; ?>"
+                        class="ui right floated blue button">
+                    Détails du rapport <?php echo explode(" ", $affaire['num_affaire'])[1]; ?></button>
+            </form>
+        <?php }
+    } ?>
 </div>
 
 <div class="ui large modal" id="modalAide">
@@ -101,7 +118,7 @@ $selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE 
             sur "Modifier", vous serez redirigé vers la page du PV correspondant.
         </p>
         <p>
-            De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisie en cliquant sur "Détails
+            De plus, vous pouvez accéder au rapport correspondant au numéro d'affaire choisi en cliquant sur "Détails
             du rapport XXX".
         </p>
         <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK

@@ -59,21 +59,26 @@
     }
 }
 
+#modalConf form {
+    margin-right: 1vh;
+    padding-bottom: 5vh;
+}
+
 #modalAide button {
     margin-bottom: 1.5vh;
     margin-right: 3vh;
     width: 10vh;
 }
 
-#modalAide p:first-of-type {
+.modal p:first-of-type {
     padding-top: 3vh;
 }
 
-#modalAide p {
+.modal p {
     padding: 1vh 3vh 1vh 3vh;
 }
 
-#modalAide p:first-letter {
+.modal p:first-letter {
     padding-left: 3vh;
 }
 

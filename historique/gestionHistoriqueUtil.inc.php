@@ -27,10 +27,8 @@ function archiverHistorique($bdd, $annee) {
     $chemin = $convertisseur->sauvegarde();
 
     $historique = $convertisseur->getHistorique();
-    for ($i = 0; $i < sizeof($historique); $i++) {
-        $bdd->query('delete from historique_activite where id_activite = '.$historique[$i]['id_activite']);
-    }
 
+    $bdd->query('truncate table historique_activite');
     $bdd->query('alter table historique_activite auto_increment = 1');
     insert($bdd, "archives_activites", array("null", intval($annee), sizeof($historique), $bdd->quote($chemin)));
 }

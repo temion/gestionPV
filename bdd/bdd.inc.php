@@ -260,7 +260,7 @@ function selectUtilisateurParLogin($base, $login) {
  * @return mixed Informations de l'utilisateur.
  */
 function selectUtilisateurParNom($base, $nom) {
-    return selectAllFromWhere($base, "utilisateurs", "nom", "like", $nom);
+    return selectAllFromWhere($base, "utilisateurs", "trim(nom)", "like", $nom);
 }
 
 /** Contrôle */

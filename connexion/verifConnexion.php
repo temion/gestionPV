@@ -11,12 +11,15 @@ if (!isset($_POST['login']) || !isset($_POST['mdp']) || $_POST['login'] == "" ||
     erreur(1);
 }
 
-$utilisateur = selectUtilisateurParLogin($bddPlanning, $_POST['login'])->fetch();
+$login = htmlspecialchars($_POST['login']);
+$mdp   = htmlspecialchars($_POST['mdp']);
+
+$utilisateur = selectUtilisateurParLogin($bddPlanning, $login)->fetch();
 
 if (empty($utilisateur)) {
     erreur(2);
 } else {
-    if (sha1($_POST['mdp']) == $utilisateur['mdp']) {
+    if (sha1($mdp) == $utilisateur['mdp']) {
         if ($utilisateur['droit'] == 0)
             $_SESSION['droit'] = "CA";
         else
