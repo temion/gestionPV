@@ -67,3 +67,8 @@ table {
 .info {
     background-color: #c0c0c0;
 }
+
+#image {
+    top: 0;
+    position: fixed;
+}

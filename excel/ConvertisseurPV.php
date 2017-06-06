@@ -72,7 +72,20 @@ class ConvertisseurPV extends PHPExcel {
         $this->titre = "SCO" . explode(" ", $this->affaire['num_affaire'])[1] . '-' . $this->discipline['code'] . '-' . $this->typeControle['code'] . '-' . sprintf("%03d", $this->pv['num_ordre']);
 
         $this->dimensionnerColonnes();
+        $this->ajouterImage();
         $this->remplirFeuille();
+    }
+
+    function ajouterImage() {
+        $image = imagecreatefrompng('../images/scopeo.png');
+        $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
+        $objDrawing->setName('Sample image');$objDrawing->setDescription('Sample image');
+        $objDrawing->setImageResource($image);
+        $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+        $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+        $objDrawing->setHeight(100);
+        $objDrawing->setWorksheet($this->feuille);
+        $objDrawing->setCoordinates('A1');
     }
 
     /**

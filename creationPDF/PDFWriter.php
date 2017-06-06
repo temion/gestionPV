@@ -1,5 +1,5 @@
 <?php
-require_once '..\lib\vendor\mpdf\mpdf\mpdf.php';
+require_once '../lib/vendor/mpdf/mpdf/mpdf.php';
 require_once '../util.inc.php';
 
 class PDFWriter extends mPDF {
@@ -7,9 +7,10 @@ class PDFWriter extends mPDF {
     /**
      * Écrit sur l'en-tête du document.
      *
-     * array @param $infos Informations à faire apparaître.
+     * @param array $infos Informations à faire apparaître.
      */
     function enTete($infos) {
+        $this->ecrireHTML("<div id=\"image\"><img src=\"../images/scopeo.png\" alt=\"Logo SCOPEO\" height=\"125\" width=\"150\"></div>");
         for ($i = 0; $i < sizeof($infos); $i++)
             $this->ecrireHTML("<div id='enTete'>" . $infos[$i] . "</div>");
     }

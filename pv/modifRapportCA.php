@@ -48,8 +48,7 @@ $listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "
 ?>
 
     <div id="contenu">
-        <h1 class="ui blue center aligned huge header">Modification du
-            rapport <?php echo $affaire['num_affaire']; ?></h1>
+        <h1 class="ui blue center aligned huge header">Modification du rapport <?php echo $affaire['num_affaire']; ?></h1>
         <?php
         afficherMessage('ajout', "Succès !", "Le PV a bien été crée.",
             "Erreur", "Veuillez remplir tous les champs précédés d'un astérisque par des valeurs valides.");
