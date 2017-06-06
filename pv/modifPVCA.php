@@ -96,11 +96,6 @@ if (isset($modifs) && $modifs == 1)
             </td>
 
             <td class="partieTableau">
-
-
-
-
-                <!-- ToDo -->
                 <table>
                     <tr>
                         <th colspan="3"><h4 class="ui dividing header">Modifier les détails du PV</h4></th>
@@ -153,9 +148,6 @@ if (isset($modifs) && $modifs == 1)
                         </tr>
                     </form>
                 </table>
-                <!-- ToDo -->
-
-
 
                 <table>
                     <tr>
@@ -292,9 +284,12 @@ if (isset($modifs) && $modifs == 1)
     <div class="header">Attention</div>
     <div>
         <p>
-            Une fois supprimé, vous ne pourrez plus travailler sur ce PV. Etes-vous sûrs de vouloir le supprimer ?
+            Une fois supprimé, vous ne pourrez plus travailler sur ce PV.
         </p>
-        <form method="get" action="listePVCA.php">
+        <p>
+            Etes-vous sûrs de vouloir le supprimer ?
+        </p>
+        <form method="post" action="listePVCA.php">
             <?php echo '<input type="hidden" name="idPV" value="'.$pv['id_pv'].'">'; ?>
             <?php echo '<input type="hidden" name="nomPV" value="' . $titre . '">'; ?>
             <button class="ui right floated red button"> Supprimer le PV </button>

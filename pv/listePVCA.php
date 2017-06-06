@@ -14,8 +14,8 @@ if (isset($_GET['nomPV']) && $_GET['nomPV'] != "") {
     $_GET['numAffaire'] = "SCOPEO " . explode("O", explode("-", $_GET['nomPV'])[0])[1]; // Permet de retourner directement sur les PV de la même affaire que le PV généré.
 }
 
-if (isset($_GET['idPV']) && $_GET['idPV'] != "")
-    supprimerPV($bddPortailGestion, $_GET['idPV']);
+if (isset($_POST['idPV']) && $_POST['idPV'] != "")
+    supprimerPV($bddPortailGestion, $_POST['idPV']);
 
 
 // Ensemble des affaires disponibles

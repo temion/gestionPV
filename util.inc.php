@@ -305,4 +305,8 @@ function supprimerPV($bdd, $idPV) {
     $bdd->query('delete from constatations_pv where id_pv = '.$idPV);
     $bdd->query('delete from conclusions_pv where id_pv = '.$idPV);
 }
+
+function supprimerRapport($bdd, $idRapport) {
+    $bdd->query('delete from rapports where id_rapport = '.$idRapport);
+}
 ?>

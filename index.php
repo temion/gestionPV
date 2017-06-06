@@ -53,9 +53,9 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
         </p>
     </div>
 
-    <form method="post" action="index.php">
-        <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
-    </form>
+<!--    <form method="post" action="index.php">-->
+<!--        <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>-->
+<!--    </form>-->
 
     <?php if (sizeof($historique) > 0 && isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") { ?>
         <table class="ui celled table" id="historique">
@@ -77,6 +77,7 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             </thead>
             <tbody>
             <?php
+
             $max = 5;
             if (sizeof($historique) < $max)
                 $max = sizeof($historique);
@@ -84,8 +85,10 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
             for ($i = 0; $i < $max; $i++) {
                 $prepareUtilisateur->execute(array($historique[$i]['id_utilisateur']));
                 $utilisateur = $prepareUtilisateur->fetch();
-                echo '<tr><td>' . $historique[$i]['date_activite'] . '</td><td><a href="' . $historique[$i]['page_action'] . $historique[$i]['param'] . '">' . $historique[$i]['libelle'].'</a></td>';
-                echo '<td>'.$utilisateur['nom'].'</td></tr>';
+                echo '<tr>';
+                echo '<td>' . conversionDate(explode(" ", $historique[$i]['date_activite'])[0]) . ' ' . explode(" ", $historique[$i]['date_activite'])[1] .'</td>';
+                echo '<td>'. (verifPage($bddPortailGestion, $historique[$i]) ? '<a href="' . $historique[$i]['page_action'] . $historique[$i]['param'].'">'. $historique[$i]['libelle'].'</a>' : $historique[$i]['libelle']). '</td>';
+                echo '<td>' . $utilisateur['nom'] . '</td></tr>';
             }
             ?>
             </tbody>
@@ -174,3 +177,22 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
     });
 </script>
 <!-- ToDo -->
+
+<?php
+/**
+ * Vérifie que l'élément actuel de l'historique existe encore dans la base, afin de rendre actif ou non son lien.
+ *
+ * @param $bdd Base de données dans lequel se trouve l'historique.
+ * @param $activite Activité à vérifier.
+ *
+ * @return bool Vrai si l'élément est toujours présent dans la base.
+ */
+function verifPage($bdd, $activite) {
+    if (strchr($activite['page_action'], "Rapport"))
+        return sizeof(selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $activite['param'])->fetchAll()) > 0;
+    else if (strchr($activite['page_action'], "PV"))
+        return sizeof(selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $activite['param'])->fetchAll()) > 0;
+    else
+        return false;
+}
+?>

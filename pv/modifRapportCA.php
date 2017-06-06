@@ -43,6 +43,8 @@ $listeReservoirs = selectAll($bddInspections, "reservoirs_tmp", "id_societe")->f
 $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
 $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_societe = ?');
+
+$listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "=", $rapport['id_rapport'])->fetchAll();
 ?>
 
     <div id="contenu">
@@ -256,6 +258,7 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
                     <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel
                     </button>
                 </form>
+                <button style="pointer-events: auto;" <?php echo ((sizeof($listePV) > 0) ? "disabled title=\"Le rapport comporte encore des PV\"" : ""); ?> id="boutonSuppr" class="ui right floated red button">Supprimer le rapport</button>
             </div>
         </div>
     </div>
@@ -281,8 +284,23 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
         </div>
     </div>
 
-    </body>
-    </html>
+    <div class="ui small modal" id="modalConf">
+        <div class="header">Attention</div>
+        <div>
+            <p>
+                Une fois supprimé, vous ne pourrez plus travailler sur ce rapport.
+            </p>
+            <p>
+                Etes-vous sûrs de vouloir le supprimer ?
+            </p>
+            <form method="post" action="listeRapportsCA.php">
+                <?php echo '<input type="hidden" name="idRapport" value="'.$rapport['id_rapport'].'">'; ?>
+                <button class="ui right floated red button"> Supprimer le rapport </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
 
     <script>
         $(function () {
@@ -293,6 +311,12 @@ $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_so
                 else
                     $("#boutonGenere").prop('disabled', true);
             })
+        });
+
+        $("#boutonSuppr").on("click", function () {
+            $('.small.modal')
+                .modal('show')
+            ;
         });
     </script>
 

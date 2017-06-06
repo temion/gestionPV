@@ -32,3 +32,20 @@ function archiverHistorique($bdd, $annee) {
     $bdd->query('alter table historique_activite auto_increment = 1');
     insert($bdd, "archives_activites", array("null", intval($annee), sizeof($historique), $bdd->quote($chemin)));
 }
+
+/**
+ * Vérifie que l'élément actuel de l'historique existe encore dans la base, afin de rendre actif ou non son lien.
+ *
+ * @param $bdd Base de données dans lequel se trouve l'historique.
+ * @param $activite Activité à vérifier.
+ *
+ * @return bool Vrai si l'élément est toujours présent dans la base.
+ */
+function verifPage($bdd, $activite) {
+    if (strchr($activite['page_action'], "Rapport"))
+        return sizeof(selectAllFromWhere($bdd, "rapports", "id_rapport", "=", $activite['param'])->fetchAll()) > 0;
+    else if (strchr($activite['page_action'], "PV"))
+        return sizeof(selectAllFromWhere($bdd, "pv_controle", "id_pv", "=", $activite['param'])->fetchAll()) > 0;
+    else
+        return false;
+}
