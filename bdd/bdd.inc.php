@@ -410,3 +410,9 @@ function selectConstatationsParPV($base, $idPV) {
 function selectConclusionsParPV($base, $idPV) {
     return selectAllFromWhere($base, "conclusions_pv", "id_pv", "=", $idPV);
 }
+
+/** Controles auto */
+
+function selectControlesAutoParSociete($base, $idSociete) {
+    return selectAllFromWhere($base, "conrole_auto", "id_societe", "=", $idSociete);
+}

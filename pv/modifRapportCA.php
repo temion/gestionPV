@@ -193,7 +193,7 @@ $listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "
                             </select>
                         </td>
                         <td>
-                            <label class="desc" for="appareil"> * Discipline du PV : </label>
+                            <label class="desc" for="discipline"> * Discipline du PV : </label>
                             <select class="ui search dropdown listeAjout" name="discipline">
                                 <option selected></option>
                                 <?php

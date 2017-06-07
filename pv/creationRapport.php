@@ -219,7 +219,6 @@ $typeControles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
         </table>
 
         <input type="hidden" name="ajoutRapport" value="1">
-        <button class="ui right floated blue button">Valider</button>
     </form>
 </div>
 

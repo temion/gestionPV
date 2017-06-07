@@ -102,6 +102,12 @@ function enTete($titre, $styles, $scripts) {
                 <div class="header">Gestion</div>
 
                 <div class="menu">
+                    <a href="/gestionPV/pv/pvAuto.php" class="item lienMenu">
+                        Automatisation des PV
+                    </a>
+                </div>
+
+                <div class="menu">
                     <a href="/gestionPV/planning/calendrier.php" class="item lienMenu">
                         Planning des PV
                     </a>
