@@ -184,7 +184,7 @@ function infosRapport() {
                 <label>* Numéro de l'affaire : </label>
                 <div class="field"><?php $url = "creationRapport.php?num_affaire="; ?>
                     <select onChange='document.location="<?php echo $url ?>".concat(this.options[this.selectedIndex].value)' class="inputEl ui search dropdown" name="num_affaire">
-                        <option selected label="defaut"></option>
+                        <option selected></option>
                         <?php
                         for ($i = 0; $i < sizeof($affaires); $i++) {
                             // Garde en mémoire l'élément sélectionné
@@ -203,7 +203,7 @@ function infosRapport() {
                 <label>* Demande reçue par : </label>
                 <div class="field">
                     <select class="inputEl ui search dropdown" name="demandeRecue">
-                        <option selected label="defaut"></option>
+                        <option selected></option>
                         <?php
                         for ($i = 0; $i < sizeof($utilisateurs); $i++) {
                             if ($utilisateurs[$i]['nom'] != 'root') {
@@ -223,7 +223,7 @@ function infosRapport() {
                 <label>* Demande analysée par : </label>
                 <div class="field">
                     <select class="inputEl ui search dropdown" name="demandeAnalysee">
-                        <option selected label="defaut"></option>
+                        <option selected></option>
                         <?php
                         for ($i = 0; $i < sizeof($utilisateurs); $i++) {
                             if ($utilisateurs[$i]['nom'] != 'root') {
@@ -252,7 +252,7 @@ function infosRapport() {
         <td>
             <label>* Obtention de l'offre </label>
             <select class="inputEl ui search dropdown voieOffre" name="obtentionOffre">
-                <option selected label="defaut"></option>
+                <option selected></option>
                 <?php
                 if (isset($_GET['obtentionOffre']) && $_GET['obtentionOffre'] == "Oral") {
                     echo '<option selected>Oral</option>';
