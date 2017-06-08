@@ -18,6 +18,23 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
     $rapport = selectRapportParId($bddPortailGestion, $_GET['idRapport'])->fetch();
     $affaire = selectAffaireParId($bddPortailGestion, $rapport['id_affaire'])->fetch();
     ajouterHistorique($bddPortailGestion, "Création du rapport de l'affaire " . $affaire['num_affaire'], "pv/modifRapportCA.php?idRapport=", $rapport['id_rapport']);
+
+    $controlesAuto = selectControlesAutoParSociete($bddPortailGestion, $affaire['id_societe'])->fetchAll();
+    if (sizeof($controlesAuto) > 0) {
+        for ($i = 0; $i < sizeof($controlesAuto); $i++) {
+            if ($controlesAuto[$i]['generation_auto'] == 1) {
+                $controle = selectControleParId($bddPortailGestion, $controlesAuto[$i]['id_controle'])->fetch();
+                $nouvelleVal = $controle['num_controle'] + 1;
+                update($bddPortailGestion, "type_controle", "num_controle", $nouvelleVal, "id_type", "=", $controlesAuto[$i]['id_controle']);
+
+                // Sélection du dernier numéro du contrôle rentré pour le rapport courant.
+                $numOrdreActuel = $bddPortailGestion->query('SELECT max(num_ordre) FROM pv_controle WHERE id_rapport = ' . $rapport['id_rapport'] . ' AND id_type_controle = ' . $controlesAuto[$i]['id_controle'])->fetch();
+
+                $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null");
+                insert($bddPortailGestion, "pv_controle", $valeurs);
+            }
+        }
+    }
 }
 
 if (!isset($_GET['idRapport']) ||$_GET['idRapport'] == "") {

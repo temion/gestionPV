@@ -414,5 +414,9 @@ function selectConclusionsParPV($base, $idPV) {
 /** Controles auto */
 
 function selectControlesAutoParSociete($base, $idSociete) {
-    return selectAllFromWhere($base, "conrole_auto", "id_societe", "=", $idSociete);
+    return selectAllFromWhere($base, "controle_auto", "id_societe", "=", $idSociete);
+}
+
+function selectControlesAutoParId($base, $id) {
+    return selectAllFromWhere($base, "controle_auto", "id_controle_auto", "=", $id);
 }

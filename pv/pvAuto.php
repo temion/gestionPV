@@ -10,13 +10,21 @@ enTete("Programmation de PV",
        array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/infos.css", "../style/pvAuto.css", "../style/menu.css"),
        array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
+if (isset($_GET['activer']) && $_GET['activer'] == 1)
+    if (isset($_GET['idControleAuto']) && $_GET['idControleAuto'] != "")
+        update($bddPortailGestion, "controle_auto", "generation_auto", "1", "id_controle_auto", "=", $_GET['idControleAuto']);
+
+if (isset($_GET['desactiver']) && $_GET['desactiver'] == 1)
+    if (isset($_GET['idControleAuto']) && $_GET['idControleAuto'] != "")
+        update($bddPortailGestion, "controle_auto", "generation_auto", "0", "id_controle_auto", "=", $_GET['idControleAuto']);
+
 if (isset($_GET['supprimer']) && $_GET['supprimer'] == 1)
     if (isset($_GET['idControleAuto']) && $_GET['idControleAuto'] != "")
         $bddPortailGestion->exec("delete from controle_auto where id_controle_auto = ".$_GET['idControleAuto']);
 
 if (isset($_GET['valider']) && $_GET['valider'] == 1) {
     if (valeursValides())
-        insert($bddPortailGestion, "controle_auto", array("null", $_GET['idSociete'], $_GET['idReservoir'], $_GET['idControle'], $_GET['idDiscipline']));
+        insert($bddPortailGestion, "controle_auto", array("null", $_GET['idSociete'], $_GET['idReservoir'], $_GET['idControle'], $_GET['idDiscipline'], 1));
     else
         $erreur = 1;
 }
@@ -126,7 +134,7 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
         <table class="ui celled table">
             <thead>
             <tr>
-                <th style="text-align: center" colspan="4">PV programmés pour les affaires impliquant la société <?php echo $societe['nom_societe']; ?></th>
+                <th style="text-align: center" colspan="5">PV programmés pour les affaires impliquant la société <?php echo $societe['nom_societe']; ?></th>
             </tr>
             <tr>
                 <th>
@@ -137,6 +145,9 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
                 </th>
                 <th>
                     Discipline du contrôle
+                </th>
+                <th>
+                    Activer/Désactiver la génération automatique
                 </th>
                 <th>
                     Supprimer la programmation
@@ -162,6 +173,14 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
                     echo '<td>'.$societe['nom_societe'].' : '.$reservoir['designation'].' '.$reservoir['type'].'</td>';
                     echo '<td>'.$controle['libelle'].' ('.$controle['code'].')</td>';
                     echo '<td>'.$discipline['libelle'].' ('.$discipline['code'].')</td>';
+                    echo '<td><form method="get" action="pvAuto.php">';
+                    echo '<input type="hidden" name="idControleAuto" value="'.$controlesAuto[$i]['id_controle_auto'].'">';
+                    echo '<input type="hidden" name="idSociete" value="'.$_GET['idSociete'].'">';
+                    if ($controlesAuto[$i]['generation_auto'] == 1)
+                        echo '<button name="desactiver" value="1" class="ui blue button">  Désactiver la génération automatique </button>';
+                    else
+                        echo '<button name="activer" value="1" class="ui blue button">  Activer la génération automatique </button>';
+                    echo '</form></td>';
                     echo '<td><form method="get" action="pvAuto.php">';
                     echo '<input type="hidden" name="idControleAuto" value="'.$controlesAuto[$i]['id_controle_auto'].'">';
                     echo '<input type="hidden" name="idSociete" value="'.$_GET['idSociete'].'">';

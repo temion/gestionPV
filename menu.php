@@ -216,12 +216,10 @@ function enTete($titre, $styles, $scripts) {
     });
 
     $("#iconeAide").on('mouseover', function () {
-        console.log('mouseover');
         $("#iconeAide").addClass("blue");
     });
 
     $("#iconeAide").on('mouseleave', function () {
-        console.log('mouseleave');
         $("#iconeAide").removeClass("blue");
     });
 </script>

@@ -1,0 +1,41 @@
+#ensTables {
+    width: 100%;
+}
+
+#infosRapport, #tableauPVAuto {
+    width: 50%;
+}
+
+#infosRapport {
+    padding-top: 5em;
+    padding-right: 3em;
+}
+
+#infosRapport td {
+    text-align: center;
+    padding-right: 2em;
+}
+
+#infosRapport th {
+    padding-bottom: 2em;
+}
+
+#infosRapport tr td {
+    padding-bottom: 2em;
+}
+
+#infosRapport table {
+    margin-bottom: 5em;
+}
+
+#infosRapport select {
+    width: 15em;
+}
+
+#apercu {
+    margin: 5em auto auto auto;
+}
+
+#apercu td, th {
+    padding-bottom: 0.5em;
+}

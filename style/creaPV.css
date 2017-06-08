@@ -15,7 +15,7 @@ th {
 }
 
 td {
-    width: 20em;
+    width: inherit;
     padding: 0 2em 0.5em 2em;
 }
 
