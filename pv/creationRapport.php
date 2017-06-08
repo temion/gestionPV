@@ -151,6 +151,14 @@ if (!isset($_GET['start']) || $_GET['start'] == "")
             cliquez sur "Valider"
             et votre PV sera ajouté à la base, et accessible sur ce portail.
         </p>
+        <p>
+            A droite sont indiqués dans un tableau, si ils ont été crées, les PV programmés pour la société concernée par l'affaire.
+            Vous pouvez sélectionner les PV que vous souhaitez automatiquement générer en les cochant. En cliquant sur "Valider" en bas
+            de la page, le rapport sera crée, ainsi que l'ensemble des PV cochés.
+        </p>
+        <p>
+            Pour programmer des PV pour une société, rendez-vous dans la section "Gestion > Automatisation des PV".
+        </p>
         <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
         </button>
     </div>
@@ -324,7 +332,14 @@ function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee
                     Discipline du contrôle
                 </th>
                 <th>
-                    Ajouter <input type="checkbox" checked id="toutCocher">
+                    <?php
+                        if (verifGeneration($controlesAuto))
+                            echo 'Ajouter <a href="" id="toutDecocher">(Tout décocher)</a>';
+                        else
+                            echo 'Ajouter <a href="" id="toutCocher">(Tout cocher)</a>';
+
+                    ?>
+
                 </th>
             </tr>
             </thead>
@@ -367,7 +382,7 @@ function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee
                             echo '<a class="doublePageSuivante item">' . ($pageActuelle + 2) . '</a>';
 
 
-                        if ($_GET['start'] <= sizeof($controlesAuto) - 5) {
+                        if ($_GET['start'] < sizeof($controlesAuto) - 5) {
                             echo '<a class="icon item pageSuivante">';
                             echo '<i class="right chevron icon"></i>';
                             echo '</a>';
@@ -390,6 +405,21 @@ function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee
             </p>
         </div>
     <?php }
+}
+
+/**
+ * Parcours l'ensemble des contrôles programmés pour la société actuelle, et retourne vrai si ils sont tous à générer, faux sinon.
+ *
+ * @param array $controlesAuto Tableau contenant les informations des différents PV de contrôle programmés.
+ * @return bool Vrai si tous les PV doivent être générés.
+ */
+function verifGeneration($controlesAuto) {
+    for ($i = 0; $i < $controlesAuto; $i++) {
+        if ($controlesAuto[$i]['generation_auto'] == 0)
+            return false;
+
+        return true;
+    }
 }
 
 function ecrireLigne($bddPortailGestion, $bddInspections, $controleAuto) {
@@ -428,6 +458,34 @@ function ecrireLigne($bddPortailGestion, $bddInspections, $controleAuto) {
         });
     });
 
+    $("#toutCocher").on("click", function(e) {
+        var id_societe = <?php echo $societe['id_societe']; ?>;
+
+        $.ajax({
+            method: "post",
+            url: "modifAutoAjax.php",
+            data: "id_societe=" + id_societe + "&valeur=1",
+            cache: false,
+            success: function (data) {},
+        });
+
+        document.location = pageActuelle();
+    })
+
+    $("#toutDecocher").on("click", function(e) {
+        var id_societe = <?php echo $societe['id_societe']; ?>;
+
+        $.ajax({
+            method: "post",
+            url: "modifAutoAjax.php",
+            data: "id_societe=" + id_societe + "&valeur=0",
+            cache: false,
+            success: function (data) {},
+        });
+
+        document.location = pageActuelle();
+    })
+
     function recupererDonnees() {
         var donnees = "creationRapport.php?";
 
@@ -441,6 +499,12 @@ function ecrireLigne($bddPortailGestion, $bddInspections, $controleAuto) {
         donnees += $("input[name='codeInter']").attr('name') + "=" + $("input[name='codeInter']").val() + "&";
 
         return donnees;
+    }
+
+    function pageActuelle() {
+        var start = <?php echo $_GET['start']; ?>;
+
+        return recupererDonnees().concat("start=" + (start));
     }
 
     function pagePrecedente() {

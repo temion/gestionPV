@@ -155,6 +155,7 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
             </tr>
             </thead>
             <tbody>
+
             <?php
                 for ($i = 0; $i < sizeof($controlesAuto); $i++) {
                     $prepareReservoir->execute(array($controlesAuto[$i]['id_reservoir']));
@@ -195,6 +196,24 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
         }
     }
     ?>
+
+    <div class="ui large modal" id="modalAide">
+        <div class="header">Aide</div>
+        <div>
+            <p>
+                Cette page vous indique les PV programmés et vous permet d'en programmer de nouveaux.
+                En sélectionnant une société dans la liste, les PV programmés pour celle-ci apparaîtront sous forme de tableau.
+                Vous pouvez les supprimer ou encore déterminer si oui ou non ils doivent être générés automatiquement à chaque création de rapport concernant la société en question.
+            </p>
+            <p>
+                Pour programmer de nouveaux PV, il vous suffit de sélectionner une entreprise, et de remplir les autres champs demandés.
+                En cliquant sur "Créer ce PV", celui-ci apparaîtra alors dans le tableau des PV programmés, et sera dès lors générable automatiquement lors de la création de rapports.
+            </p>
+            <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
+            </button>
+        </div>
+    </div>
+
 </div>
 
 <?php
