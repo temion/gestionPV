@@ -18,3 +18,5 @@ if (isset($_POST['id_societe']) && isset($_POST['valeur'])) {
         update($bddPortailGestion, "controle_auto", "generation_auto", $_POST['valeur'], "id_controle_auto", "=", $controles[$i]['id_controle_auto']);
     }
 }
+
+exit;

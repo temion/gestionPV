@@ -258,22 +258,29 @@ function creerApercuDocuments($pv) {
 function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire, $prepareControle, $prepareReservoir, $prepareAvancement, $prepareDiscipline, $lienRetour) {
     $prepareUtilisateur->execute(array($pv['id_controleur']));
     $controleur = $prepareUtilisateur->fetch();
+    $prepareUtilisateur->closeCursor();
 
     $prepareRapport->execute(array($pv['id_rapport']));
     $prepareAffaire->execute(array($prepareRapport->fetch()['id_affaire']));
     $affaire = $prepareAffaire->fetch();
+    $prepareRapport->closeCursor();
+    $prepareAffaire->closeCursor();
 
     $prepareControle->execute(array($pv['id_type_controle']));
     $controle = $prepareControle->fetch();
+    $prepareControle->closeCursor();
 
     $prepareReservoir->execute(array($pv['id_reservoir']));
     $reservoir = $prepareReservoir->fetch();
+    $prepareReservoir->closeCursor();
 
     $prepareAvancement->execute(array($pv['id_avancement']));
     $avancement = $prepareAvancement->fetch();
+    $prepareAvancement->closeCursor();
 
     $prepareDiscipline->execute(array($pv['id_discipline']));
     $discipline = $prepareDiscipline->fetch();
+    $prepareDiscipline->closeCursor();
 
     $titrePV = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $controle['code'] . '-' . sprintf("%03d", $pv['num_ordre']);
 

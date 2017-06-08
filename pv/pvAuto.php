@@ -124,6 +124,7 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
 
     <?php
     if (isset($_GET['idSociete']) && $_GET['idSociete'] != "") {
+        $prepareSociete->closeCursor();
         $prepareSociete->execute(array($_GET['idSociete']));
         $societe = $prepareSociete->fetch();
 
@@ -161,6 +162,7 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
                     $prepareReservoir->execute(array($controlesAuto[$i]['id_reservoir']));
                     $reservoir = $prepareReservoir->fetch();
 
+                    $prepareSociete->closeCursor();
                     $prepareSociete->execute(array($reservoir['id_societe']));
                     $societe = $prepareSociete->fetch();
 

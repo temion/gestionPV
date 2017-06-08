@@ -349,6 +349,7 @@ function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee
                 if (isset($controlesAuto[$i + $_GET['start']]) && $controlesAuto[$i + $_GET['start']] != "") {
                     $prepareControleAuto->execute(array($controlesAuto[$i + $_GET['start']]['id_controle_auto']));
                     $controleAuto = $prepareControleAuto->fetch();
+                    $prepareControleAuto->closeCursor();
                     ecrireLigne($bddPortailGestion, $bddInspections, $controleAuto);
                 }
             }
