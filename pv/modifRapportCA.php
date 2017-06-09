@@ -32,7 +32,7 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
                 // Sélection du dernier numéro du contrôle rentré pour le rapport courant.
                 $numOrdreActuel = $bddPortailGestion->query('SELECT max(num_ordre) FROM pv_controle WHERE id_rapport = ' . $rapport['id_rapport'] . ' AND id_type_controle = ' . $controlesAuto[$i]['id_controle'])->fetch();
 
-                $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null");
+                $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", 1, "null", "null", "null");
                 insert($bddPortailGestion, "pv_controle", $valeurs);
             }
         }
@@ -287,7 +287,14 @@ $listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "
             <p>
                 Cette page vous indique les différentes informations sur le rapport sélectionné. Vous pouvez également y
                 ajouter un nouveau PV, accéder aux PV déjà existants à l'aide du bouton "Détails des PV du rapport", ou
-                encore obtenir un fichier Excel regroupant les informations du rapport. Enfin, en cliquant sur
+                encore obtenir un fichier Excel regroupant les informations du rapport.
+            </p>
+            <p>
+                Vous pouvez aussi supprimer le rapport, ce qui supprimera l'ensemble des PV le composant, et supprimant toutes ses
+                données dans la base. Après suppression, vous ne pourrez pas récupérer les données.
+            </p>
+            <p>
+                Enfin, en cliquant sur
                 "Générer tous les fichiers du rapport au format Excel", vous générerez sur le serveur les fichiers Excel
                 correspondant à tous les PV du rapport ainsi que le fichier Excel du rapport, et obtiendrez une archive
                 disponible en téléchargement, contenant l'ensemble de ces fichiers.

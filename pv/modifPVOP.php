@@ -248,54 +248,6 @@ creerModal("conclusion");
                             </td>
                         </tr>
                     </table>
-
-                    <!--                    <table>-->
-                    <!--                        <tr>-->
-                    <!--                            <th colspan="2"><h4 class="ui dividing header">Uploader les fichiers</h4></th>-->
-                    <!--                        </tr>-->
-                    <!---->
-                    <!--                        <form enctype="multipart/form-data" action="uploadPV.php" method="post">-->
-                    <!--                            <tr>-->
-                    <!--                                <td>-->
-                    <!--                                    <input type="hidden" name="taille_max" value="30000"/>-->
-                    <!--                                    <input name="pv_excel" type="file"/>-->
-                    <!--                                </td>-->
-                    <!--                                <td>-->
-                    <!--                                    --><?php
-                    //                                    echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                    //                                    echo '<input type="hidden" name="nomFichier" value="pv_excel">';
-                    //                                    echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
-                    //                                    ?>
-                    <!--                                    <button class="ui right floated blue button">Uploader au format Excel</button>-->
-                    <!--                                </td>-->
-                    <!--                            </tr>-->
-                    <!--                        </form>-->
-                    <!---->
-                    <!--                        <!---->
-                    <!--                            <form enctype="multipart/form-data" action="uploadPV.php" method="post">-->
-                    <!--                                <tr>-->
-                    <!--                                    <td>-->
-                    <!--                                        <input type="hidden" name="taille_max" value="30000" />-->
-                    <!--                                        <input name="pv_pdf" type="file" />-->
-                    <!--                                    </td>-->
-                    <!--                                    <td>-->
-                    <!--                                        --><?php
-                    //                                        echo '<input type="hidden" name="idPV" value="' . $pv['id_pv'] . '">';
-                    //                                        echo '<input type="hidden" name="nomFichier" value="pv_pdf">';
-                    //                                        echo '<input type="hidden" name="lienRetour" value="modifPVOP">';
-                    //                                        ?>
-                    <!--                                        <button class="ui right floated blue button">Uploader au format PDF</button>-->
-                    <!--                                    </td>-->
-                    <!--                                </tr>-->
-                    <!--                            </form>-->
-                    <!--                            -->
-                    <!---->
-                    <!--                        <tr>-->
-                    <!--                            --><?php
-                    //                            afficherMessage('erreurUpload', "Erreur", "Erreur dans l'upload du fichier", "Succès", "Le fichier a bien été uploadé !");
-                    //                            ?>
-                    <!--                        </tr>-->
-                    <!--                    </table>-->
                 </td>
             </tr>
         </table>
@@ -314,19 +266,18 @@ creerModal("conclusion");
                 également indiquer les appareils utilisés pour effectuer le contrôle parmi ceux présents dans la base,
                 indiquer la situation du contrôle, le nombre et le type d'annexes, et enfin les constatations et
                 conclusions
-                effectuées. Une fois ces informations rentrées, vous pouvez cliquer sur le bouton "Générer/Télécharger le
+                effectuées.
+            </p>
+            <p>
+                Une fois ces informations rentrées, vous pouvez cliquer sur le bouton "Générer/Télécharger le
                 fichier
                 Excel", qui vous génerera automatiquement un fichier Excel comprenant toutes les informations indiquées,
                 qui sera stocké sur le serveur. Vous pouvez ensuite télécharger le fichier, et le regénérer si besoin.
             </p>
-<!--            <p>-->
-<!--                <strong> Attention : </strong> réuploader des fichiers Excel ne modifie pas les informations stockées-->
-<!--                dans la base.-->
-<!--            </p>-->
             <p>
                 <strong> Attention : </strong> "Télécharger le fichier Excel" ne fait que télécharger le fichier présent
                 sur le serveur
-                - il ne génère un fichier que si aucun fichier n'est présent. Si un fichier est déjà présent sur le
+                - il ne génère un fichier que si aucun autre fichier concernant ce PV n'est présent. Si un fichier est déjà présent sur le
                 serveur,
                 utilisez le bouton "Regénérer le fichier" afin de le mettre à jour avec les nouvelles informations
                 entrées dans le formulaire.

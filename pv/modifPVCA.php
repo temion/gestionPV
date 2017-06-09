@@ -263,17 +263,13 @@ if (isset($modifs) && $modifs == 1)
     <div>
         <p>
             Cette page vous indique les différentes informations sur le PV sélectionné. Vous pouvez également y modifier
-            l'avancement,
+            différents détails comme le responsable ou les dates de contrôle,
             laisser un commentaire à propos du PV qui sera disponible pour tous les chargés d'affaire, ou encore
             télécharger les fichiers
-            Excel et PDF correspondants. De plus, vous pouvez réuploader des fichiers Excel/PDF si besoin, qui
-            remplaceront ceux déjà
-            présents sur le serveur et seront donc accessibles à tous.
-
-        <p>
-            <strong> Attention : </strong> réuploader des fichiers Excel ne modifie pas les informations stockées dans
-            la base.
+            Excel et PDF correspondants.
         </p>
+        <p>
+            Enfin, vous pouvez si besoin le supprimer, ce qui retirera de la base toutes les informations qui lui sont reliées.
         </p>
         <button onclick="$('#modalAide').modal('hide')" id="fermerModal" class="ui right floated blue button"> OK
         </button>

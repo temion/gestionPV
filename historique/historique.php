@@ -156,6 +156,10 @@ $nbAct = $bddPortailGestion->query('select count(*) from historique_activite;')-
                 à l'aide des flèches et des numéros de page placés en bas.
             </p>
             <p>
+                De plus, en cliquant sur le libellé d'un élément de la table, vous serez redirigé vers la page correspondant au document concerné,
+                si celui existe encore.
+            </p>
+            <p>
                 La base comportant l'historique s'archive automatiquement chaque année, et un fichier Excel comportant les
                 informations archivées est généré. Pour accéder à la liste des archives disponibles, cliquez sur le bouton "Archives"
                 en bas à gauche.

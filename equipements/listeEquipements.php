@@ -51,7 +51,7 @@ $societe = $bddPortailGestion->prepare('SELECT * FROM societe WHERE id_societe =
             <?php
             if (isset($_SESSION['droit']) && $_SESSION['droit'] == 'CA') {
                 ?>
-                En cliquant sur modifier, vous accèderez à une page permettant de modifier les informations
+                En cliquant sur "Modifier", vous accèderez à une page permettant de modifier les informations
                 concernant l'équipement sélectionné.
                 <?php
             }

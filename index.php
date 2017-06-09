@@ -132,12 +132,13 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
                 à inspecter dans la base de données.
             </p>
             <p>
-                Vous avez également accès à un planning, qui indique les dates à laquelle des contrôles sont effectués.
+                Enfin, la section "Gestion" vous donne accès à différents outils tels que l'historique complet des activités
+                ou encore le programmateur de PV. Vous avez également accès à un planning, qui indique les dates à laquelle des contrôles sont effectués.
             </p>
             <p>
-                Enfin, le tableau "Activités récentes" vous indique les derniers ajouts et modifications effectués. En
-                cliquant sur le libellé d'une activité, vous serez redirigé vers la page correspondant au rapport ou au PV concerné.
-                Le lien détail vous redirigera vers un tableau comportant l'intégralité des activités enregistrées dans la base.
+                Au centre de la page se trouve également un tableau, représentant les 5 dernières actions
+                (création/modification de rapport/PV) effectuées par les utilisateurs sur le portail. En cliquant sur le
+                libellé d'une des actions, vous serez redirigé vers la page du document concerné, si celui-ci existe encore.
             </p>
         <?php } else { ?>
             <p>
