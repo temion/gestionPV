@@ -32,14 +32,14 @@ if (isset($_GET['valider']) && $_GET['valider'] == 1) {
 // Ensemble des sociétés
 $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
 
-$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp", "id_societe")->fetchAll();
+$listeReservoirs = selectAll($bddInspections, "reservoirs_gestion_pv", "id_societe")->fetchAll();
 $prepareSociete = $bddPortailGestion->prepare('select * from societe where id_societe = ?');
 
 $controles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 $disciplines = selectAll($bddPortailGestion, "type_discipline")->fetchAll();
 
 $prepareControleAuto = $bddPortailGestion->prepare('select * from controle_auto where id_societe = ?');
-$prepareReservoir = $bddInspections->prepare('select * from reservoirs_tmp where id_reservoir = ?');
+$prepareReservoir = $bddInspections->prepare('select * from reservoirs_gestion_pv where id_reservoir = ?');
 $prepareControle = $bddPortailGestion->prepare('select * from type_controle where id_type = ?');
 $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline where id_discipline = ?');
 ?>

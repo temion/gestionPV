@@ -39,9 +39,9 @@ function modifAttribut($bddInspections, $attr) {
             $prepareIdSociete->execute(array($_POST['societe']));
             $idSociete = $prepareIdSociete->fetchAll();
 
-            $bddInspections->exec('UPDATE reservoirs_tmp SET id_societe = '.$idSociete[0]['id_societe'].' WHERE id_reservoir = ' . $_POST['idEquipement']);
+            $bddInspections->exec('UPDATE reservoirs_gestion_pv SET id_societe = '.$idSociete[0]['id_societe'].' WHERE id_reservoir = ' . $_POST['idEquipement']);
         } else {
-            $bddInspections->exec('UPDATE reservoirs_tmp SET ' . $attr . ' = upper(' . $bddInspections->quote($_POST[$attr]) . ') WHERE id_reservoir = ' . $_POST['idEquipement']);
+            $bddInspections->exec('UPDATE reservoirs_gestion_pv SET ' . $attr . ' = upper(' . $bddInspections->quote($_POST[$attr]) . ') WHERE id_reservoir = ' . $_POST['idEquipement']);
         }
 
         $modifs++;

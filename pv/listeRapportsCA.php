@@ -17,7 +17,7 @@ if (isset($_POST['idRapport']) && $_POST['idRapport'] != "")
 $numRapports = selectAll($bddPortailGestion, "rapports")->fetchAll();
 
 $selectAffaire = $bddPortailGestion->prepare('SELECT * FROM affaire WHERE id_affaire = ?');
-$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_tmp WHERE id_reservoir = ?');
+$selectReservoir = $bddInspections->prepare('SELECT * FROM reservoirs_gestion_pv WHERE id_reservoir = ?');
 $comptePV = $bddPortailGestion->prepare('SELECT count(*) FROM pv_controle WHERE id_rapport = ?');
 ?>
 

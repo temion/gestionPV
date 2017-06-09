@@ -314,6 +314,12 @@ function supprimerPV($bdd, $idPV) {
 }
 
 function supprimerRapport($bdd, $idRapport) {
+    $pvRapport = selectPVParRapport($bdd, $idRapport)->fetchAll();
+
+    for ($i = 0; $i < sizeof($pvRapport); $i++) {
+        supprimerPV($bdd, $pvRapport[$i]['id_pv']);
+    }
+
     $bdd->query('delete from rapports where id_rapport = '.$idRapport);
 }
 ?>

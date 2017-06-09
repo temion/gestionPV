@@ -17,7 +17,7 @@ $valeurs = array("diametre" => definirValeur('diametre'), "hauteur" => definirVa
 $societe = $bddPortailGestion->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bddPortailGestion->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
 
 //$bddPortailGestion->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bddPortailGestion->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bddPortailGestion->errorInfo(), true));
-$bddInspections->exec('insert into reservoirs_tmp values(NULL, '.$bddInspections->quote($_POST['designation']).', '.$bddInspections->quote($_POST['type']).', '.$societe['id_societe'].', '. definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']).', '.definirValeur($_POST['nb_generatrices'].')'));
+$bddInspections->exec('insert into reservoirs_gestion_pv values(NULL, '.$bddInspections->quote($_POST['designation']).', '.$bddInspections->quote($_POST['type']).', '.$societe['id_societe'].', '. definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']).', '.definirValeur($_POST['nb_generatrices'].')'));
 header("Location: ajoutEquipement.php?ajout=1");
 ?>
 

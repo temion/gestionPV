@@ -7,6 +7,8 @@ if (!verifSessionCA()) {
     exit;
 }
 
+verifParam();
+
 enTete("Modification de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/modifRapport.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
@@ -55,7 +57,7 @@ $controles = selectAll($bddPortailGestion, "type_controle")->fetchAll();
 
 $disciplines = selectAll($bddPortailGestion, "type_discipline")->fetchAll();
 
-$listeReservoirs = selectAll($bddInspections, "reservoirs_tmp", "id_societe")->fetchAll();
+$listeReservoirs = selectAll($bddInspections, "reservoirs_gestion_pv", "id_societe")->fetchAll();
 
 $listeUtilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
@@ -274,7 +276,7 @@ $listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "
                     <button class="ui right floated green button">Générer tous les fichiers du rapport au format Excel
                     </button>
                 </form>
-                <button style="pointer-events: auto;" <?php echo ((sizeof($listePV) > 0) ? "disabled title=\"Le rapport comporte encore des PV\"" : ""); ?> id="boutonSuppr" class="ui right floated red button">Supprimer le rapport</button>
+                <button style="pointer-events: auto;" id="boutonSuppr" class="ui right floated red button">Supprimer le rapport</button>
             </div>
         </div>
     </div>
@@ -304,10 +306,11 @@ $listePV = selectAllFromWhere($bddPortailGestion, "pv_controle", "id_rapport", "
         <div class="header">Attention</div>
         <div>
             <p>
-                Une fois supprimé, vous ne pourrez plus travailler sur ce rapport.
+                Cette action supprimera ce rapport ainsi que tous les PV le composant.
+                Une fois supprimé, vous ne pourrez plus travailler sur ces documents, et ne pourrez pas les récupérer.
             </p>
             <p>
-                Etes-vous sûrs de vouloir le supprimer ?
+                Etes-vous sûrs de vouloir les supprimer ?
             </p>
             <form method="post" action="listeRapportsCA.php">
                 <?php echo '<input type="hidden" name="idRapport" value="'.$rapport['id_rapport'].'">'; ?>
@@ -366,14 +369,6 @@ function afficherMessageAjout($conditionSucces, $messageSucces, $messageErreur) 
  * @param PDO $bddPlanning Base de données comportant les informations utilisateurs.
  */
 function creerRapport($bdd, $bddPlanning) {
-    if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
-        $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
-        $_GET['procedure'] == "" || $_GET['codeInter'] == ""
-    ) {
-        header("Location: creationRapport.php?erreur=1");
-        exit;
-    }
-
     $affaire = selectAffaireParNom($bdd, $_GET['num_affaire'])->fetch();
 
     // Id du récepteur de la demande
@@ -390,4 +385,16 @@ function creerRapport($bdd, $bddPlanning) {
         $bdd->quote($_GET['codeInter']), "now()");
 
     insert($bdd, "rapports", $valeursTmp);
+}
+
+function verifParam() {
+    if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
+        if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
+            $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
+            $_GET['procedure'] == "" || $_GET['codeInter'] == ""
+        ) {
+            header("Location: creationRapport.php?erreur=1");
+            exit;
+        }
+    }
 }
