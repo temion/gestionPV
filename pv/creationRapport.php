@@ -425,7 +425,7 @@ function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee
  * @return bool Vrai si tous les PV doivent être générés.
  */
 function verifGeneration($controlesAuto) {
-    for ($i = 0; $i < $controlesAuto; $i++) {
+    for ($i = 0; $i < sizeof($controlesAuto); $i++) {
         if ($controlesAuto[$i]['generation_auto'] == 0)
             return false;
     }

@@ -118,6 +118,12 @@ function enTete($titre, $styles, $scripts) {
                         Historique des activités effectuées
                     </a>
                 </div>
+
+                <div class="menu">
+                    <a href="/gestionPV/historique/archives.php" class="item lienMenu">
+                        Archives des historiques d'activité
+                    </a>
+                </div>
             </div>
         <?php } ?>
         <div class="item">
