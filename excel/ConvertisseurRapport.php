@@ -249,6 +249,9 @@ class ConvertisseurRapport extends PHPExcel {
         colorerCellule($this, 'K' . $this->celluleAct, $this->couleurs['jaune']);
     }
 
+    /**
+     * Redimensionne les colonnes du classeur.
+     */
     function dimensionnerColonnes() {
         $this->feuille->getColumnDimension('G')->setWidth(15);
         $this->feuille->getColumnDimension('H')->setWidth(15);

@@ -219,6 +219,11 @@ $prepareDiscipline = $bddPortailGestion->prepare('select * from type_discipline 
 </div>
 
 <?php
+/**
+ * Retourne vrai si les valeurs rentrées pour le PV sont correctes.
+ *
+ * @return bool Vrai si tous les champs ont été remplis avec des valeurs correctes.
+ */
 function valeursValides() {
     return (isset($_GET['idSociete']) && $_GET['idSociete'] != "" && isset($_GET['idReservoir']) && $_GET['idReservoir'] != ""
          && isset($_GET['idControle']) && $_GET['idControle'] != "" && isset($_GET['idDiscipline']) && $_GET['idDiscipline'] != "");

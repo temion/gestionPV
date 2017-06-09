@@ -394,6 +394,10 @@ function creerRapport($bdd, $bddPlanning) {
     insert($bdd, "rapports", $valeursTmp);
 }
 
+/**
+ * Vérifie si tous les paramètres nécessaires à la création d'un rapport ont bien été envoyés.
+ * Si ce n'est pas le cas, redirige vers le formulaire.
+ */
 function verifParam() {
     if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
         if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||

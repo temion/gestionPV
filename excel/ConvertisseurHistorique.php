@@ -47,6 +47,9 @@ class ConvertisseurHistorique extends PHPExcel {
         $this->remplirFeuille();
     }
 
+    /**
+     * Récupère dans la base de données les informations nécessaires à la génération Excel de l'historique.
+     */
     function recupBDD() {
         $this->bddPortailGestion = connexion('portail_gestion');
         $this->bddPlanning = connexion('planning');
@@ -55,12 +58,18 @@ class ConvertisseurHistorique extends PHPExcel {
         $this->prepareUtilisateur = $this->bddPlanning->prepare('select * from utilisateurs where id_utilisateur = ?');
     }
 
+    /**
+     * Redimensionne les colonnes du classeur Excel.
+     */
     function dimensionnerColonnes() {
         $this->feuille->getColumnDimension('A')->setWidth(25);
         $this->feuille->getColumnDimension('B')->setWidth(50);
         $this->feuille->getColumnDimension('C')->setWidth(25);
     }
 
+    /**
+     * Ecrit les données.
+     */
     function remplirFeuille() {
         $this->celluleAct = 1;
 
@@ -84,6 +93,11 @@ class ConvertisseurHistorique extends PHPExcel {
         $this->feuille->getStyle('A1:C' . $this->celluleAct)->applyFromArray($this->bordures);
     }
 
+    /**
+     * Retourne l'historique stocké dans la base.
+     *
+     * @return mixed Historique.
+     */
     function getHistorique() {
         return $this->historique;
     }

@@ -76,6 +76,9 @@ class ConvertisseurPV extends PHPExcel {
         $this->remplirFeuille();
     }
 
+    /**
+     * Ajoute le logo en haut de la feuille Excel.
+     */
     function ajouterImage() {
         $image = imagecreatefrompng('../images/scopeo.png');
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();

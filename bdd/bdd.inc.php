@@ -414,10 +414,24 @@ function selectConclusionsParPV($base, $idPV) {
 
 /** Controles auto */
 
+/**
+ * Retourne les contrôles programmés pour les affaires concernant la société dont l'id est passé en paramètre.
+ *
+ * @param PDO $base Base de données.
+ * @param int $idSociete Identifiant de la société.
+ * @return mixed Tableau des contrôles programmés.
+ */
 function selectControlesAutoParSociete($base, $idSociete) {
     return selectAllFromWhere($base, "controle_auto", "id_societe", "=", $idSociete);
 }
 
+/**
+ * Retourne le contrôle programmés possédant l'id passé en paramètre dans la base.
+ *
+ * @param PDO $base Base de données.
+ * @param int $id Identifiant du contrôle.
+ * @return mixed Informations du contrôle.
+ */
 function selectControlesAutoParId($base, $id) {
     return selectAllFromWhere($base, "controle_auto", "id_controle_auto", "=", $id);
 }

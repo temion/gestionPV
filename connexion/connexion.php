@@ -85,9 +85,6 @@ session_destroy();
             </table>
         </div>
     </form>
-<!--    <div style="text-align: center; margin-top: 2vh">-->
-<!--        (Identifiants test : op (droit opérateur)/ca (droit chargé d'affaires) -- mdp)-->
-<!--    </div>-->
 </div>
 </body>
 </html>

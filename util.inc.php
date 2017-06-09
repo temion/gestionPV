@@ -45,7 +45,6 @@ function conversionDate($date) {
  * Vérifie le format dans lequel l'utilisateur a rentré la date.
  *
  * @param string $date Date à vérifier.
- *
  * @return bool Vrai si la format est bien JJ-MM-AAAA.
  */
 function verifFormatDates($date) {
@@ -306,6 +305,12 @@ function creerLignePV($pv, $prepareUtilisateur, $prepareRapport, $prepareAffaire
     echo '</tr>';
 }
 
+/**
+ * Supprime de la base le PV possédant l'identifiant passé en paramètre.
+ *
+ * @param PDO $bdd Base de données des PV.
+ * @param int $idPV Identifiant du PV dans la base.
+ */
 function supprimerPV($bdd, $idPV) {
     $bdd->query('delete from pv_controle where id_pv = ' .$idPV);
     $bdd->query('delete from appareils_utilises where id_pv_controle = '.$idPV);
@@ -313,6 +318,12 @@ function supprimerPV($bdd, $idPV) {
     $bdd->query('delete from conclusions_pv where id_pv = '.$idPV);
 }
 
+/**
+ * Supprime de la base le rapport possédant l'identifiant passé en paramètre, ainsi que tous les PV qui le composent.
+ *
+ * @param PDO $bdd Base de données des PV.
+ * @param int $idRapport Identifiant du Rapport dans la base.
+ */
 function supprimerRapport($bdd, $idRapport) {
     $pvRapport = selectPVParRapport($bdd, $idRapport)->fetchAll();
 

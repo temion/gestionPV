@@ -167,6 +167,9 @@ if (!isset($_GET['start']) || $_GET['start'] == "")
 </html>
 
 <?php
+/**
+ * Crée les différents champs du formulaire à remplir pour créer le rapport.
+ */
 function infosRapport() {
     global $affaires, $utilisateurs;
 ?>
@@ -305,6 +308,13 @@ function infosRapport() {
 <?php
 }
 
+/**
+ * Crée le tableau indiquant les PV préprogrammés pour la société concernée par l'affaire.
+ *
+ * @param PDO $bddPortailGestion Base de données des PV.
+ * @param PDO $bddInspections Base de données des réservoirs.
+ * @param array $affaireSelectionnee Affaire sélectionnée par l'utilisateur.
+ */
 function tableauPVAuto($bddPortailGestion, $bddInspections, $affaireSelectionnee) {
     $societe = selectSocieteParId($bddPortailGestion, $affaireSelectionnee['id_societe'])->fetch();
     $controlesAuto = selectControlesAutoParSociete($bddPortailGestion, $societe['id_societe'])->fetchAll();
@@ -418,11 +428,18 @@ function verifGeneration($controlesAuto) {
     for ($i = 0; $i < $controlesAuto; $i++) {
         if ($controlesAuto[$i]['generation_auto'] == 0)
             return false;
-
-        return true;
     }
+
+    return true;
 }
 
+/**
+ * Ecrit une ligne du tableau des PV préprogrammés.
+ *
+ * @param PDO $bddPortailGestion Base de données des PV.
+ * @param PDO $bddInspections Base de données des réservoirs.
+ * @param array $controleAuto PV de contrôle à représenter sur la ligne.
+ */
 function ecrireLigne($bddPortailGestion, $bddInspections, $controleAuto) {
     $prepareReservoir = $bddInspections->prepare('select * from reservoirs_gestion_pv where id_reservoir = ?');
     $prepareControle = $bddPortailGestion->prepare('select * from type_controle where id_type = ?');

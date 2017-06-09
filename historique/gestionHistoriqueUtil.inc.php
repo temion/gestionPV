@@ -21,6 +21,13 @@ function ajouterHistorique($bdd, $libelle, $pageAction, $param) {
         insert($bdd, "historique_activite", array("null", $_SESSION['id_connecte'], $bdd->quote($libelle), $bdd->quote($pageAction), $bdd->quote($param), "now()"));
 }
 
+/**
+ * Supprime les tuples de la table "historique_activite", et ajoute un tuple dans "archives_activite" indiquant
+ * le chemin du fichier Excel d'archive sur le serveur.
+ *
+ * @param PDO $bdd Base de données.
+ * @param string $annee Année des activités à archiver.
+ */
 function archiverHistorique($bdd, $annee) {
     $convertisseur = new ConvertisseurHistorique($annee);
 

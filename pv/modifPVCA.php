@@ -313,6 +313,13 @@ if (isset($modifs) && $modifs == 1)
 </script>
 
 <?php
+/**
+ * Vérifie que les dates rentrées sont cohérentes, et met à jour la table en conséquence.
+ *
+ * @param string $dateA Date de début du contrôle.
+ * @param string $dateB Date de fin du contrôle.
+ * @param PDO $bddPortailGestion Base de données des PV.
+ */
 function majDates($dateA, $dateB, $bddPortailGestion) {
     global $pv, $modifs, $erreurs;
 
