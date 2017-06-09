@@ -34,6 +34,14 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
 
                 $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", 1, "null", "null", "null");
                 insert($bddPortailGestion, "pv_controle", $valeurs);
+
+                $pvCree = selectDernierPV($bddPortailGestion)->fetch();
+                $discipline = selectDisciplineParId($bddPortailGestion, $pvCree['id_discipline'])->fetch();
+                $type_controle = selectControleParId($bddPortailGestion, $pvCree['id_type_controle'])->fetch();
+
+                $titre = "SCO" . explode(" ", $affaire['num_affaire'])[1] . '-' . $discipline['code'] . '-' . $type_controle['code'] . '-' . sprintf("%03d", $pvCree['num_ordre']);
+
+                ajouterHistorique($bddPortailGestion, "Création du PV " . $titre, "pv/modifPVCA.php?idPV=", $pvCree['id_pv']);
             }
         }
     }
