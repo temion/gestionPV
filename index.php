@@ -55,9 +55,9 @@ $prepareUtilisateur = $bddPlanning->prepare('select * from utilisateurs where id
         </p>
     </div>
 
-    <form method="get" action="index.php">
-        <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>
-    </form>
+<!--    <form method="get" action="index.php">-->
+<!--        <button class="ui right floated red button" name="reset" value="1">REINITIALISER TABLES</button>-->
+<!--    </form>-->
 
     <?php if (sizeof($historique) > 0 && isset($_SESSION['droit']) && $_SESSION['droit'] == "CA") { ?>
         <table class="ui celled table" id="historique">

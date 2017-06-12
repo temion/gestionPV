@@ -31,7 +31,7 @@ class ConvertisseurHistorique extends PHPExcel {
         $this->setActiveSheetIndex(0);
 
         $this->feuille = $this->getActiveSheet();
-        $this->feuille->getProtection()->setSheet(true);
+//        $this->feuille->getProtection()->setSheet(true);
 
         $this->bordures = array(
             'borders' => array(
