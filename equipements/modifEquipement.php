@@ -97,7 +97,6 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                 <th> Hauteur</th>
                 <th> Hauteur produit</th>
                 <th> Volume</th>
-                <th> Distance entre 2 points</th>
                 <th> Nombre de génératrices</th>
             </tr>
             </thead>
@@ -115,9 +114,6 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                 </td>
                 <td>
                     <label> <?php echo($equipement['volume'] != "" ? $equipement['volume'] . ' mm<sup>3</sup>' : ""); ?> </label>
-                </td>
-                <td>
-                    <label> <?php echo($equipement['distance_points'] != "" ? $equipement['distance_points'] . ' mm' : ""); ?> </label>
                 </td>
                 <td>
                     <label> <?php echo($equipement['nb_generatrices'] != "" ? $equipement['nb_generatrices'] : ""); ?> </label>
@@ -155,14 +151,6 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                         <label>Volume : </label>
                         <div class="ui input">
                             <input type="text" name="volume" placeholder="Volume (mm3)">
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="field">
-                        <label>Distance entre 2 points : </label>
-                        <div class="ui input">
-                            <input type="text" name="distance_points" placeholder="Distance (mm)">
                         </div>
                     </div>
                 </td>

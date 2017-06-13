@@ -12,12 +12,11 @@ if ($_POST['societe'] == "" || $_POST['designation'] == "" || $_POST['type'] == 
     exit;
 }
 
-$valeurs = array("diametre" => definirValeur('diametre'), "hauteur" => definirValeur('hauteur'), "hauteur_produit" => definirValeur('hauteur_produit'), "volume" => definirValeur('volume'), "distance" => definirValeur('distance'));
-
 $societe = $bddPortailGestion->query('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(' . $bddPortailGestion->quote($_POST['societe'] . '%') . ' , \' \', \'\')')->fetch(); // Replace pour éviter les bugs de comparaison de chaînes à espace.
 
-//$bddPortailGestion->exec('INSERT INTO equipements VALUES(NULL, ' . $societe['id_societe'] . ', ' . $bddPortailGestion->quote($_POST['nom']) . ', ' . definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']) . ')') or die (print_r($bddPortailGestion->errorInfo(), true));
-$bddInspections->exec('insert into reservoirs_gestion_pv values(NULL, '.$bddInspections->quote($_POST['designation']).', '.$bddInspections->quote($_POST['type']).', '.$societe['id_societe'].', '. definirValeur($_POST['diametre']) . ', ' . definirValeur($_POST['hauteur']) . ', ' . definirValeur($_POST['hauteur_produit']) . ', ' . definirValeur($_POST['volume']) . ', ' . definirValeur($_POST['distance']).', '.definirValeur($_POST['nb_generatrices'].')'));
+$valeurs = array("null", $bddInspections->quote($_POST['designation']), $bddInspections->quote($_POST['type']), $societe['id_societe'], definirValeur('diametre'), definirValeur('hauteur'), definirValeur('hauteur_produit'), definirValeur('volume'), calculDistance(), definirValeur('nb_generatrices'));
+
+insert($bddInspections, "reservoirs_gestion_pv", $valeurs);
 header("Location: ajoutEquipement.php?ajout=1");
 ?>
 
@@ -43,6 +42,13 @@ function verifEntreeDates($date) {
     return $date_correcte;
 }
 
+function calculDistance() {
+    if (isset($_POST['diametre']) && $_POST['diametre'] != "" && isset($_POST['nb_generatrices']) && $_POST['nb_generatrices'] != "")
+        return (($_POST['diametre'] * pi()) / $_POST['nb_generatrices']) / 10;
+
+    return 0;
+}
+
 /**
  * Crée en fonction de l'entrée utilisateur la valeur de la variable passée en paramètre.
  *
@@ -50,7 +56,7 @@ function verifEntreeDates($date) {
  * @return string Valeur de la variable.
  */
 function definirValeur($post) {
-    return (isset($post) && $post != "") ? $post : "null";
+    return (isset($_POST[$post]) && $_POST[$post] != "") ? $_POST[$post] : "0";
 }
 
 ?>

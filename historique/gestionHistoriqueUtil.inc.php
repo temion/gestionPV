@@ -43,8 +43,8 @@ function archiverHistorique($bdd, $annee) {
 /**
  * Vérifie que l'élément actuel de l'historique existe encore dans la base, afin de rendre actif ou non son lien.
  *
- * @param $bdd Base de données dans lequel se trouve l'historique.
- * @param $activite Activité à vérifier.
+ * @param PDO $bdd Base de données dans lequel se trouve l'historique.
+ * @param array $activite Activité à vérifier.
  *
  * @return bool Vrai si l'élément est toujours présent dans la base.
  */

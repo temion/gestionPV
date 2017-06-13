@@ -187,7 +187,7 @@ class ConvertisseurPV extends PHPExcel {
         remplirCellules($this->feuille, 'G' . $this->celluleAct, 'H' . $this->celluleAct, $this->titre);
         $this->feuille->getCell('I' . $this->celluleAct)->getStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
-        colorerCellule($this, 'A' . $this->celluleAct . ':H' . $this->celluleAct, $this->couleurs['bleu']); // Bleu
+        colorerCellule($this, 'A' . $this->celluleAct . ':H' . $this->celluleAct, $this->couleurs['bleu']);
     }
 
     /**
@@ -463,4 +463,5 @@ class ConvertisseurPV extends PHPExcel {
     function getPV() {
         return $this->pv;
     }
+
 }

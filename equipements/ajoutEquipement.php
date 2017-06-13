@@ -10,7 +10,7 @@ enTete("Ajout d'un nouvel équipement",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/ajout.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$societes = selectAll($bddPortailGestion, "societe")->fetchAll();
+$societes = selectAll($bddPortailGestion, "societe", "nom_societe")->fetchAll();
 ?>
 
 <div id="contenu">
@@ -85,14 +85,6 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                         <label>Volume : </label>
                         <div class="ui input">
                             <input type="text" name="volume" placeholder="Volume (mm3)">
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="field">
-                        <label>Distance entre 2 points : </label>
-                        <div class="ui input">
-                            <input type="text" name="distance" placeholder="Distance (mm)">
                         </div>
                     </div>
                 </td>

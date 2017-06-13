@@ -16,9 +16,15 @@ $modifs = 0;
 
 $prepareIdSociete = $bddPortailGestion->prepare('SELECT * FROM societe WHERE replace(nom_societe, \' \', \'\') LIKE replace(?, \' \', \'\')');
 
-$attributs = array('societe', 'designation', 'type', 'diametre', 'hauteur', 'hauteur_produit', 'volume', 'distance_points', 'nb_generatrices');
+$attributs = array('societe', 'designation', 'type', 'diametre', 'hauteur', 'hauteur_produit', 'volume', 'nb_generatrices');
 for ($i = 0; $i < sizeof($attributs); $i++)
     modifAttribut($bddInspections, $attributs[$i]);
+
+$equipement = selectReservoirParId($bddInspections, $_POST['idEquipement'])->fetch();
+if (isset($equipement['diametre']) && $equipement['diametre'] != "" && isset($equipement['nb_generatrices']) && $equipement['nb_generatrices'] != "") {
+    $distance = (($equipement['diametre']*pi()) / $equipement['nb_generatrices']) / 1000;
+    $bddInspections->exec('UPDATE reservoirs_gestion_pv SET distance_points = '.$distance.' WHERE id_reservoir = ' . $_POST['idEquipement']);
+}
 
 header('Location: listeEquipements.php?modifs=' . $modifs);
 exit;
