@@ -31,3 +31,7 @@ table {
 .partieTableau {
     width: 50em;
 }
+
+#tableCB td {
+    width: 33%;
+}

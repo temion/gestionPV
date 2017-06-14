@@ -18,6 +18,7 @@ update($bddPortailGestion, "pv_controle", "pieces_jointes", etatCB($bddPortailGe
 update($bddPortailGestion, "pv_controle", "controle_interne", etatCB($bddPortailGestion, 'controle_interne'), "id_pv", "=", $_GET['idPV']);
 update($bddPortailGestion, "pv_controle", "controle_externe", etatCB($bddPortailGestion, 'controle_externe'), "id_pv", "=", $_GET['idPV']);
 update($bddPortailGestion, "pv_controle", "controle_peripherique", etatCB($bddPortailGestion, 'controle_peripherique'), "id_pv", "=", $_GET['idPV']);
+update($bddPortailGestion, "pv_controle", "surface_peinte", etatCB($bddPortailGestion, 'peinture'), "id_pv", "=", $_GET['idPV']);
 
 if (isset($_GET['nbAnnexes']) && is_numeric($_GET['nbAnnexes']))
     update($bddPortailGestion, "pv_controle", "nb_annexes", $_GET['nbAnnexes'], "id_pv", "=", $_GET['idPV']);

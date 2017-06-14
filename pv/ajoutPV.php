@@ -24,7 +24,7 @@ if ($_GET['date_fin'] != "null")
     $_GET['date_fin'] = $bddPortailGestion->quote(conversionDate($_GET['date_fin']));
 
 $valeurs = array("null", $_GET['idRapport'], $_GET['reservoir'], $_GET['discipline'], $_GET['controle'], $numOrdreActuel[0] + 1,
-                $_GET['controleur'], "false", "false", 0, "false", "false", "false",
+                $_GET['controleur'], "false", "false", 0, "false", "false", "false", "false",
                 $_GET['date_debut'], $_GET['date_fin'], 1,
                 "null", "null", "null");
 

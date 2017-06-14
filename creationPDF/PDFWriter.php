@@ -67,7 +67,8 @@ class PDFWriter extends mPDF {
     function situationControle($pv) {
         $this->ecrireHTML("<table class='details'><tr class='titre'><td colspan='4'>Situation de contrôle</td></tr>");
         $this->ecrireHTML("<tr><td>Contrôle interne ? </td><td class='info'>" . ($pv['controle_interne'] ? "OUI" : "NON") . "</td><td>Contrôle externe ? </td><td class='info'>" . ($pv['controle_externe'] ? "OUI" : "NON") . "</td></tr>");
-        $this->ecrireHTML("<tr><td>Contrôle périphérique ? </td><td class='info'>" . ($pv['controle_peripherique'] ? "OUI" : "NON") . "</td></tr>");
+        $this->ecrireHTML("<tr><td>Contrôle périphérique ? </td><td class='info'>" . ($pv['controle_peripherique'] ? "OUI" : "NON") . "</td>");
+        $this->ecrireHTML("<td>Surface peinte ? </td><td class='info'>" . ($pv['surface_peinte'] ? "OUI" : "NON") . "</td></tr>");
         $this->ecrireHTML("</table>");
     }
 

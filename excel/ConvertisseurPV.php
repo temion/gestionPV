@@ -246,10 +246,13 @@ class ConvertisseurPV extends PHPExcel {
         colorerCellule($this, 'G' . $this->celluleAct, $this->couleurs['gris']);
 
         $this->celluleAct++;
-        creerChamp($this->feuille, $this->celluleAct, 'A', 'B', "Contrôle périphérique ? ", 'C', 'D', ($this->pv['controle_peripherique'] == 1 ? "OUI" : "NON"));
 
-        $this->feuille->getStyle('A' . $this->celluleAct . ':D' . $this->celluleAct)->applyFromArray($this->bordures);
+        creerChamp($this->feuille, $this->celluleAct, 'A', 'B', "Contrôle périphérique ? ", 'C', 'D', ($this->pv['controle_peripherique'] == 1 ? "OUI" : "NON"));
+        creerChamp($this->feuille, $this->celluleAct, 'E', 'F', "Surface peinte ? ", 'G', 'H', ($this->pv['surface_peinte'] == 1 ? "OUI" : "NON"));
+
+        $this->feuille->getStyle('A' . $this->celluleAct . ':H' . $this->celluleAct)->applyFromArray($this->bordures);
         colorerCellule($this, 'C' . $this->celluleAct, $this->couleurs['gris']);
+        colorerCellule($this, 'G' . $this->celluleAct, $this->couleurs['gris']);
     }
 
     /**

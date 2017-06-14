@@ -32,7 +32,7 @@ if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
                 // Sélection du dernier numéro du contrôle rentré pour le rapport courant.
                 $numOrdreActuel = $bddPortailGestion->query('SELECT max(num_ordre) FROM pv_controle WHERE id_rapport = ' . $rapport['id_rapport'] . ' AND id_type_controle = ' . $controlesAuto[$i]['id_controle'])->fetch();
 
-                $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", 1, "null", "null", "null");
+                $valeurs = array("null", $rapport['id_rapport'], $controlesAuto[$i]['id_reservoir'], $controlesAuto[$i]['id_discipline'], $controlesAuto[$i]['id_controle'], $numOrdreActuel[0] + 1, "null", "null", "null", "null", "null", "null", "null", "null", "null", "null", 1, "null", "null", "null");
                 insert($bddPortailGestion, "pv_controle", $valeurs);
 
                 $pvCree = selectDernierPV($bddPortailGestion)->fetch();

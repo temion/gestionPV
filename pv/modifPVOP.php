@@ -146,7 +146,7 @@ creerModal("conclusion");
                         ?>
                     </form>
                     <form method="get" action="ajoutSituationPV.php">
-                        <table>
+                        <table id="tableCB">
                             <tr>
                                 <th colspan="3"><h4 class="ui dividing header">Situation de contrôle & annexes</h4></th>
                             </tr>
@@ -201,6 +201,23 @@ creerModal("conclusion");
                                     ?>
                                 </td>
                                 <td>
+                                    <label class="labelCB"> Surface peinte ? </label>
+                                    <?php
+                                    if ($pv['surface_peinte'] == 1)
+                                        echo '<input checked type="checkbox" name="peinture">';
+                                    else
+                                        echo '<input type="checkbox" name="peinture">';
+                                    ?>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2"> <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?> </td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
                                     <label> Annexes : </label>
                                     <div class="ui input">
                                         <?php
@@ -211,12 +228,8 @@ creerModal("conclusion");
                                         ?>
                                     </div>
                                 </td>
+                                <td></td>
                             </tr>
-
-                            <tr>
-                                <td colspan="2"> <?php afficherMessageAjout('nbAnnexes', "Les modifications ont bien été prises en compte !", "Erreur dans la modification"); ?> </td>
-                            </tr>
-
                             <tr>
                                 <td></td>
                                 <td></td>
