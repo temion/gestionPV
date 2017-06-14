@@ -10,7 +10,8 @@ enTete("Création de rapport",
     array("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css", "../style/creationRapport.css", "../style/menu.css"),
     array("https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js", "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"));
 
-$affaires = selectAll($bddPortailGestion, "affaire")->fetchAll();
+$affaires = $bddPortailGestion->query('SELECT * FROM affaire WHERE affaire.id_affaire NOT IN (SELECT rapports.id_affaire FROM rapports)')->fetchAll();    // Permet d'empécher la création de 2 rapports sur la même affaire.
+//$affaires = selectAll($bddPortailGestion, "affaire")->fetchAll();
 $utilisateurs = selectAll($bddPlanning, "utilisateurs")->fetchAll();
 
 if (isset($_GET['num_affaire'])) {
