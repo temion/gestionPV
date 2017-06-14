@@ -273,7 +273,7 @@ function infosRapport() {
             </select>
         </td>
         <td>
-            <label>* Avenant affaire n° : </label>
+            <label>Avenant affaire n° : </label>
             <div class="ui input">
                 <input class="inputEl" type="text" name="numAvenant" placeholder="Numéro avenant affaire"
                        value="<?php if (isset($_GET['numAvenant'])) echo $_GET['numAvenant']; ?>">

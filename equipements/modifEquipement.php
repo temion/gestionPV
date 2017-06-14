@@ -150,7 +150,7 @@ $societes = selectAll($bddPortailGestion, "societe")->fetchAll();
                     <div class="field">
                         <label>Volume : </label>
                         <div class="ui input">
-                            <input type="text" name="volume" placeholder="Volume (mm3)">
+                            <input type="text" name="volume" placeholder="Volume (m3)">
                         </div>
                     </div>
                 </td>

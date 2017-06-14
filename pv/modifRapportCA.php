@@ -409,8 +409,7 @@ function creerRapport($bdd, $bddPlanning) {
 function verifParam() {
     if (isset($_GET['ajoutRapport']) && $_GET['ajoutRapport'] == 1) {
         if ($_GET['num_affaire'] == "" || $_GET['demandeRecue'] == "" || $_GET['demandeAnalysee'] == "" ||
-            $_GET['obtentionOffre'] == "" || $_GET['numAvenant'] == "" ||
-            $_GET['procedure'] == "" || $_GET['codeInter'] == ""
+            $_GET['obtentionOffre'] == "" || $_GET['procedure'] == "" || $_GET['codeInter'] == ""
         ) {
             header("Location: creationRapport.php?erreur=1");
             exit;

@@ -83,7 +83,7 @@ function creerLigneAppareil($equipements, $ind) {
     echo '<td>' . ($equipements[$ind]['diametre'] != "" ? $equipements[$ind]['diametre'] . ' mm' : "") . '</td>';
     echo '<td>' . ($equipements[$ind]['hauteur'] != "" ? $equipements[$ind]['hauteur'] . ' mm' : "") . '</td>';
     echo '<td>' . ($equipements[$ind]['hauteur_produit'] != "" ? $equipements[$ind]['hauteur_produit'] . ' mm' : "") . '</td>';
-    echo '<td>' . ($equipements[$ind]['volume'] != "" ? $equipements[$ind]['volume'] . ' mm<sup>3</sup>' : "") . '</td>';
+    echo '<td>' . ($equipements[$ind]['volume'] != "" ? $equipements[$ind]['volume'] / 1000 . ' m<sup>3</sup>' : "") . '</td>';
     echo '<td>' . ($equipements[$ind]['distance_points'] != "" ? $equipements[$ind]['distance_points'] . ' mm' : "") . '</td>';
     echo '<td>' . ($equipements[$ind]['nb_generatrices'] != "" ? $equipements[$ind]['nb_generatrices'] : "") . '</td>';
     if (isset($_SESSION['droit']) && $_SESSION['droit'] == "OP")

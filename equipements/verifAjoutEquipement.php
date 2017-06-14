@@ -44,7 +44,7 @@ function verifEntreeDates($date) {
 
 function calculDistance() {
     if (isset($_POST['diametre']) && $_POST['diametre'] != "" && isset($_POST['nb_generatrices']) && $_POST['nb_generatrices'] != "")
-        return (($_POST['diametre'] * pi()) / $_POST['nb_generatrices']) / 10;
+        return (($_POST['diametre'] * pi()) / $_POST['nb_generatrices']) / 1000;
 
     return 0;
 }
@@ -56,6 +56,9 @@ function calculDistance() {
  * @return string Valeur de la variable.
  */
 function definirValeur($post) {
+    if ($post == 'volume')
+        return (isset($_POST[$post]) && $_POST[$post] != "") ? strval(intval($_POST[$post])*1000) : "0";
+
     return (isset($_POST[$post]) && $_POST[$post] != "") ? $_POST[$post] : "0";
 }
 

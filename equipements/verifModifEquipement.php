@@ -46,6 +46,8 @@ function modifAttribut($bddInspections, $attr) {
             $idSociete = $prepareIdSociete->fetchAll();
 
             $bddInspections->exec('UPDATE reservoirs_gestion_pv SET id_societe = '.$idSociete[0]['id_societe'].' WHERE id_reservoir = ' . $_POST['idEquipement']);
+        } else if ($attr == 'volume') {
+            $bddInspections->exec('UPDATE reservoirs_gestion_pv SET ' . $attr . ' = upper(' . $bddInspections->quote(strval(intval($_POST[$attr])*1000)) . ') WHERE id_reservoir = ' . $_POST['idEquipement']);
         } else {
             $bddInspections->exec('UPDATE reservoirs_gestion_pv SET ' . $attr . ' = upper(' . $bddInspections->quote($_POST[$attr]) . ') WHERE id_reservoir = ' . $_POST['idEquipement']);
         }
